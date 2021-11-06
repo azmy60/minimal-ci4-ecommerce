@@ -127,3 +127,6 @@ nb-configuration.xml
 
 # Node
 node_modules
+
+# Distribution files
+public/css/*

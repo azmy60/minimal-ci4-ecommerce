@@ -14,7 +14,7 @@
         </svg>
       </div>
     <?php endif ?>
-    <input name="<?= $name ?>" <?= ($type === 'password') ? ":type=\"show ? 'text' : 'password'\" x-ref=\"passwordInput\"" : "type=\"$type\"" ?> class="<?= ($type == 'password') ? 'pl-4 pr-12' : 'px-4' ?> <?= !empty($error) ? 'border-red-500' : 'border-trueGray-400' ?> w-full py-2.5 bg-white border rounded-lg  focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500">
+    <input id="<?= $name ?>" name="<?= $name ?>" <?= ($type === 'password') ? ":type=\"show ? 'text' : 'password'\" x-ref=\"passwordInput\"" : "type=\"$type\"" ?> class="<?= ($type == 'password') ? 'pl-4 pr-12' : 'px-4' ?> <?= !empty($error) ? 'border-red-500' : 'border-trueGray-400' ?> w-full py-2.5 bg-white border rounded-lg  focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500">
   </div>
 
   <?php if (!empty($helper)) :  ?>

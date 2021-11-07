@@ -16,7 +16,7 @@
             </svg></h1>
         <p class="text-lg">Ini adalah halaman khusus penjual. Untuk melihat halaman pembeli, <a href="/" class="underline text-emerald-500">klik disini</a>.</p>
     </section>
-    <form action="<?= route_to('login') ?>" method="POST" class="grid items-end w-full h-full sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
+    <form action="<?= route_to('login') ?>" method="POST" class="grid items-end w-full h-full login-form sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
         <?= csrf_field() ?>
         <div class="space-y-2">
             <div class="text-4xl font-bold">Nama Toko</div>

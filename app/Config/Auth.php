@@ -35,7 +35,7 @@ class Auth extends \Myth\Auth\Config\Auth
 	 */
 	public $views = [
 		'login'		   => 'login',
-		'register'		=> 'Myth\Auth\Views\register',
+		'register'		=> 'register',
 		'forgot'		  => 'Myth\Auth\Views\forgot',
 		'reset'		   => 'Myth\Auth\Views\reset',
 		'emailForgot'	 => 'Myth\Auth\Views\emails\forgot',
@@ -83,7 +83,7 @@ class Auth extends \Myth\Auth\Config\Auth
 	 *
 	 * @var string[]
 	 */
-	public $personalFields = [];
+	public $personalFields = ['username'];
 
 	/**
 	 * --------------------------------------------------------------------

@@ -14,13 +14,13 @@ return [
 
     // Registration
     'registerDisabled'          => 'Sorry, new user accounts are not allowed at this time.',
-    'registerSuccess'           => 'Welcome aboard! Please login with your new credentials.',
+    'registerSuccess'           => 'You\'re account is verified! Please login with your account to get started.',
     'registerCLI'               => 'New user created: {0}, #{1}',
 
     // Activation
     'activationNoUser'          => 'Unable to locate a user with that activation code.',
     'activationSubject'         => 'Activate your account',
-    'activationSuccess'         => 'Please confirm your account by clicking the activation link in the email we have sent.',
+    'activationSuccess'         => 'We have sent you a confirmation link to your email. Please verify your account by clicking the link.',
     'activationResend'          => 'Resend activation message one more time.',
     'notActivated'              => 'This user account is not yet activated.',
     'errorSendingActivation'    => 'Failed to send activation message to: {0}',

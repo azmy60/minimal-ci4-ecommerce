@@ -36,7 +36,7 @@ class Auth extends \Myth\Auth\Config\Auth
 	public $views = [
 		'login'		   => 'login',
 		'register'		=> 'register',
-		'forgot'		  => 'Myth\Auth\Views\forgot',
+		'forgot'		  => 'forgot',
 		'reset'		   => 'Myth\Auth\Views\reset',
 		'emailForgot'	 => 'Myth\Auth\Views\emails\forgot',
 		'emailActivation' => 'Myth\Auth\Views\emails\activation',

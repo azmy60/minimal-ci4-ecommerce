@@ -11,16 +11,25 @@
 			box-sizing: border-box;
 		}
 
+		html, body {
+			padding: 0;
+			margin: 0;
+		}
+
 		body {
 			font-family: sans-serif;
 			font-size: 18px;
 			padding: 1rem;
 			color: black;
+			display: grid;
+			place-content: center;
+			height: 100vh;
 		}
 
 		a {
 			color: black;
 			font-weight: bold;
+			text-decoration: none;
 		}
 
 		a:focus {
@@ -50,11 +59,20 @@
 </head>
 
 <body>
-	<?php if (logged_in()) : ?>
-		<span>Logged in as <?= user()->toArray()['username'] ?>. <a class="btn" style="margin-left: 0.5rem;" href="/logout">logout</a></span>
-	<?php else : ?>
-		<span>Not logged in. <a href="/login">Login here</a></span>
-	<?php endif ?>
+	<main>
+		<?php if (logged_in()) : ?>
+			<span>Logged in as <?= user()->toArray()['email'] ?> <a class="btn" style="margin-left: 0.5rem;" href="/logout">logout</a></span>
+		<?php else : ?>
+			<span>Not logged in.</span>
+			<br>
+			<br>
+			<div>
+				<a href="/login">Login</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/register">Create a new account</a>
+			</div>
+		<?php endif ?>
+	</main>
 </body>
 
 </html>

@@ -34,9 +34,9 @@ function css() {
 
 // Run php server + live reload
 function serve() {
-  const phpServer = spawn('php', 'spark serve --port 8000'.split(' '), {stdio: 'inherit'})
+  const phpServer = spawn('php', 'spark serve'.split(' '), {stdio: 'inherit'})
   
-  browserSync({ proxy: '[::1]:8000' })
+  browserSync({ proxy: '[::1]:8080' })
 
   // Watch css
   watch(['src/css/*.css', 'tailwind.config.js'], series(css))

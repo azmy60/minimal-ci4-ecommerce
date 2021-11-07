@@ -1,0 +1,3 @@
+form {
+  grid-template-rows: minmax(12rem, auto) minmax(13rem, 16rem) minmax(13rem, auto);
+}

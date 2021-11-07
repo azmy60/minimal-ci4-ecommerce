@@ -6,6 +6,7 @@ const tailwindcss = require('tailwindcss')
 const autoprefixer = require('autoprefixer')
 const cssnano = require('cssnano')
 const browserSync = require('browser-sync')
+const atImport = require('postcss-import')
 const reload = browserSync.reload
 
 // Remove files in public/css
@@ -21,6 +22,7 @@ function css() {
   return src('src/css/main.css')
     .pipe(
       postcss([
+        atImport(),
         tailwindcss(),
         autoprefixer(),
         ...process.env.NODE_ENV === 'production' 
@@ -39,7 +41,7 @@ function serve() {
   browserSync({ proxy: '[::1]:8080' })
 
   // Watch css
-  watch(['src/css/*.css', 'tailwind.config.js'], series(css))
+  watch(['src/css/**/*.css', 'tailwind.config.js'], series(css))
 
   // Watch views
   watch('app/Views/**/*.php').on('change', browserSync.reload)

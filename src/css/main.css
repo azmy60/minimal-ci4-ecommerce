@@ -1,3 +1,39 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import './pages/login';
+
+@layer base {
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-weight: 400;
+    src:
+      url("/fonts/source-sans-pro-v14-latin-regular.woff2") format("woff2"),
+      url("/fonts/source-sans-pro-v14-latin-regular.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-weight: 600;
+    src:
+      url("/fonts/source-sans-pro-v14-latin-600.woff2") format("woff2"),
+      url("/fonts/source-sans-pro-v14-latin-600.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-weight: 700;
+    src:
+      url("/fonts/source-sans-pro-v14-latin-700.woff2") format("woff2"),
+      url("/fonts/source-sans-pro-v14-latin-700.woff") format("woff");
+  }
+
+  svg {
+    @apply fill-current;
+  }
+}
+
+/* Fix CodeIgniter toolbar from breaking the main layout */
+#toolbarContainer {
+  @apply absolute;
+}

@@ -16,15 +16,15 @@
             </svg></h1>
         <p class="text-lg">Ini adalah halaman khusus penjual. Untuk melihat halaman pembeli, <a href="/" class="underline text-emerald-500">klik disini</a>.</p>
     </section>
-    <form action="<?= route_to('login') ?>" method="POST" class="grid items-end w-full h-full sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-8 sm:p-16">
+    <form action="<?= route_to('login') ?>" method="POST" class="grid items-end w-full h-full sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
         <?= csrf_field() ?>
         <div class="space-y-2">
             <div class="text-4xl font-bold">Nama Toko</div>
-            <p class="lg:hidden">Ini adalah halaman khusus penjual. Untuk melihat halaman pembeli, <a href="http://" target="_blank" rel="noopener noreferrer" class="underline text-emerald-500">klik disini</a>.</p>
+            <p class="lg:hidden">Ini adalah halaman khusus penjual. Untuk melihat halaman pembeli, <a href="/" class="underline text-emerald-500">klik disini</a>.</p>
         </div>
-        <?php if (session()->has('error')) : ?>
-            <div class="px-4 py-2 text-red-500 bg-red-100 border border-red-500 rounded-lg">
-                <?= session('error') ?>
+        <?php if (session()->has('error') || session()->has('message')) : ?>
+            <div class="<?= session()->has('error') ? 'text-red-500 bg-red-100 border-red-500' : 'text-emerald-700 bg-emerald-50 border-emerald-500' ?> px-4 py-2 border rounded-lg">
+                <?= session('error') ?? session('message') ?>
             </div>
         <?php endif ?>
 

@@ -31,7 +31,7 @@
         <div class="space-y-4">
             <?= view('components/input', [
                 'label' => 'Email', 'name' => 'login',
-                'type' => 'text', 'size' => 'large',
+                'type' => 'email', 'size' => 'large',
                 'error' => session('errors.login'),
             ]) ?>
             <?= view('components/input', [

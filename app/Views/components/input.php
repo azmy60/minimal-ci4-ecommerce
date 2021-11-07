@@ -1,4 +1,4 @@
-<div class="grid gap-1">
+<div class="<?= $class ?? '' ?> grid gap-1">
   <?php if (!empty($label)) : ?>
     <label for="<?= $name ?>" class="<?= !empty($error) ? 'text-red-500' : 'text-trueGray-800' ?> font-semibold"><?= $label ?></label>
   <?php endif ?>

@@ -38,7 +38,7 @@ class Auth extends \Myth\Auth\Config\Auth
 		'register'		=> 'register',
 		'forgot'		  => 'forgot',
 		'reset'		   => 'Myth\Auth\Views\reset',
-		'emailForgot'	 => 'Myth\Auth\Views\emails\forgot',
+		'emailForgot'	 => 'emails/forgot',
 		'emailActivation' => 'Myth\Auth\Views\emails\activation',
 	];
 

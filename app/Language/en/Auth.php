@@ -33,7 +33,7 @@ return [
     // Forgotten Passwords
     'forgotDisabled'            => 'Reseting password option has been disabled.',
     'forgotNoUser'              => 'Unable to locate a user with that email.',
-    'forgotSubject'             => 'Password Reset Instructions',
+    'forgotSubject'             => 'Someone asked a password reset',
     'resetSuccess'              => 'Your password has been successfully changed. Please login with the new password.',
     'forgotEmailSent'           => 'A security token has been emailed to you. Enter it in the box below to continue.',
     'errorEmailSent'            => 'Unable to send email with password reset instructions to: {0}',

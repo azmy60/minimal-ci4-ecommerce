@@ -41,4 +41,16 @@ class Validation
     //--------------------------------------------------------------------
     // Rules
     //--------------------------------------------------------------------
+
+    public $attemptReset = [
+        'token'        => 'required',
+        'email'        => 'required|valid_email',
+        'password'     => 'required|strong_password',
+        'pass_confirm' => [
+            'rules' => 'required|matches[password]',
+            'errors' => [
+                'matches' => 'Please make sure your password match.',
+            ],
+        ],
+    ];
 }

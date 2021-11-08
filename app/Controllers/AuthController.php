@@ -297,14 +297,7 @@ class AuthController extends Controller
 			(string)$this->request->getUserAgent()
 		);
 
-		$rules = [
-			'token'		=> 'required',
-			'email'		=> 'required|valid_email',
-			'password'	 => 'required|strong_password',
-			'pass_confirm' => 'required|matches[password]',
-		];
-
-		if (!$this->validate($rules)) {
+		if (!$this->validate('attemptReset')) {
 			return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 		}
 

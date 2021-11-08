@@ -72,4 +72,6 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('forgot', 'AuthController::attemptForgot');
     $routes->get('reset-password', 'AuthController::resetPassword', ['as' => 'reset-password']);
     $routes->post('reset-password', 'AuthController::attemptReset');
+
+    $routes->get('reset-email-has-been-sent', 'AuthController::resetSent');
 });

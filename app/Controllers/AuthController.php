@@ -242,7 +242,18 @@ class AuthController extends Controller
 			return redirect()->back()->withInput()->with('error', $resetter->error() ?? lang('Auth.unknownError'));
 		}
 
-		return redirect()->route('reset-password')->with('message', lang('Auth.forgotEmailSent'));
+		return redirect()->route('reset-email-has-been-sent')->with('message', 'Email has been sent!');
+	}
+
+	/**
+	 * Displays the success message after sending email.
+	 */
+	public function resetSent()
+	{
+		if (empty(session('message')))
+			return redirect()->to(site_url('/'));
+
+		return $this->_render($this->config->views['resetSent'], ['config' => $this->config]);
 	}
 
 	/**

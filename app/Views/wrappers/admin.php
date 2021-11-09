@@ -28,7 +28,7 @@
         Nama
       </span>
     </div>
-    <nav hx-boost="true" hx-indicator="#main-indicator" hx-target="#main" x-show="showNav" x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static md:mt-8 bg-trueGray-900 admin-nav">
+    <nav hx-boost="true" hx-indicator="#main-indicator" hx-target="#main" x-data="navData()" x-show="showNav" x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static md:mt-8 bg-trueGray-900 admin-nav">
       <?php
       $topItems = [
         [
@@ -61,13 +61,13 @@
       $bottomItems = [
         [
           'name' => 'Logout',
-          'path' => '/logout',
+          'path' => route_to('logout'),
           'icon' => 'sign-out',
           'attributes' => 'hx-disable x-ignore',
         ],
         [
           'name' => 'Send feedback',
-          'path' => '/admin/send-feedback',
+          'path' => route_to('admin/send-feedback'),
           'icon' => 'chat-text',
           'attributes' => 'hx-disable x-ignore',
         ],
@@ -97,6 +97,17 @@
   <div x-data :style="{ left: `${document.querySelector('#main').offsetLeft}px`, width: `${document.querySelector('#main').offsetWidth}px`, height: `${window.innerHeight}px` }" id="main-indicator" class="absolute top-0 grid bg-white htmx-indicator place-content-center">
     <?= view('components/loading_spinner') ?>
   </div>
+
+  <script>
+    function navData() {
+      return {
+        currentPath: location.pathname,
+        viewPage(path) {
+          this.currentPath = path
+        }
+      }
+    }
+  </script>
 </body>
 
 <?= $this->endSection() ?>

@@ -46,6 +46,10 @@
   @apply absolute;
 }
 
+[x-cloak] {
+  display: none !important;
+}
+
 .htmx-indicator {
   transition: none !important;
 }

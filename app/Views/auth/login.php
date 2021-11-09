@@ -15,13 +15,13 @@
                 <path fill="#5DADEC" d="M4.667 22.917c-2 0-3.334-1.334-3.334-3.334a.667.667 0 1 0-1.333 0c0 2.667 2 4.667 4.667 4.667a.666.666 0 1 0 0-1.333ZM16 1.583a.667.667 0 1 0 0 1.334c2.667 0 5.333 2.392 5.333 5.333a.667.667 0 0 0 1.334 0C22.667 4.574 20 1.583 16 1.583Z" />
                 <path fill="#5DADEC" d="M19.333.278c-.368 0-.666.27-.666.639 0 .368.298.694.666.694 2 0 3.306 1.484 3.306 3.306 0 .368.326.666.694.666.369 0 .639-.298.639-.666 0-2.558-1.972-4.639-4.639-4.639Z" />
             </svg></h1>
-        <p class="text-lg">Ini adalah halaman khusus penjual. Untuk melihat halaman pembeli, <a href="/" class="underline text-emerald-500">klik disini</a>.</p>
+        <p class="text-lg">Ini adalah halaman khusus penjual. Untuk melihat halaman pembeli, <a href="<?= route_to('login') ?>" class="underline text-emerald-500">klik disini</a>.</p>
     </section>
     <form action="<?= route_to('login') ?>" method="POST" class="grid items-end w-full h-full login-form sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
         <?= csrf_field() ?>
         <div class="space-y-2">
             <div class="text-4xl font-bold">Nama Toko</div>
-            <p class="lg:hidden">Ini adalah halaman khusus penjual. Untuk melihat halaman pembeli, <a href="/" class="underline text-emerald-500">klik disini</a>.</p>
+            <p class="lg:hidden">Ini adalah halaman khusus penjual. Untuk melihat halaman pembeli, <a href="<?= route_to('login') ?>" class="underline text-emerald-500">klik disini</a>.</p>
         </div>
         <?php if (session()->has('error') || session()->has('message')) : ?>
             <div class="<?= session()->has('error') ? 'text-red-500 bg-red-100 border-red-500' : 'text-emerald-700 bg-emerald-50 border-emerald-500' ?> px-4 py-2 border rounded-lg">

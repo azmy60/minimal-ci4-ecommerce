@@ -5,7 +5,8 @@
 
 <?= $this->section('body') ?>
 
-<body class="w-screen h-screen px-4 pb-4 sm:grid sm:place-content-center lg:gap-32 xl:gap-72 lg:grid-flow-col">
+<body class="w-screen h-screen px-4 pb-4 sm:grid sm:place-content-center lg:gap-32 lg:grid-flow-col">
+    <?= view('components/iconset') ?>
     <section class="self-center hidden space-y-2 lg:block w-88">
         <h1 class="text-4xl font-bold">Halo!<svg class="inline-block w-12 ml-2" viewBox="0 0 24 25">
                 <path fill="#EF9645" d="M3.24 6.348c.627-.438 1.572-.354 2.135.11l-.646-.937c-.519-.741-.333-1.542.408-2.062.742-.518 2.842.874 2.842.874-.524-.748-.426-1.696.322-2.22a1.655 1.655 0 0 1 2.304.407l6.947 9.813-.885 8.584-7.389-2.695-6.445-9.555a1.663 1.663 0 0 1 .408-2.319Z" />

@@ -5,6 +5,7 @@
 <?= $this->section('body') ?>
 
 <body class="w-screen h-screen px-4 pb-4 sm:grid sm:place-content-center">
+    <?= view('components/iconset') ?>
     <form action="<?= route_to('reset-password') ?>" method="post" class="grid items-end w-full h-full sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
         <?= csrf_field() ?>
 

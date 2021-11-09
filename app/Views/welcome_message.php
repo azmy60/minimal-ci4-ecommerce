@@ -11,7 +11,8 @@
 			box-sizing: border-box;
 		}
 
-		html, body {
+		html,
+		body {
 			padding: 0;
 			margin: 0;
 		}
@@ -24,6 +25,12 @@
 			display: grid;
 			place-content: center;
 			height: 100vh;
+		}
+
+		main {
+			display: flex;
+			gap: 0.6rem;
+			align-items: center;
 		}
 
 		a {
@@ -61,16 +68,13 @@
 <body>
 	<main>
 		<?php if (logged_in()) : ?>
-			<span>Logged in as <?= user()->toArray()['email'] ?> <a class="btn" style="margin-left: 0.5rem;" href="/logout">logout</a></span>
+			<span>Logged in as <?= user()->toArray()['email'] ?></span>
+			<a class="btn" style="background-color: black; border-color: black; color: white;" href="<?= route_to('admin') ?>">go to admin</a>
+			<a class="btn" href="<?= route_to('logout') ?>">logout</a>
 		<?php else : ?>
 			<span>Not logged in.</span>
-			<br>
-			<br>
-			<div>
-				<a href="/login">Login</a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="/register">Create a new account</a>
-			</div>
+			<a href="<?= route_to('login') ?>">Login</a>
+			<a href="<?= route_to('register') ?>">Create a new account</a>
 		<?php endif ?>
 	</main>
 </body>

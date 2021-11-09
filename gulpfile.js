@@ -38,13 +38,15 @@ function css() {
 function serve() {
   const phpServer = spawn('php', 'spark serve'.split(' '), {stdio: 'inherit'})
   
-  browserSync({ proxy: '[::1]:8080' })
+  setTimeout(() => {
+    browserSync({ proxy: '[::1]:8080', notify: false })
+  }, 300)
 
   // Watch css
   watch(['src/css/**/*.css', 'tailwind.config.js'], series(css))
 
   // Watch views
-  watch('app/Views/**/*.php').on('change', browserSync.reload)
+  watch('app/Views/**/*.php').on('change', series(css, browserSync.reload))
 
   return phpServer
 }

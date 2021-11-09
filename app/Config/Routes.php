@@ -75,3 +75,11 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 
     $routes->get('reset-email-has-been-sent', 'AuthController::resetSent');
 });
+
+$routes->group('admin', function($routes) {
+    // Home
+    $routes->get('', 'AdminController::home');
+
+    // Products
+    $routes->get('products', 'AdminController::products');
+});

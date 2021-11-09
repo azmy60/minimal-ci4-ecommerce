@@ -33,6 +33,13 @@
   }
 }
 
+@screen md {
+  .admin-nav {
+    display: grid !important;
+    grid-template-rows: 1fr auto;
+  }
+}
+
 /* Fix CodeIgniter toolbar from breaking the main layout */
 #toolbarContainer {
   @apply absolute;

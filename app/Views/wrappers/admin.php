@@ -1,6 +1,7 @@
 <?= $this->extend('wrappers/base') ?>
 <?= $this->section('head') ?>
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.6.0"></script>
 <?= $this->endSection() ?>
 
 <?= $this->section('body') ?>
@@ -27,7 +28,7 @@
         Nama
       </span>
     </div>
-    <nav x-show="showNav" x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static md:mt-8 bg-trueGray-900 admin-nav">
+    <nav hx-boost="true" hx-indicator="#main-indicator" hx-target="#main" x-show="showNav" x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static md:mt-8 bg-trueGray-900 admin-nav">
       <?php
       $topItems = [
         [
@@ -62,11 +63,13 @@
           'name' => 'Logout',
           'path' => '/logout',
           'icon' => 'sign-out',
+          'attributes' => 'hx-disable x-ignore',
         ],
         [
           'name' => 'Send feedback',
           'path' => '/admin/send-feedback',
           'icon' => 'chat-text',
+          'attributes' => 'hx-disable x-ignore',
         ],
       ];
       ?>
@@ -87,9 +90,13 @@
     </nav>
   </aside>
 
-  <main class="z-0 px-4 mt-14 md:px-7 md:mt-8">
+  <main id="main" class="relative z-0 flex-grow px-4 mt-14 md:px-7 md:mt-8">
     <?= $this->renderSection('main') ?>
   </main>
+
+  <div x-data :style="{ left: `${document.querySelector('#main').offsetLeft}px`, width: `${document.querySelector('#main').offsetWidth}px`, height: `${window.innerHeight}px` }" id="main-indicator" class="absolute top-0 grid bg-white htmx-indicator place-content-center">
+    <?= view('components/loading_spinner') ?>
+  </div>
 </body>
 
 <?= $this->endSection() ?>

@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import './pages/login';
+@import './components/loadingSpinner';
 
 @layer base {
   @font-face {
@@ -43,4 +44,8 @@
 /* Fix CodeIgniter toolbar from breaking the main layout */
 #toolbarContainer {
   @apply absolute;
+}
+
+.htmx-indicator {
+  transition: none !important;
 }

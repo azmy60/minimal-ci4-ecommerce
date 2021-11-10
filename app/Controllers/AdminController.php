@@ -8,17 +8,11 @@ class AdminController extends BaseController
 {
     public function home()
     {
-        if(!logged_in())
-            return redirect()->route('/');
-
         return $this->render('home');
     }
 
     public function products()
     {
-        if(!logged_in())
-            return redirect()->route('/');
-
         return $this->render('products');
     }
 

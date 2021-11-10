@@ -9,7 +9,7 @@ use Myth\Auth\Config\Auth as AuthConfig;
 use Myth\Auth\Entities\User;
 use Myth\Auth\Models\UserModel;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
 	protected $auth;
 
@@ -405,6 +405,6 @@ class AuthController extends Controller
 
 	protected function _render(string $view, array $data = [])
 	{
-		return view($view, $data);
+		return $this->twig->render($view, $data);
 	}
 }

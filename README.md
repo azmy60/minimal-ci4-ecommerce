@@ -30,6 +30,8 @@ npm run dev
 ## Dependencies
 - CodeIgniter 4 (see [official documentation](https://codeigniter.com/user_guide/intro/index.html) / [github](https://github.com/codeigniter4/CodeIgniter4))
 - Myth:Auth (see [github](https://github.com/lonnieezell/myth-auth))
+- Twig (see [official website](https://twig.symfony.com/))
+- kenjis/codeigniter-ss-twig (see [github](https://github.com/kenjis/codeigniter-ss-twig))
 - TailwindCSS (see [official website](https://tailwindcss.com/))
 - Alpine.js (see [official website](https://alpinejs.dev/))
 

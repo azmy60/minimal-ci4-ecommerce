@@ -48,5 +48,11 @@ class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         helper('auth');
+
+        // Load twig library
+        $config = [
+            'functions' => ['route_to', 'base_url', 'old', 'session']
+        ];
+        $this->twig = new \Kenjis\CI4Twig\Twig($config);
     }
 }

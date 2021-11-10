@@ -19,18 +19,9 @@ class AdminController extends BaseController
     // Only use render() for views that is wrapped in wrappers/admin
     function render($name)
     {
-        $theView = "admin/$name";
-        if($this->request->hasHeader('HX-Request'))
-        {
-            return view($theView);
-        }
-
-        $viewRenderer = \Config\Services::renderer();
-
-        $viewRenderer->section('main');
-        echo view($theView);
-        $viewRenderer->endSection();
-
-        return $viewRenderer->render('wrappers/admin');
+        $dontExtend = $this->request->hasHeader('HX-Request');
+        return $this->twig->render("admin/$name.html", [
+            'template' => $dontExtend ? 'wrappers/admin_empty.html.twig' : 'wrappers/admin.html.twig',
+        ]);
     }
 }

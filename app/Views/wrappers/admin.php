@@ -17,7 +17,7 @@
         <use xlink:href="#ph_x-bold" />
       </svg>
     </div>
-    <div class="absolute text-2xl font-semibold leading-none transform -translate-x-1/2 -translate-y-1/2 md:text-4xl md:w-full md:px-6 md:mt-8 md:text-center lg:text-left md:static md:transform-none left-1/2 top-1/2">
+    <div class="absolute text-2xl font-semibold leading-none transform -translate-x-1/2 -translate-y-1/2 md:text-4xl md:w-full md:px-6 md:mt-4 md:text-center lg:text-left md:static md:transform-none left-1/2 top-1/2">
       <span class="md:hidden">
         Nama Toko
       </span>
@@ -90,7 +90,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="relative z-0 flex-grow px-4 mt-14 md:px-7 md:mt-8">
+  <main id="main" class="relative z-0 flex-grow mt-14 md:mt-0">
     <?= $this->renderSection('main') ?>
   </main>
 

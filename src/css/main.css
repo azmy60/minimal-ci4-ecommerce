@@ -28,10 +28,6 @@
       url("/fonts/source-sans-pro-v14-latin-700.woff2") format("woff2"),
       url("/fonts/source-sans-pro-v14-latin-700.woff") format("woff");
   }
-
-  svg {
-    @apply fill-current;
-  }
 }
 
 @screen md {
@@ -51,5 +47,10 @@
 }
 
 .htmx-indicator {
+  display: none;
   transition: none !important;
+}
+
+#main-indicator.htmx-indicator.htmx-request {
+  display: grid;
 }

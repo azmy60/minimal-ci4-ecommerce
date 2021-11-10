@@ -1,0 +1,128 @@
+{% extends "wrappers/base.html.twig" %}
+{% block head %}
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.6.0"></script>
+{% endblock head %}
+
+{% block body %}
+
+<body class="relative flex w-full">
+  {% include "components/iconset.html" %}
+  <aside x-data="{ showNav: false }" @click.outside="showNav = false"
+    class="fixed top-0 z-50 w-full text-white select-none md:sticky md:h-screen md:w-24 md:flex md:flex-col lg:w-56 h-14 bg-trueGray-900">
+    <div @click="showNav = !showNav" class="ml-4 mt-[0.875rem] cursor-pointer fill-current w-7 h-7 md:hidden">
+      <svg x-show="!showNav" class="w-full h-full">
+        <use xlink:href="#ph_list-bold" />
+      </svg>
+      <svg x-show="showNav" class="w-full h-full">
+        <use xlink:href="#ph_x-bold" />
+      </svg>
+    </div>
+    <div
+      class="absolute text-2xl font-semibold leading-none transform -translate-x-1/2 -translate-y-1/2 md:text-4xl md:w-full md:px-6 md:mt-4 md:text-center lg:text-left md:static md:transform-none left-1/2 top-1/2">
+      <span class="md:hidden">
+        Nama Toko
+      </span>
+      <span class="hidden md:inline lg:hidden">
+        N
+      </span>
+      <span class="hidden lg:inline">
+        Nama
+      </span>
+    </div>
+    <nav hx-boost="true" hx-indicator="#main-indicator" hx-target="#main" x-data="navData()" x-show="showNav"
+      x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static md:mt-8 bg-trueGray-900 admin-nav">
+      {% set topItems = [
+      {
+      name: 'Home',
+      path: route_to('admin'),
+      icon: 'house',
+      },
+      {
+      name: 'Products',
+      path: route_to('admin/products'),
+      icon: 'package',
+      },
+      {
+      name: 'Categories',
+      path: route_to('admin/categories'),
+      icon: 'squares-four',
+      },
+      {
+      name: 'Settings',
+      path: route_to('admin/settings'),
+      icon: 'gear-six',
+      },
+      {
+      name: 'Help',
+      path: route_to('admin/help'),
+      icon: 'question',
+      },
+      ] %}
+
+      {% set bottomItems = [
+      {
+      name: 'Logout',
+      path: route_to('logout'),
+      icon: 'sign-out',
+      },
+      {
+      name: 'Send feedback',
+      path: route_to('admin/send-feedback'),
+      icon: 'chat-text',
+      },
+      ] %}
+
+      <div>
+        {% for item in topItems %}
+        {{ _self.nav_item(item.name, item.icon, item.path) }}
+        {% endfor %}
+      </div>
+
+      <div class="border-t border-trueGray-800">
+        {% for item in bottomItems %}
+        {{ _self.nav_item(item.name, item.icon, item.path, 'hx-disable x-ignore') }}
+        {% endfor %}
+      </div>
+    </nav>
+  </aside>
+
+  <main id="main" class="relative z-0 flex-grow mt-14 md:mt-0">
+    {% block main %}{% endblock main %}
+  </main>
+
+  <div x-data
+    :style="{ left: `${document.querySelector('#main').offsetLeft}px`, width: `${document.querySelector('#main').offsetWidth}px`, height: `${window.innerHeight}px` }"
+    id="main-indicator" class="absolute top-0 grid bg-white htmx-indicator place-content-center">
+    {% include "components/loading_spinner.html" %}
+  </div>
+
+  <script>
+    function navData() {
+      return {
+        currentPath: location.pathname,
+        viewPage(path) {
+          this.currentPath = path
+        }
+      }
+    }
+  </script>
+</body>
+
+{% endblock body %}
+
+{% macro nav_item(name, icon, path, attributes) %}
+<a {{ attributes }} x-data="{ myPath: '{{ path }}' }" @click="viewPage(myPath)"
+  :class="{ 'text-emerald-400': currentPath === myPath }" href="{{ path }}"
+  class="flex items-center gap-4 py-4 pl-4 hover:bg-emerald-900 md:flex-col md:gap-0 md:text-center md:p-0 md:h-20 md:flex md:justify-center lg:flex-row lg:justify-start lg:pl-4 lg:h-auto lg:py-4 lg:gap-4">
+  <svg x-show="currentPath !== myPath" class="fill-current w-7 h-7">
+    <use xlink:href="#ph_{{ icon }}" />
+  </svg>
+  <svg x-cloak x-show="currentPath === myPath" class="fill-current w-7 h-7">
+    <use xlink:href="#ph_{{ icon }}-bold" />
+  </svg>
+  <span :class="{ 'font-semibold': currentPath === myPath }" class="text-xl md:text-base lg:text-lg">
+    {{ name }}
+  </span>
+</a>
+{% endmacro %}

@@ -1,0 +1,31 @@
+{% macro input(label, name, type = 'text', size = 'medium', helper = '', error = '', attributes = '', class = '') %}
+<div class="grid gap-1 {{ class }}">
+  {% if label is not empty %}
+  <label for="{{ name }}" class=" {{ error is not empty ? 'text-red-500' : 'text-trueGray-800' }} font-semibold">{{
+    label }}</label>
+  {% endif %}
+
+  <div {{ type=='password' ? 'x-data="{ show: false }"' }} class="relative">
+    {% if type == 'password' %}
+    <div @click="$refs.passwordInput.focus(); show = !show"
+      class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
+      <svg x-show="!show" class="w-full h-full fill-current">
+        <use xlink:href="#ph_eye" />
+      </svg>
+      <svg x-show="show" class="w-full h-full fill-current">
+        <use xlink:href="#ph_eye-slash" />
+      </svg>
+    </div>
+    {% endif %}
+    <input id="{{ name }}" name="{{ name }}" {{ type=='password' ? ":type=\" show ? 'text' : 'password' \"
+      x-ref=\"passwordInput\"" : "type=\" $type\"" }}
+      class="{{ type == 'password' ? 'pl-4 pr-12' : 'px-4' }} {{ error is not empty ? 'border-red-500' : 'border-trueGray-400' }} w-full py-2.5 bg-white border rounded-lg  focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500">
+  </div>
+
+  {% if error is not empty %}
+  <p class="text-red-500">{{ error }}</p>
+  {% elseif helper is not empty %}
+  <p class="text-trueGray-500">{{ helper }}</p>
+  {% endif %}
+</div>
+{% endmacro %}

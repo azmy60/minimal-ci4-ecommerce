@@ -1,0 +1,33 @@
+{% extends "wrappers/base.html.twig" %}
+{% block head %}
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{% endblock head %}
+{% block body %}
+
+<body class="w-screen h-screen px-4 pb-4 sm:grid sm:place-content-center">
+  {% include "components/iconset.html" %}
+  <form action="<?= route_to('register') ?>" method="post"
+    class="grid items-end w-full h-full sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
+    {{ csrf_field() }}
+
+    <div class="space-y-2">
+      <h1 class="text-2xl font-bold">Create a new account</h1>
+      <p>TODO: We won't deliver a register page to a client. A user account should be created under the hood. maybe...?
+      </p>
+    </div>
+
+    {% import "components/auth_components.html.twig" as auth_components%}
+    {{ auth_components.message_box() }}
+
+    <div class="space-y-4">
+      {% import "components/components.html.twig" as components%}
+      {{ components.input('Email address', 'email', 'email', 'large', '', session('errors.email')) }}
+      {{ components.input('New password', 'password', 'password', 'large', '', session('errors.password')) }}
+    </div>
+
+    <button type="submit"
+      class="w-full py-2.5 px-4 text-lg rounded-lg font-semibold bg-emerald-500 text-white">Register</button>
+  </form>
+</body>
+
+{% endblock body %}

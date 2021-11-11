@@ -46,7 +46,7 @@ function serve() {
   watch(['src/css/**/*.css', 'tailwind.config.js'], series(css))
 
   // Watch views
-  watch('app/Views/**/*.php').on('change', series(css, browserSync.reload))
+  watch('app/Views/**/*.twig').on('change', series(css, browserSync.reload))
 
   return phpServer
 }

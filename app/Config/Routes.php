@@ -76,10 +76,13 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('reset-email-has-been-sent', 'AuthController::resetSent');
 });
 
-$routes->group('admin', function($routes) {
-    // Home
+$routes->group('admin', ['filter' => 'login'], function($routes) {
     $routes->get('', 'AdminController::home');
-
-    // Products
     $routes->get('products', 'AdminController::products');
+    $routes->get('categories', 'AdminController::categories');
+    $routes->get('settings', 'AdminController::settings');
+    $routes->get('help', 'AdminController::help');
+
+    $routes->get('add-product', 'AdminController::addProduct');
+    $routes->post('add-product', 'AdminController::attemptAddProduct');
 });

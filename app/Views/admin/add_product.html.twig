@@ -1,0 +1,92 @@
+{% extends "wrappers/base.html.twig" %}
+{% block head %}
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{% endblock head %}
+{% block body %}
+
+{% include "components/iconset.html" %}
+
+<header class="flex items-center py-4 space-x-12 px-7">
+  <a href="{{ route_to('admin/products') }}">
+    <svg class="fill-current w-11 h-11">
+      <use xlink:href="#ph_caret-left">
+    </svg>
+  </a>
+  <h1 class="block text-3xl font-bold">Tambah produk</h1>
+</header>
+
+<main class="w-full mt-8">
+  <form class="pb-16 mx-auto space-y-24 w-min" action="{{ route_to('admin/add_product') }}" method="post">
+    <section class="space-y-10">
+
+      {% import "components/components.html.twig" as components %}
+
+      {{ _self.input_row(
+      'Judul',
+      'Cantumkan maks. 80 karakter.',
+      'title',
+      components.input_field('title', 'text', null, session('errors.title'), null, 'w-full')) }}
+
+      {{ _self.input_row(
+      'Deskripsi',
+      'Cantumkan maks. 4000 karakter.',
+      'description',
+      components.input_field('description', 'textarea', 6, session('errors.description'), null, 'w-full')) }}
+
+      {{ _self.input_row(
+      'Kategori (opsional)',
+      'Produkmu bisa dikategorikan agar memudahkan calon pembeli. Pelajari tips mengkategorikan produk.',
+      'categories',
+      components.input_field('categories', 'text', null, session('errors.categories'), null, 'w-full'), 'opacity-50') }}
+
+    </section>
+
+    <section>
+      {{ _self.input_row(
+      'Varian (opsional)',
+      'Kamu bisa menambah varian produk seperti warna, ukuran dan rasa.',
+      'variant',
+      components.button('medium', true, 'Tambah varian', 'plus', null, 'disabled'), 'opacity-50') }}
+    </section>
+
+    <section class="space-y-10">
+      {{ _self.input_row(
+      'Stok',
+      '',
+      'stock',
+      'TODO: Make a switch component.', 'opacity-50') }}
+
+      {{ _self.input_row(
+      'Harga',
+      'Cantumkan harga asli produkmu',
+      'price',
+      components.input_field('price', 'number', null, session('errors.price'), null, 'w-full'), 'opacity-50') }}
+
+      {{ _self.input_row(
+      'Diskon (opsional)',
+      'Kamu bisa mencantum harga setelah diskon dari harga asli.',
+      'discount',
+      components.button('medium', true, 'Beri diskon', 'plus', null, 'disabled'), 'opacity-50') }}
+    </section>
+
+    <section class="flex justify-end space-x-3">
+      <a href="{{ route_to('admin/products') }}">
+        {{ components.button('medium', true, 'Batalkan', null, null, 'disabled') }}
+      </a>
+      {{ components.button('medium', true, 'Simpan ke draf', null, null, 'disabled', 'opacity-50') }}
+      {{ components.button('medium', false, 'Simpan', null, null, 'disabled', 'opacity-50') }}
+    </section>
+  </form>
+</main>
+
+{% endblock body %}
+
+{% macro input_row(label, helper, name, input_area, class = '') %}
+<div class="{{ class }} flex gap-20">
+  <div class="space-y-1 w-72">
+    <label for="{{ name }}" class="text-xl font-semibold">{{ label }}</label>
+    <p class="text-base">{{ helper }}</p>
+  </div>
+  <div class="w-[37rem]">{{ input_area }}</div>
+</div>
+{% endmacro %}

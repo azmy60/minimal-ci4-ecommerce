@@ -32,57 +32,17 @@
     </div>
     <nav hx-boost="true" hx-indicator="#main-indicator" hx-target="#main" x-data="navData()" x-show="showNav"
       x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static md:mt-8 bg-trueGray-900 admin-nav">
-      {% set topItems = [
-      {
-      name: 'Home',
-      path: route_to('admin'),
-      icon: 'house',
-      },
-      {
-      name: 'Products',
-      path: route_to('admin/products'),
-      icon: 'package',
-      },
-      {
-      name: 'Categories',
-      path: route_to('admin/categories'),
-      icon: 'squares-four',
-      },
-      {
-      name: 'Settings',
-      path: route_to('admin/settings'),
-      icon: 'gear-six',
-      },
-      {
-      name: 'Help',
-      path: route_to('admin/help'),
-      icon: 'question',
-      },
-      ] %}
-
-      {% set bottomItems = [
-      {
-      name: 'Logout',
-      path: route_to('logout'),
-      icon: 'sign-out',
-      },
-      {
-      name: 'Send feedback',
-      path: route_to('admin/send-feedback'),
-      icon: 'chat-text',
-      },
-      ] %}
-
       <div>
-        {% for item in topItems %}
-        {{ _self.nav_item(item.name, item.icon, item.path) }}
-        {% endfor %}
+        {{ _self.nav_item('Home', 'house', route_to('admin')) }}
+        {{ _self.nav_item('Products', 'package', route_to('admin/products')) }}
+        {{ _self.nav_item('Categories', 'squares-four', route_to('admin/categories')) }}
+        {{ _self.nav_item('Settings', 'gear-six', route_to('admin/settings')) }}
+        {{ _self.nav_item('Help', 'question', route_to('admin/help')) }}
       </div>
-
+      
       <div class="border-t border-trueGray-800">
-        {% for item in bottomItems %}
-        {{ _self.nav_item(item.name, item.icon, item.path, 'hx-disable x-ignore') }}
-        {% endfor %}
+        {{ _self.nav_item('Logout', 'sign-out', route_to('logout'), 'hx-disable hx-ignore') }}
+        {{ _self.nav_item('Send feedback', 'chat-text', route_to('admin/send-feedback'), 'hx-disable hx-ignore') }}
       </div>
     </nav>
   </aside>

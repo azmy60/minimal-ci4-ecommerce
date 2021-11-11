@@ -25,17 +25,17 @@ class EmailResetter extends BaseResetter implements ResetterInterface
      */
     public function send(User $user = null): bool
     {
+        $twig = new \Kenjis\CI4Twig\Twig();
+
         $email = service('email');
         $config = new Email();
-
-        // $settings = $this->getResetterSettings();
 
         $sent = $email->setFrom($config->fromEmail, $config->fromName)
               ->setTo($user->email)
               ->setSubject(lang('Auth.forgotSubject'))
-              ->setMessage(view($this->config->views['emailForgot'], [
-                'hash' => $user->reset_hash,
-                'email' => $user->email,
+              ->setMessage($twig->render($this->config->views['emailForgot'], [
+                  'site' => site_url(),
+                  'link' => base_url('reset-password') . '?token=' . $user->reset_hash . '&email=' . rawurlencode($user->email),
                 ]))
               ->setMailType('html')
               ->send();

@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Authentication\Resetters\EmailResetter;
 use CodeIgniter\Controller;
 use CodeIgniter\Session\Session;
 use Myth\Auth\Config\Auth as AuthConfig;
@@ -235,7 +234,7 @@ class AuthController extends BaseController
 		$user->generateResetHash();
 		$users->save($user);
 
-		$resetter = new EmailResetter();
+		$resetter = service('resetter');
 		$sent = $resetter->send($user);
 
 		if (!$sent) {

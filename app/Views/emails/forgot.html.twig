@@ -1,10 +1,9 @@
-<p>Someone requested a password reset at this email address for <?= site_url() ?>.</p>
+<p>Someone requested a password reset at this email address for {{ site }}.</p>
 
 <p>To reset the password click this URL.</p>
 
-{% set url = base_url('reset-password') ~ "?token=#{hash}&email=#{email|url_encode}" %}
-<a href="{{ url }}">
-  {{ url }}
+<a href="{{ link }}">
+  {{ link }}
 </a>
 
 <br>

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\StoreModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -54,5 +55,7 @@ class BaseController extends Controller
             'functions' => ['route_to', 'base_url', 'old', 'session']
         ];
         $this->twig = new \Kenjis\CI4Twig\Twig($config);
+        
+        $this->store = new StoreModel();
     }
 }

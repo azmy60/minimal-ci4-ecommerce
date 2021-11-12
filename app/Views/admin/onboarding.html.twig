@@ -1,0 +1,46 @@
+{% extends template %}
+{% block main %}
+
+{% import "components/components.html.twig" as components %}
+<form x-data="{ section: 0 }" x-show="$store.onboarding" x-init="$store.onboarding=true" x-transition:leave.duration.500ms action={{ route_to('admin/onboarding-setup') }} method="post" class="flex items-center justify-start w-full h-full px-6 bg-white">
+  {{ csrf_field() }}
+  <section x-show="section === 0">
+    <h1 class="text-5xl font-bold">Selamat Datang!</h1>
+    <p class="mt-2 text-lg">Tinggal beberapa langkah lagi tokomu siap di pamerkan!</p>
+    {{ components.button({ text: 'Selanjutnya', size: 'medium', type: 'button', style: 'outlined_black', rightIcon: 'caret-right', class: 'mt-6', attributes: '@click="section++; $nextTick(() => $refs.name.focus());"' }) }}
+  </section>
+  <section x-show="section === 1">
+    <h2 class="text-4xl font-bold">Perkenalkan toko mu ke calon pembeli</h2>
+    <p class="mt-2 text-lg">Masukkan nama toko untuk dipasang di website mu. Kalau perlu, kamu juga bisa mengubah nama di lain waktu.</p>
+    {{ components.input({
+      name: 'name',
+      type: 'text',
+      placeholder: 'Masukkan nama toko',
+      inputAttributes: 'x-ref="name" @input="$refs.nameBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.nameBtn.click() " @keyup.shift.enter="$refs.backName.click()"',
+      class: 'mt-6 w-112',
+      error: session('errors.name')
+    }) }}
+    <div class="flex mt-6 space-x-4">
+      {{ components.button({ text: 'Kembali', size: 'medium', type: 'button', style: 'outlined_black', attributes: 'x-ref="backName" @click="section--;"' }) }}
+      {{ components.button({ text: 'Selanjutnya', size: 'medium', type: 'button', rightIcon: 'caret-right', attributes: 'x-ref="nameBtn" @click="section++; $nextTick(() => $refs.phone.focus());" :disabled="$refs.name.value.match(/^ *$/) !== null"' }) }}
+    </div>
+  </section>
+  <section x-show="section === 2">
+    <h2 class="text-4xl font-bold ">Kontak utama lewat WhatsApp</h2>
+    <p class="mt-2 text-lg">Calon pembeli akan menggunakan nomor ini untuk menghubungi kamu. Masukkan nomor WhatsApp mu yang aktif. </p>
+    {{ components.input({
+      name: 'phone',
+      type: 'tel',
+      placeholder: 'Contoh, (+62) 333-4444-5555',
+      inputAttributes: 'x-ref="phone" @input="$refs.phoneBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.phoneBtn.click()" @keyup.shift.enter="$refs.backPhone.click()"',
+      class: 'mt-6 w-112',
+      error: session('errors.phone')
+    }) }}
+    <div class="flex mt-6 space-x-4">
+      {{ components.button({ text: 'Kembali', size: 'medium', type: 'button', style: 'outlined_black', attributes: 'x-ref="backPhone" @click="section--;"' }) }}
+      {{ components.button({ text: 'Selesai', size: 'medium', type: 'submit', attributes: 'x-ref="phoneBtn" @click="$store.onboarding = false;" :disabled="$refs.phone.value.match(/^ *$/) !== null"' }) }}
+    </div>
+  </section>
+</form>
+
+{% endblock main %}

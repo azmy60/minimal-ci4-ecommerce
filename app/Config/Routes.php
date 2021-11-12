@@ -77,6 +77,9 @@ $routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
 });
 
 $routes->group('admin', ['filter' => 'login'], function($routes) {
+    $routes->get('onboarding', 'AdminController::onboarding');
+    $routes->post('onboarding-setup', 'AdminController::onboardingSetup');
+    
     $routes->get('', 'AdminController::home');
     $routes->get('products', 'AdminController::products');
     $routes->get('categories', 'AdminController::categories');

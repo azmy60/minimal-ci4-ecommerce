@@ -32,7 +32,8 @@
     </div>
     <nav hx-boost="true" hx-indicator="#main-indicator" hx-target="#main" x-data="navData()" x-show="showNav"
       x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static md:mt-8 bg-trueGray-900 admin-nav">
-      <div>
+      <div class="relative">
+        {{ _self.nav_group_skeleton() }}
         {{ _self.nav_item('Home', 'house', route_to('admin')) }}
         {{ _self.nav_item('Products', 'package', route_to('admin/products')) }}
         {{ _self.nav_item('Categories', 'squares-four', route_to('admin/categories')) }}
@@ -40,7 +41,8 @@
         {{ _self.nav_item('Help', 'question', route_to('admin/help')) }}
       </div>
       
-      <div class="border-t border-trueGray-800">
+      <div class="relative border-t border-trueGray-800">
+        {{ _self.nav_group_skeleton() }}
         {{ _self.nav_item('Logout', 'sign-out', route_to('logout'), 'hx-disable hx-ignore') }}
         {{ _self.nav_item('Send feedback', 'chat-text', route_to('admin/send-feedback'), 'hx-disable hx-ignore') }}
       </div>
@@ -66,14 +68,17 @@
         }
       }
     }
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('onboarding', false)
+    })
   </script>
 </body>
-
 {% endblock body %}
 
 {% macro nav_item(name, icon, path, attributes) %}
 <a {{ attributes }} x-data="{ myPath: '{{ path }}' }" @click="viewPage(myPath)"
   :class="{ 'text-emerald-400': currentPath === myPath }" href="{{ path }}"
+  :tabindex="$store.onboarding ? -1 : 0"
   class="flex items-center gap-4 py-4 pl-4 hover:bg-emerald-900 md:flex-col md:gap-0 md:text-center md:p-0 md:h-20 md:flex md:justify-center lg:flex-row lg:justify-start lg:pl-4 lg:h-auto lg:py-4 lg:gap-4">
   <svg x-show="currentPath !== myPath" class="fill-current w-7 h-7">
     <use xlink:href="#ph_{{ icon }}" />
@@ -85,4 +90,11 @@
     {{ name }}
   </span>
 </a>
+{% endmacro %}
+
+{% macro nav_group_skeleton() %}
+<div x-show="$store.onboarding" x-transition:leave.duration.500ms class="absolute inset-0 flex flex-col p-6 space-y-4 bg-trueGray-900">
+  <div class="w-full h-12 rounded-lg bg-trueGray-800"></div>
+  <div class="w-full h-12 rounded-lg bg-trueGray-800"></div>
+</div>
 {% endmacro %}

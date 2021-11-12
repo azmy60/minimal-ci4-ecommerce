@@ -30,29 +30,48 @@
 </div>
 {% endmacro %}
 
-<!-- button: size=small|medium|large, outlined=true|false -->
-{% macro button(size, outlined, text, leftIcon = '', rightIcon = '', attributes = '', class = null) %}
-<button {{ attributes }}
-  class="{{ class }} flex items-center self-center gap-2 px-4 py-2 text-base font-semibold text-white rounded-lg bg-trueGray-800">
-  {% if leftIcon is not empty %}
+<!--
+  button options:
+  - text
+  - size = [small|medium|large]
+  - outlined = [true|false]
+  - submit = [true|false]
+  - leftIcon
+  - rightIcon
+  - attributes
+  - class
+-->
+{% macro button(options) %}
+<button {{ options.attributes }} {{ options.submit ? 'type="submit"' }}
+  class="{{ options.class }} flex items-center self-center gap-2 px-4 py-2 text-base font-semibold text-white rounded-lg bg-trueGray-800">
+  {% if options.leftIcon is not empty %}
   <svg class="w-5 h-5 fill-current">
-    <use xlink:href="#ph_{{ leftIcon }}-bold">
+    <use xlink:href="#ph_{{ options.leftIcon }}-bold">
   </svg>
   {% endif %}
-  <span>{{ text }}</span>
-  {% if rightIcon is not empty %}
+  <span>{{ options.text }}</span>
+  {% if options.rightIcon is not empty %}
   <svg class="w-5 h-5 fill-current">
-    <use xlink:href="#ph_{{ rightIcon }}-bold">
+    <use xlink:href="#ph_{{ options.rightIcon }}-bold">
   </svg>
   {% endif %}
 </button>
 {% endmacro %}
 
-<!-- input_field: type=text|password|textarea|orwhtever rows=[number for textarea rows] -->
-{% macro input_field(name, type, rows = null, error = null, attributes = null, class = null) %}
-{% set common_classes = (error is not empty ? 'border-red-500' : 'border-trueGray-400') ~ 'py-2.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500' %}
-{% if type == 'password' %}
-<div {{ attributes }} x-data="{ show: false }" class="<?= $class ?? '' ?> relative">
+<!--
+  input_field options: 
+  - name 
+  - type = [text|password|textarea|or whatever]
+  - rows = [for textarea]
+  - placeholder
+  - error
+  - attributes
+  - class
+-->
+{% macro input_field(options) %}
+{% set common_classes = (options.error is not empty ? 'border-red-500' : 'border-trueGray-400') ~ 'py-2.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500' %}
+{% if options.type == 'password' %}
+<div {{ options.attributes }} x-data="{ show: false }" class="{{ options.class }} relative">
   <div @click="$refs.passwordInput.focus(); show = !show" class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
     <svg x-show="!show" class="w-full h-full fill-current">
       <use xlink:href="#ph_eye" />
@@ -61,11 +80,11 @@
       <use xlink:href="#ph_eye-slash" />
     </svg>
   </div>
-  <input id="{{ name }}" name="{{ name }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" type="password" class="{{ common_classes }} w-full pl-4 pr-12">
+  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" type="password" class="{{ common_classes }} w-full pl-4 pr-12">
 </div>
-{% elseif type == 'textarea' %}
-<textarea {{ attributes }} id="{{ name }}" name="{{ name }}" rows="{{ rows }}" class="{{ class }} {{ common_classes }} px-4"></textarea>
+{% elseif options.type == 'textarea' %}
+<textarea {{ options.attributes }} id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" rows="{{ options.rows }}" class="{{ options.class }} {{ common_classes }} px-4"></textarea>
 {% else %}  
-<input {{ attributes }} id="{{ name }}" name="{{ name }}" type="{{ type }}" class="{{ class }} {{ common_classes }} px-4">
+<input {{ options.attributes }} id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" type="{{ options.type }}" class="{{ options.class }} {{ common_classes }} px-4">
 {% endif %}
 {% endmacro %}

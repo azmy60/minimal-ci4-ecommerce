@@ -131,7 +131,7 @@
       </div>
       <a class="flex justify-center" href="{{ route_to('admin/add-product') }}">
         {% import "components/components.html.twig" as components %}
-        {{ components.button('medium', false, 'Tambah produk', 'plus') }}
+        {{ components.button({text: 'Tambah produk', type: 'medium', leftIcon: 'plus'}) }}
       </a>
     </div>
   </section>

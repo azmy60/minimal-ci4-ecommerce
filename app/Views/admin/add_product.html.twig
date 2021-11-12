@@ -25,19 +25,21 @@
       'Judul',
       'Cantumkan maks. 80 karakter.',
       'title',
-      components.input_field('title', 'text', null, session('errors.title'), null, 'w-full')) }}
+      components.input_field({ name: 'title', type: 'text', error: session('errors.title'), class: 'w-full' }) }}
 
       {{ _self.input_row(
       'Deskripsi',
       'Cantumkan maks. 4000 karakter.',
       'description',
-      components.input_field('description', 'textarea', 6, session('errors.description'), null, 'w-full')) }}
+      components.input_field({ 
+        name: 'description', type: 'textarea', rows: 6, error: session('errors.description'), class: 'w-full' })) }}
 
       {{ _self.input_row(
       'Kategori (opsional)',
       'Produkmu bisa dikategorikan agar memudahkan calon pembeli. Pelajari tips mengkategorikan produk.',
       'categories',
-      components.input_field('categories', 'text', null, session('errors.categories'), null, 'w-full'), 'opacity-50') }}
+      components.input_field({ name: 'categories', type: 'text', error: session('errors.categories'), class: 'w-full' }),
+      'opacity-50') }}
 
     </section>
 
@@ -46,7 +48,8 @@
       'Varian (opsional)',
       'Kamu bisa menambah varian produk seperti warna, ukuran dan rasa.',
       'variant',
-      components.button('medium', true, 'Tambah varian', 'plus', null, 'disabled'), 'opacity-50') }}
+      components.button({ text: 'Tambah varian', size: 'medium', outlined: true, leftIcon: 'plus', attributes: 'disabled' }),
+      'opacity-50') }}
     </section>
 
     <section class="space-y-10">
@@ -60,21 +63,23 @@
       'Harga',
       'Cantumkan harga asli produkmu',
       'price',
-      components.input_field('price', 'number', null, session('errors.price'), null, 'w-full'), 'opacity-50') }}
+      components.input_field({ name: 'price', type: 'number', error: session('errors.price'), class: 'w-full'),
+      'opacity-50') }}
 
       {{ _self.input_row(
       'Diskon (opsional)',
       'Kamu bisa mencantum harga setelah diskon dari harga asli.',
       'discount',
-      components.button('medium', true, 'Beri diskon', 'plus', null, 'disabled'), 'opacity-50') }}
+      components.button({ text: 'Beri diskon', size: 'medium', outlined: true, leftIcon: 'plus', attributes: 'disabled' }),
+      'opacity-50') }}
     </section>
 
     <section class="flex justify-end space-x-3">
       <a href="{{ route_to('admin/products') }}">
-        {{ components.button('medium', true, 'Batalkan', null, null, 'disabled') }}
+        {{ components.button({ text: 'Batalkan', size: 'medium', outlined: true, attributes: 'disabled' }) }}
       </a>
-      {{ components.button('medium', true, 'Simpan ke draf', null, null, 'disabled', 'opacity-50') }}
-      {{ components.button('medium', false, 'Simpan', null, null, 'disabled', 'opacity-50') }}
+      {{ components.button({ text: 'Simpan ke draf', size: 'medium', outlined: true, attributes: 'disabled', class: 'opacity-50'}) }}
+      {{ components.button({ text: 'Simpan', size: 'medium', attributes: 'disabled', class: 'opacity-50'}) }}
     </section>
   </form>
 </main>

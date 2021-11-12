@@ -1,14 +1,29 @@
-{% macro input(label, name, type = 'text', size = 'medium', helper = '', error = '', attributes = '', class = '') %}
-<div class="grid gap-1 {{ class }}">
-  {% if label is not empty %}
-  <label for="{{ name }}" class=" {{ error is not empty ? 'text-red-500' : 'text-trueGray-800' }} font-semibold">{{
-    label }}</label>
+<!--
+  input_field options: 
+  - label
+  - name
+  - placeholder
+  - helper
+  - size [small|medium|large]
+  - type [text|password|textarea|or whatever]
+  - rows [for textarea]
+  - error
+  - attributes
+  - inputAttributes
+  - class
+-->
+{% macro input(options) %}
+<div class="grid gap-1 {{ options.class }}" {{ options.attributes|raw }}>
+  {% if options.label is not empty %}
+  <label for="{{ options.name }}" class="{{ options.error is not empty ? 'text-red-500' : 'text-trueGray-800' }} font-semibold">
+    {{ options.label }}
+  </label>
   {% endif %}
 
-  <div {{ type=='password' ? 'x-data="{ show: false }"' }} class="relative">
-    {% if type == 'password' %}
-    <div @click="$refs.passwordInput.focus(); show = !show"
-      class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
+  {% set common_classes = (options.error is not empty ? 'border-red-500' : 'border-trueGray-400') ~ ' py-2.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500' %}
+  {% if options.type == 'password' %}
+  <div x-data="{ show: false }" class="{{ options.class }} relative" {{ options.inputAttributes|raw }}>
+    <div @click="$refs.passwordInput.focus(); show = !show" class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
       <svg x-show="!show" class="w-full h-full fill-current">
         <use xlink:href="#ph_eye" />
       </svg>
@@ -16,16 +31,18 @@
         <use xlink:href="#ph_eye-slash" />
       </svg>
     </div>
-    {% endif %}
-    <input id="{{ name }}" name="{{ name }}" {{ type=='password' ? ":type=\" show ? 'text' : 'password' \"
-      x-ref=\"passwordInput\"" : "type=\" $type\"" }}
-      class="{{ type == 'password' ? 'pl-4 pr-12' : 'px-4' }} {{ error is not empty ? 'border-red-500' : 'border-trueGray-400' }} w-full py-2.5 bg-white border rounded-lg  focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500">
+    <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" type="password" class="{{ common_classes }} w-full pl-4 pr-12">
   </div>
+  {% elseif options.type == 'textarea' %}
+  <textarea id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" rows="{{ options.rows }}" class="{{ common_classes }} px-4" {{ options.inputAttributes|raw }}></textarea>
+  {% else %}  
+  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" type="{{ options.type }}" class="{{ common_classes }} px-4" {{ options.inputAttributes|raw }}>
+  {% endif %}
 
-  {% if error is not empty %}
-  <p class="text-red-500">{{ error }}</p>
-  {% elseif helper is not empty %}
-  <p class="text-trueGray-500">{{ helper }}</p>
+  {% if options.error is not empty %}
+  <p class="text-red-500">{{ options.error }}</p>
+  {% elseif options.helper is not empty %}
+  <p class="text-trueGray-500">{{ options.helper }}</p>
   {% endif %}
 </div>
 {% endmacro %}
@@ -42,49 +59,25 @@
   - class
 -->
 {% macro button(options) %}
-<button {{ options.attributes }} {{ options.submit ? 'type="submit"' }}
-  class="{{ options.class }} flex items-center self-center gap-2 px-4 py-2 text-base font-semibold text-white rounded-lg bg-trueGray-800">
+{% set styles = {
+  outlined_black: 'border border-emerald-600 text-emerald-600',
+  outlined_black: 'border border-trueGray-800 text-black',
+  solid_black: 'bg-trueGray-800 text-white',
+  solid_emerald: 'bg-emerald-500 text-white',
+} %}
+<button {{ options.type ? "type=#{options.type}" }} {{ options.submit ? 'type="submit"' }}
+  class="{{ options.class }} {{ styles[options.style] ?? styles.solid_black }} disabled:opacity-40 flex items-center self-center gap-2 px-4 py-2 text-base font-semibold rounded-lg"
+  {{ options.attributes|raw }}>
   {% if options.leftIcon is not empty %}
   <svg class="w-5 h-5 fill-current">
-    <use xlink:href="#ph_{{ options.leftIcon }}-bold">
+    <use xlink:href="#ph_{{ options.leftIcon }}{{ options.outlined ?: '-bold'}}">
   </svg>
   {% endif %}
   <span>{{ options.text }}</span>
   {% if options.rightIcon is not empty %}
   <svg class="w-5 h-5 fill-current">
-    <use xlink:href="#ph_{{ options.rightIcon }}-bold">
+    <use xlink:href="#ph_{{ options.rightIcon }}{{ options.outlined ?: '-bold'}}">
   </svg>
   {% endif %}
 </button>
-{% endmacro %}
-
-<!--
-  input_field options: 
-  - name 
-  - type = [text|password|textarea|or whatever]
-  - rows = [for textarea]
-  - placeholder
-  - error
-  - attributes
-  - class
--->
-{% macro input_field(options) %}
-{% set common_classes = (options.error is not empty ? 'border-red-500' : 'border-trueGray-400') ~ 'py-2.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500' %}
-{% if options.type == 'password' %}
-<div {{ options.attributes }} x-data="{ show: false }" class="{{ options.class }} relative">
-  <div @click="$refs.passwordInput.focus(); show = !show" class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
-    <svg x-show="!show" class="w-full h-full fill-current">
-      <use xlink:href="#ph_eye" />
-    </svg>
-    <svg x-show="show" class="w-full h-full fill-current">
-      <use xlink:href="#ph_eye-slash" />
-    </svg>
-  </div>
-  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" type="password" class="{{ common_classes }} w-full pl-4 pr-12">
-</div>
-{% elseif options.type == 'textarea' %}
-<textarea {{ options.attributes }} id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" rows="{{ options.rows }}" class="{{ options.class }} {{ common_classes }} px-4"></textarea>
-{% else %}  
-<input {{ options.attributes }} id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" type="{{ options.type }}" class="{{ options.class }} {{ common_classes }} px-4">
-{% endif %}
 {% endmacro %}

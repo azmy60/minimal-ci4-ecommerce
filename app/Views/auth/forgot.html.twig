@@ -15,7 +15,7 @@
     {{ auth_components.message_box() }}
 
     {% import "components/components.html.twig" as components %}
-    {{ components.input('Email', 'email', 'email', 'large', '', session('errors.email'), '', 'mt-6 sm:mt-0') }}
+    {{ components.input({ label: 'Email', name: 'email', type: 'email', size: 'large', error: session('errors.email'), class: 'mt-6 sm:mt-0'}) }}
 
 
     <div class="flex flex-col justify-end flex-grow sm:mt-6">

@@ -24,10 +24,12 @@
     <br>
     <div class="space-y-4">
       {% import "components/components.html.twig" as components %}
-      {{ components.input('New password', 'password', 'password', 'large', '', session('errors.password')) }}
-      {{ components.input('Confirm new password', 'pass_confirm', 'password', 'large', '',
-      session('errors.pass_confirm')) }}
-
+      {{ components.input({ 
+        label: 'New password', name: 'password', type: 'password', size: 'large', error: session('errors.password')
+      }) }}
+      {{ components.input({
+        label: 'Confirm new password', name: 'pass_confirm', type: 'password', size: 'large', error: session('errors.pass_confirm')
+      }) }}
     </div>
 
     <button type="submit" class="w-full py-2.5 px-4 text-lg rounded-lg font-semibold bg-emerald-500 text-white">

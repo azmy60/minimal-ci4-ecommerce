@@ -21,8 +21,8 @@
 
     <div class="space-y-4">
       {% import "components/components.html.twig" as components%}
-      {{ components.input('Email address', 'email', 'email', 'large', '', session('errors.email')) }}
-      {{ components.input('New password', 'password', 'password', 'large', '', session('errors.password')) }}
+      {{ components.input({ label: 'Email address', name: 'email', type: 'email', size: 'large', error: session('errors.email') }) }}
+      {{ components.input({ label: 'New password', name: 'password', type: 'password', size: 'large', error: session('errors.password') }) }}
     </div>
 
     <button type="submit"

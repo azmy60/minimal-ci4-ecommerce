@@ -5,7 +5,7 @@
 {% block body %}
 
 <body class="w-screen h-screen px-4 pb-4 sm:grid sm:place-content-center">
-  {% include "components/iconset.html" %}
+  {% include "dest/symbol/iconset.svg" %}
   <form action="{{ route_to('register') }}" method="post"
     class="grid items-end w-full h-full sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
     {{ csrf_field() }}

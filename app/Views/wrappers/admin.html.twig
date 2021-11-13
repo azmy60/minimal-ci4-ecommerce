@@ -7,7 +7,7 @@
 {% block body %}
 
 <body class="relative flex w-full">
-  {% include "components/iconset.html" %}
+  {% include "dest/symbol/iconset.svg" %}
   <aside x-data="{ showNav: false }" @click.outside="showNav = false"
     class="fixed top-0 z-50 w-full text-white select-none md:sticky md:h-screen md:w-24 md:flex md:flex-col lg:w-56 h-14 bg-trueGray-900">
     <div @click="showNav = !showNav" class="ml-4 mt-[0.875rem] cursor-pointer fill-current w-7 h-7 md:hidden">

@@ -7,14 +7,43 @@ const autoprefixer = require('autoprefixer')
 const cssnano = require('cssnano')
 const browserSync = require('browser-sync')
 const atImport = require('postcss-import')
+const svgSprite = require('gulp-svg-sprite')
+const through2 = require('through2')
 const reload = browserSync.reload
 
 // Remove files in public/css
 function clean() {
   const del = require('del')
   return del([
-    'public/css/*'
+    'public/css/*',
+    'app/Views/dest/*',
   ])
+}
+
+// Create iconset
+function svg() {
+  return src('src/svg/iconset/*.svg')
+    .pipe(svgSprite({
+      xmlDeclaration: false,
+      doctypeDeclaration: false,
+      dimensionAttributes: false,
+      mode: { 
+        symbol: {
+          inline: true,
+          sprite: 'iconset.svg',
+        },
+      },
+    }))
+    .pipe(through2.obj((file, _, cb) => {
+      if (file.isBuffer()) {
+        // const reg_xmlns_and_fill = /xmlns="http:\/\/www.w3.org\/2000\/svg"|fill="(?!none).*?"/g
+        const reg_xmlns_and_fill = /xmlns="http:\/\/www.w3.org\/2000\/svg"|fill=".*?"/g        
+        const code = file.contents.toString().replace(reg_xmlns_and_fill, '')
+        file.contents = Buffer.from(code)
+      }
+      cb(null, file)
+    }))
+    .pipe(dest('app/Views/dest'))
 }
 
 // Build css
@@ -51,5 +80,5 @@ function serve() {
   return phpServer
 }
 
-exports.build = series(clean, css)
-exports.default = series(clean, css, serve)
+exports.build = series(clean, svg, css)
+exports.default = series(clean, svg, css, serve)

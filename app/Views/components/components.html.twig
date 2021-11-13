@@ -81,3 +81,24 @@
   {% endif %}
 </button>
 {% endmacro %}
+
+{#
+switch options:
+- name
+- value
+- checked [true|false]
+- activeText
+- inactiveText
+#}
+{% macro switch(options) %}
+<div x-data="{ checked: {{ options.checked ? 'true': 'false' }} }" class="flex items-center space-x-2">
+  <input x-ref="{{ options.name }}" :checked="checked" {{ options.checked ? 'checked' }} id="{{ options.name }}" name="{{ options.name }}" value="{{ options.value }}" type="checkbox" class="hidden">
+  <div @click="checked = !checked" :class="{'bg-emerald-500': checked, 'bg-trueGray-300': !checked}" class="relative cursor-pointer w-14 h-7 rounded-3xl">
+    <div :class="{'left-8': checked, 'left-1': !checked }" class="absolute w-5 h-5 bg-white rounded-full left-8 top-1"></div>
+  </div>
+  <div>
+    <span x-show="checked">{{ options.activeText }}</span>
+    <span x-show="!checked">{{ options.inactiveText }}</span>
+  </div>
+</div>
+{% endmacro %}

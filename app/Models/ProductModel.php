@@ -28,14 +28,19 @@ class ProductModel extends Model
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
-    function add($title, $desc, $price, $stock, $catId = null)
+    /**
+     * Returns -1 on failure 
+     * @return int
+     */
+    function add($title, $desc, $price, $stock, $catId)
     {
-        $this->insert([
+        $success = $this->insert([
             'title' => $title,
             'desc' => $desc,
             'price' => $price,
             'stock' => $stock,
             'cat_id' => $catId,
         ]);
+        return $success ? $this->getInsertID() : -1;
     }
 }

@@ -15,15 +15,30 @@ class InitialTables extends Migration
             'desc'          => ['type' => 'text'],
             'price'         => ['type' => 'double'],
             'stock'         => ['type' => 'int', 'constraint' => 1],
-            'cat_id'        => ['type' => 'int', 'constraint' => 10, null => true],
+            'cat_id'        => ['type' => 'int', 'constraint' => 10, 'null' => true],
+            'created_at'    => ['type' => 'datetime', 'null' => true],
+            'updated_at'    => ['type' => 'datetime', 'null' => true],
+            'deleted_at'    => ['type' => 'datetime', 'null' => true],
+        ]);
+        
+        $this->forge->addPrimaryKey('id');
+        $this->forge->addUniqueKey('title');
+        $this->forge->createTable('products');
+        
+        // Product photos
+        $this->forge->addField([
+            'id'            => ['type' => 'int', 'constraint' => 10, 'unsigned' => true, 'auto_increment' => true],
+            'product_id'    => ['type' => 'int', 'constraint' => 10, 'unsigned' => true],
+            'filename'      => ['type' => 'varchar', 'constraint' => 100],
             'created_at'    => ['type' => 'datetime', 'null' => true],
             'updated_at'    => ['type' => 'datetime', 'null' => true],
             'deleted_at'    => ['type' => 'datetime', 'null' => true],
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->addUniqueKey('title');
-        $this->forge->createTable('products');
+        $this->forge->addForeignKey('product_id', 'products', 'id');
+        $this->forge->addUniqueKey('filename');
+        $this->forge->createTable('product_photos');
 
         // Categories
         $this->forge->addField([
@@ -75,6 +90,7 @@ class InitialTables extends Migration
     public function down()
     {
         $this->forge->dropTable('products');
+        $this->forge->dropTable('product_photos');
         $this->forge->dropTable('categories');
         $this->forge->dropTable('store');
         $this->forge->dropTable('message_template');

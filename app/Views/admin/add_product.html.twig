@@ -16,82 +16,219 @@
 </header>
 
 <main class="w-full mt-8">
-  <form class="pb-16 mx-auto space-y-24 w-min" action="{{ route_to('admin/add_product') }}" method="post">
-    <section class="space-y-10">
-
+  <form class="pb-16 mx-auto space-y-24 w-min" action="{{ route_to('admin/add_product') }}" method="post" enctype="multipart/form-data">
+    {{ csrf_field() }}
+    <section>
       {% import "components/components.html.twig" as components %}
+      {{ _self.input_row({
+        label: 'Foto',
+        helper: 'Format foto .jpg .jpeg .png dengan ukuran minimal 1000 x 1000px dan maksimal 2MB.<br><br>
+        Pilih foto atau tarik dan letakkan di kotak hingga 10 foto. Geser foto sesuai urutan yang diinginkan.',
+        name: 'photos',
+        input_area: _self.upload_zone(),
+      }) }}
+    </section>
 
-      {{ _self.input_row(
-      'Judul',
-      'Cantumkan maks. 80 karakter.',
-      'title',
-      components.input_field({ name: 'title', type: 'text', error: session('errors.title'), class: 'w-full' }) }}
+    <section class="space-y-10">
+      {{ _self.input_row({
+      label: 'Judul',
+      helper: 'Cantumkan maks. 80 karakter.',
+      for: 'title',
+      input_area: 
+        components.input({
+          name: 'title', type: 'text', error: session('errors.title'), class: 'w-full'
+        }),
+      }) }}
 
-      {{ _self.input_row(
-      'Deskripsi',
-      'Cantumkan maks. 4000 karakter.',
-      'description',
-      components.input_field({ 
-        name: 'description', type: 'textarea', rows: 6, error: session('errors.description'), class: 'w-full' })) }}
+      {{ _self.input_row({
+      label: 'Deskripsi',
+      helper: 'Cantumkan maks. 4000 karakter.',
+      for: 'desc',
+      input_area:
+        components.input({ 
+          name: 'desc', type: 'textarea', rows: 6, error: session('errors.desc'), class: 'w-full'
+        }),
+      }) }}
 
-      {{ _self.input_row(
-      'Kategori (opsional)',
-      'Produkmu bisa dikategorikan agar memudahkan calon pembeli. Pelajari tips mengkategorikan produk.',
-      'categories',
-      components.input_field({ name: 'categories', type: 'text', error: session('errors.categories'), class: 'w-full' }),
-      'opacity-50') }}
-
+      {{ _self.input_row({
+      label: 'Kategori (opsional)',
+      helper: 'Produkmu bisa dikategorikan agar memudahkan calon pembeli. Pelajari tips mengkategorikan produk.',
+      for: 'cat_id',
+      class: 'opacity-50',
+      input_area: 
+        components.input({
+          name: 'cat_id', type: 'text', error: session('errors.cat_id'), class: 'w-full'
+        }),
+      }) }}
     </section>
 
     <section>
-      {{ _self.input_row(
-      'Varian (opsional)',
-      'Kamu bisa menambah varian produk seperti warna, ukuran dan rasa.',
-      'variant',
-      components.button({ text: 'Tambah varian', size: 'medium', outlined: true, leftIcon: 'plus', attributes: 'disabled' }),
-      'opacity-50') }}
+      {{ _self.input_row({
+      label: 'Varian (opsional)',
+      helper: 'Kamu bisa menambah varian produk seperti warna, ukuran dan rasa.',
+      for: 'variant',
+      class: 'opacity-50',
+      input_area:
+        components.button({
+          text: 'Tambah varian', size: 'medium', outlined: true, leftIcon: 'plus', attributes: 'disabled'
+        }),
+      }) }}
     </section>
 
     <section class="space-y-10">
-      {{ _self.input_row(
-      'Stok',
-      '',
-      'stock',
-      'TODO: Make a switch component.', 'opacity-50') }}
+      {{ _self.input_row({
+      label: 'Stok',
+      for: 'stock',
+      input_area: components.switch({
+        name: 'stock',
+        value: 1,
+        checked: true,
+        activeText: 'Ada',
+        inactiveText: 'Habis',
+      }),
+      }) }}
 
-      {{ _self.input_row(
-      'Harga',
-      'Cantumkan harga asli produkmu',
-      'price',
-      components.input_field({ name: 'price', type: 'number', error: session('errors.price'), class: 'w-full'),
-      'opacity-50') }}
+      {{ _self.input_row({
+      label: 'Harga',
+      helper: 'Cantumkan harga asli produkmu',
+      for: 'price',
+      input_area:
+        components.input({
+          name: 'price', type: 'number', attributes: 'min="1", step="any"', error: session('errors.price'), class: 'w-full'
+        }),
+      }) }}
 
-      {{ _self.input_row(
-      'Diskon (opsional)',
-      'Kamu bisa mencantum harga setelah diskon dari harga asli.',
-      'discount',
-      components.button({ text: 'Beri diskon', size: 'medium', outlined: true, leftIcon: 'plus', attributes: 'disabled' }),
-      'opacity-50') }}
+      {{ _self.input_row({
+      label: 'Diskon (opsional)',
+      helper: 'Kamu bisa mencantum harga setelah diskon dari harga asli.',
+      for: 'discount',
+      class: 'opacity-50',
+      input_area:
+        components.button({
+          text: 'Beri diskon', size: 'medium', outlined: true, leftIcon: 'plus', attributes: 'disabled'
+        }),
+      }) }}
     </section>
 
     <section class="flex justify-end space-x-3">
       <a href="{{ route_to('admin/products') }}">
-        {{ components.button({ text: 'Batalkan', size: 'medium', outlined: true, attributes: 'disabled' }) }}
+        {{ components.button({ text: 'Batalkan', size: 'medium', outlined: true }) }}
       </a>
-      {{ components.button({ text: 'Simpan ke draf', size: 'medium', outlined: true, attributes: 'disabled', class: 'opacity-50'}) }}
-      {{ components.button({ text: 'Simpan', size: 'medium', attributes: 'disabled', class: 'opacity-50'}) }}
+      {{ components.button({ text: 'Simpan ke draf', size: 'medium', outlined: true, attributes: 'disabled'}) }}
+      {{ components.button({ text: 'Simpan', size: 'medium', submit: 'true'}) }}
     </section>
   </form>
 </main>
+<script>
+  function uploadZoneData() {
+    return {
+      files: [],
+      thumbnails: [],
+      input: document.querySelector('#photos'),
+      maxOverlay: document.querySelector('#maxOverlay'),
+      allowedTypes: new Set(['image/jpeg', 'image/png']),
+      allowedSize: 2000000, // 2mb
+      filesAtMax() {
+        return this.files.length >= 10
+      },
+      ondragover(e, el) {
+        e.preventDefault()
+        el.classList.add('ring', this.filesAtMax() ? 'ring-trueGray-500': 'ring-emerald-500')
+      },
+      ondragleave(e, el) {
+        e.preventDefault()
+        el.classList.remove('ring', this.filesAtMax() ? 'ring-trueGray-500': 'ring-emerald-500')
+      },
+      ondropfiles(e, droppedFiles, cb = ()=>{}) {
+        e.preventDefault()
+        if(this.filesAtMax())
+          return cb() // TODO: show message (cannot add more than 10 photos)
+        const dt = new DataTransfer()
+        for(let i = 0; i < this.files.length; i++) {
+          dt.items.add(this.files[i])
+        }
+        for(let i = 0; i < droppedFiles.length; i++) {
+          // File validation
+          if(dt.files.length >= 10)
+            break // TODO: show message (cannot add more than 10 photos)
+          if(!this.allowedTypes.has(droppedFiles[i].type))
+            continue // TODO: show message (unsupported file type)
+          if(droppedFiles[i].size >= this.allowedSize)
+            continue // TODO: show message (unsupported file size) (NEED TEST)
+          
+          // Register a new file to droppedFiles
+          dt.items.add(droppedFiles[i])
 
+          // Generate a url for a thumbnail
+          const reader = new FileReader()
+          reader.onload = e => this.thumbnails.push(e.target.result)
+          reader.readAsDataURL(droppedFiles[i])
+        }
+        this.files = this.input.files = dt.files
+        cb()
+      },
+      onchange(e) {
+        e.preventDefault()
+        if(this.filesAtMax())
+          return // TODO: show message (cannot add more than 10 photos)
+        const dt = new DataTransfer()
+        const droppedFiles = e.target.files
+        for(let i = 0; i < this.files.length; i++) {
+          dt.items.add(this.files[i])
+        }
+        for(let i = 0; i < droppedFiles.length; i++) {
+          if(dt.files.length >= 10)
+            break // TODO: show message (cannot add more than 10 photos)
+          if(!this.allowedTypes.has(droppedFiles[i].type))
+            continue // TODO: show message (unsupported file type)
+          
+            // Register a new file to droppedFiles
+          dt.items.add(droppedFiles[i])
+
+          // Generate a url for a thumbnail
+          const reader = new FileReader()
+          reader.onload = e => this.thumbnails.push(e.target.result)
+          reader.readAsDataURL(droppedFiles[i])
+        }
+        this.files = this.input.files = dt.files
+      },
+    }
+  }
+</script>
 {% endblock body %}
 
-{% macro input_row(label, helper, name, input_area, class = '') %}
-<div class="{{ class }} flex gap-20">
+{#
+input_row options:
+- label
+- helper
+- for
+- input_area
+- class
+#}
+{% macro input_row(options) %}
+<div class="{{ options.class }} flex gap-20">
   <div class="space-y-1 w-72">
-    <label for="{{ name }}" class="text-xl font-semibold">{{ label }}</label>
-    <p class="text-base">{{ helper }}</p>
+    <label for="{{ options.for }}" class="text-xl font-semibold">{{ options.label }}</label>
+    <p class="text-base">{{ options.helper|raw }}</p>
   </div>
-  <div class="w-[37rem]">{{ input_area }}</div>
+  <div class="w-[37rem]">{{ options.input_area }}</div>
 </div>
+{% endmacro %}
+
+{% macro upload_zone() %}
+  <div x-data="uploadZoneData()" id="uploadZone" @dragover="ondragover($event, $el)" @dragleave="ondragleave($event, $el)" @drop="ondropfiles($event, $event.dataTransfer.files, $el.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray'))" class="relative w-full h-full rounded-lg">
+    <input x-ref="inputFile" @change="ondropfiles($event, $el.files)" type="file" multiple name="photos[]" id="photos" class="hidden">
+    <div class="flex flex-wrap gap-6">
+      <template x-for="(_, i) in Array.from({ length: files.length })">
+        <div class="overflow-hidden border rounded-lg w-28 h-28">
+          <img :src="thumbnails[i]" class="w-full h-full">
+        </div>
+      </template>
+      <div @click="$refs.inputFile.click()" :class="{ hidden: filesAtMax() }" class="{{ session('errors.photos') ? 'border-red-500' : border-trueGray-400 }} grid border-2 rounded-lg cursor-pointer w-28 h-28 place-content-center">
+        <svg class="fill-current w-9 h-9 text-trueGray-400">
+          <use xlink:href="#ph_upload-simple">
+        </svg>
+      </div>
+    </div>
+  </div>
 {% endmacro %}

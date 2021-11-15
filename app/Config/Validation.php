@@ -53,4 +53,11 @@ class Validation
             ],
         ],
     ];
+
+    public $attemptAddProduct = [
+        'title'         => 'required|max_length[80]',
+        'desc'          => 'required|max_length[4000]',
+        'price'         => 'required|numeric',
+        'stock'         => 'required|in_list[0,1]',
+    ];
 }

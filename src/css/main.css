@@ -54,3 +54,9 @@
 #main-indicator.htmx-indicator.htmx-request {
   display: grid;
 }
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

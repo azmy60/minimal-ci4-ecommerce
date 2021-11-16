@@ -168,31 +168,6 @@
         this.files = this.input.files = dt.files
         cb()
       },
-      onchange(e) {
-        e.preventDefault()
-        if(this.filesAtMax())
-          return // TODO: show message (cannot add more than 10 photos)
-        const dt = new DataTransfer()
-        const droppedFiles = e.target.files
-        for(let i = 0; i < this.files.length; i++) {
-          dt.items.add(this.files[i])
-        }
-        for(let i = 0; i < droppedFiles.length; i++) {
-          if(dt.files.length >= 10)
-            break // TODO: show message (cannot add more than 10 photos)
-          if(!this.allowedTypes.has(droppedFiles[i].type))
-            continue // TODO: show message (unsupported file type)
-          
-            // Register a new file to droppedFiles
-          dt.items.add(droppedFiles[i])
-
-          // Generate a url for a thumbnail
-          const reader = new FileReader()
-          reader.onload = e => this.thumbnails.push(e.target.result)
-          reader.readAsDataURL(droppedFiles[i])
-        }
-        this.files = this.input.files = dt.files
-      },
     }
   }
 </script>

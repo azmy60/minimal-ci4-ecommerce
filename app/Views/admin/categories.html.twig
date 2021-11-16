@@ -42,7 +42,10 @@
       </div>
       <a class="flex justify-center" href="{{ route_to('admin/add-category') }}">
         {% import "components/components.html.twig" as components %}
-        {{ components.button({ text: 'Tambah kategori', size: 'medium', leftIcon: 'plus', attributes: 'disabled', class: 'opacity-50'}) }}
+        <button disabled class="opacity-50 btn btn-base btn-black">
+          <svg><use xlink:href="#ph_plus-bold"></svg>
+          <span>Tambah kategori</span>
+        </button>
       </a>
     </div>
   </section>

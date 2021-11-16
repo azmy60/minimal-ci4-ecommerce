@@ -1,0 +1,45 @@
+@layer components {
+  /* Base */
+  .btn {
+    @apply disabled:opacity-40 flex items-center self-center gap-2 px-4 py-2 font-semibold rounded-lg;
+  }
+  
+  /* Sizes */
+  .btn-sm {
+    @apply text-base py-1 px-3;
+  }
+  
+  .btn-base {
+    @apply text-base py-2 px-4;
+  }
+  
+  .btn-lg {
+    @apply text-lg py-2 px-4;
+  }
+  
+  /* SVG Icons */
+  .btn-base > svg, .btn-lg > svg {
+    @apply w-5 h-5 fill-current;
+  }
+  
+  .btn-sm > svg {
+    @apply w-4 h-4 fill-current;
+  }
+  
+  /* Colors */
+  .btn-black {
+    @apply bg-trueGray-800 text-white;
+  }
+  
+  .btn-emerald {
+    @apply bg-emerald-500 text-white;
+  }
+  
+  .btn-outlined-black {
+    @apply border border-trueGray-800 text-black;
+  }
+  
+  .btn-outlined-emerald {
+    @apply border border-emerald-600 text-emerald-600;
+  } 
+}

@@ -48,41 +48,6 @@
 </div>
 {% endmacro %}
 
-<!--
-  button options:
-  - text
-  - size = [small|medium|large]
-  - outlined = [true|false]
-  - submit = [true|false]
-  - leftIcon
-  - rightIcon
-  - attributes
-  - class
--->
-{% macro button(options) %}
-{% set styles = {
-  outlined_black: 'border border-emerald-600 text-emerald-600',
-  outlined_black: 'border border-trueGray-800 text-black',
-  solid_black: 'bg-trueGray-800 text-white',
-  solid_emerald: 'bg-emerald-500 text-white',
-} %}
-<button {{ options.type ? "type=#{options.type}" }} {{ options.submit ? 'type="submit"' }}
-  class="{{ options.class }} {{ styles[options.style] ?? styles.solid_black }} disabled:opacity-40 flex items-center self-center gap-2 px-4 py-2 text-base font-semibold rounded-lg"
-  {{ options.attributes|raw }}>
-  {% if options.leftIcon is not empty %}
-  <svg class="w-5 h-5 fill-current">
-    <use xlink:href="#ph_{{ options.leftIcon }}{{ options.outlined ?: '-bold'}}">
-  </svg>
-  {% endif %}
-  <span>{{ options.text }}</span>
-  {% if options.rightIcon is not empty %}
-  <svg class="w-5 h-5 fill-current">
-    <use xlink:href="#ph_{{ options.rightIcon }}{{ options.outlined ?: '-bold'}}">
-  </svg>
-  {% endif %}
-</button>
-{% endmacro %}
-
 {#
 switch options:
 - name

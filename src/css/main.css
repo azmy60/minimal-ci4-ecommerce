@@ -3,6 +3,7 @@
 @import 'tailwindcss/utilities';
 @import './pages/login';
 @import './components/loadingSpinner';
+@import './components/buttons';
 
 @layer base {
   @font-face {

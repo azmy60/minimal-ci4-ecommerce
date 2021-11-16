@@ -54,10 +54,9 @@
       label: 'Kategori (opsional)',
       helper: 'Produkmu bisa dikategorikan agar memudahkan calon pembeli. Pelajari tips mengkategorikan produk.',
       for: 'cat_id',
-      class: 'opacity-50',
       input_area: 
         components.input({
-          name: 'cat_id', type: 'text', error: session('errors.cat_id'), class: 'w-full'
+          name: 'cat_id', type: 'text', error: session('errors.cat_id'), class: 'w-full', attributes: 'disabled'
         }),
       }) }}
     </section>
@@ -67,11 +66,12 @@
       label: 'Varian (opsional)',
       helper: 'Kamu bisa menambah varian produk seperti warna, ukuran dan rasa.',
       for: 'variant',
-      class: 'opacity-50',
-      input_area:
-        components.button({
-          text: 'Tambah varian', size: 'medium', outlined: true, leftIcon: 'plus', attributes: 'disabled'
-        }),
+      input_area: '
+        <button disabled class="btn btn-base btn-outlined-emerald">
+          <svg><use xlink:href="#ph_plus-bold"></svg>
+          <span>Tambah varian</span>
+        </button>
+      ',
       }) }}
     </section>
 
@@ -102,20 +102,21 @@
       label: 'Diskon (opsional)',
       helper: 'Kamu bisa mencantum harga setelah diskon dari harga asli.',
       for: 'discount',
-      class: 'opacity-50',
-      input_area:
-        components.button({
-          text: 'Beri diskon', size: 'medium', outlined: true, leftIcon: 'plus', attributes: 'disabled'
-        }),
+      input_area:'
+        <button disabled class="btn btn-base btn-outlined-emerald">
+          <svg><use xlink:href="#ph_plus-bold"></svg>
+          <span>Beri diskon</span>
+        </button>
+      ',
       }) }}
     </section>
 
     <section class="flex justify-end space-x-3">
       <a href="{{ route_to('admin/products') }}">
-        {{ components.button({ text: 'Batalkan', size: 'medium', outlined: true }) }}
+        <button class="btn btn-base btn-outlined-black">Batalkan</button>
       </a>
-      {{ components.button({ text: 'Simpan ke draf', size: 'medium', outlined: true, attributes: 'disabled'}) }}
-      {{ components.button({ text: 'Simpan', size: 'medium', submit: 'true'}) }}
+      <button disabled class="btn btn-base btn-outlined-black">Simpan ke draf</button>
+      <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
     </section>
   </form>
 </main>
@@ -211,7 +212,7 @@ input_row options:
     <label for="{{ options.for }}" class="text-xl font-semibold">{{ options.label }}</label>
     <p class="text-base">{{ options.helper|raw }}</p>
   </div>
-  <div class="w-[37rem]">{{ options.input_area }}</div>
+  <div class="w-[37rem]">{{ options.input_area|raw }}</div>
 </div>
 {% endmacro %}
 

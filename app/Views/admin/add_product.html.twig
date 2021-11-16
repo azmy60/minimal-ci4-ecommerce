@@ -168,6 +168,16 @@
         this.files = this.input.files = dt.files
         cb()
       },
+      removePhoto(index) {
+        const dt = new DataTransfer()
+        for(let i = 0; i < this.files.length; i++) {
+          if(i === index)
+            continue
+          dt.items.add(this.files[i])
+        }
+        this.thumbnails.splice(index, 1)
+        this.files = this.input.files = dt.files
+      }
     }
   }
 </script>
@@ -196,7 +206,13 @@ input_row options:
     <input x-ref="inputFile" @change="ondropfiles($event, $el.files)" type="file" multiple name="photos[]" id="photos" class="hidden">
     <div class="flex flex-wrap gap-6">
       <template x-for="(_, i) in Array.from({ length: files.length })">
-        <div class="overflow-hidden border rounded-lg w-28 h-28">
+        <div class="relative overflow-hidden border rounded-lg cursor-pointer w-28 h-28">
+          <div class="absolute top-0 left-0 z-50 w-full h-full opacity-0 hover:opacity-100">
+            <button @click.prevent="removePhoto(i)" class="absolute bottom-0 right-0 z-50 p-2 rounded-lg bg-trueGray-800">
+              <svg class="w-5 h-5 text-white fill-current"><use xlink:href="#ph_trash-simple-bold"></svg>
+            </button>
+            <span class="absolute w-full h-full bg-trueGray-800 opacity-10"></span>
+          </div>
           <img :src="thumbnails[i]" class="w-full h-full">
         </div>
       </template>

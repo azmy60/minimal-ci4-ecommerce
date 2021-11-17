@@ -1,5 +1,8 @@
 const { series, src, dest, watch } = require('gulp')
 const { spawn } = require('child_process')
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
+const rollup = require('rollup')
 const gulpIf = require('gulp-if')
 const postcss = require('gulp-postcss')
 const tailwindcss = require('tailwindcss')
@@ -9,6 +12,7 @@ const browserSync = require('browser-sync')
 const atImport = require('postcss-import')
 const svgSprite = require('gulp-svg-sprite')
 const through2 = require('through2')
+const { terser } = require('rollup-plugin-terser')
 const reload = browserSync.reload
 
 // Remove files in public/css
@@ -16,6 +20,7 @@ function clean() {
   const del = require('del')
   return del([
     'public/css/*',
+    'public/js/*',
     'app/Views/dest/*',
   ])
 }
@@ -63,6 +68,26 @@ function css() {
     .pipe(reload({ stream: true }))
 }
 
+async function js() {
+  const addProductBundle = await rollup.rollup({
+    input: 'src/js/addProductHelper.js',
+    plugins: [
+      nodeResolve(),
+      commonjs(),
+    ]
+  })
+
+  await addProductBundle.write({
+    dir: 'public/js',
+    name: 'uploadZoneData',
+    format: 'iife',
+    sourcemap: true,
+    plugins: [
+      terser(),
+    ]
+  })
+}
+
 // Run php server + live reload
 function serve() {
   const phpServer = spawn('php', 'spark serve'.split(' '), {stdio: 'inherit'})
@@ -77,8 +102,11 @@ function serve() {
   // Watch views
   watch('app/Views/**/*.twig').on('change', series(css, browserSync.reload))
 
+  // Watch js
+  watch('src/js/**/*.js', series(js))
+
   return phpServer
 }
 
-exports.build = series(clean, svg, css)
-exports.default = series(clean, svg, css, serve)
+exports.build = series(clean, svg, css, js)
+exports.default = series(clean, svg, css, js, serve)

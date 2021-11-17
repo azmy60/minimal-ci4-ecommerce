@@ -120,67 +120,7 @@
     </section>
   </form>
 </main>
-<script>
-  function uploadZoneData() {
-    return {
-      files: [],
-      thumbnails: [],
-      input: document.querySelector('#photos'),
-      maxOverlay: document.querySelector('#maxOverlay'),
-      allowedTypes: new Set(['image/jpeg', 'image/png']),
-      allowedSize: 2000000, // 2mb
-      filesAtMax() {
-        return this.files.length >= 10
-      },
-      ondragover(e, el) {
-        e.preventDefault()
-        el.classList.add('ring', this.filesAtMax() ? 'ring-trueGray-500': 'ring-emerald-500')
-      },
-      ondragleave(e, el) {
-        e.preventDefault()
-        el.classList.remove('ring', this.filesAtMax() ? 'ring-trueGray-500': 'ring-emerald-500')
-      },
-      ondropfiles(e, droppedFiles, cb = ()=>{}) {
-        e.preventDefault()
-        if(this.filesAtMax())
-          return cb() // TODO: show message (cannot add more than 10 photos)
-        const dt = new DataTransfer()
-        for(let i = 0; i < this.files.length; i++) {
-          dt.items.add(this.files[i])
-        }
-        for(let i = 0; i < droppedFiles.length; i++) {
-          // File validation
-          if(dt.files.length >= 10)
-            break // TODO: show message (cannot add more than 10 photos)
-          if(!this.allowedTypes.has(droppedFiles[i].type))
-            continue // TODO: show message (unsupported file type)
-          if(droppedFiles[i].size >= this.allowedSize)
-            continue // TODO: show message (unsupported file size) (NEED TEST)
-          
-          // Register a new file to droppedFiles
-          dt.items.add(droppedFiles[i])
-
-          // Generate a url for a thumbnail
-          const reader = new FileReader()
-          reader.onload = e => this.thumbnails.push(e.target.result)
-          reader.readAsDataURL(droppedFiles[i])
-        }
-        this.files = this.input.files = dt.files
-        cb()
-      },
-      removePhoto(index) {
-        const dt = new DataTransfer()
-        for(let i = 0; i < this.files.length; i++) {
-          if(i === index)
-            continue
-          dt.items.add(this.files[i])
-        }
-        this.thumbnails.splice(index, 1)
-        this.files = this.input.files = dt.files
-      }
-    }
-  }
-</script>
+<script src="/js/addProductHelper.js"></script>
 {% endblock body %}
 
 {#
@@ -202,25 +142,16 @@ input_row options:
 {% endmacro %}
 
 {% macro upload_zone() %}
-  <div x-data="uploadZoneData()" id="uploadZone" @dragover="ondragover($event, $el)" @dragleave="ondragleave($event, $el)" @drop="ondropfiles($event, $event.dataTransfer.files, $el.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray'))" class="relative w-full h-full rounded-lg">
-    <input x-ref="inputFile" @change="ondropfiles($event, $el.files)" type="file" multiple name="photos[]" id="photos" class="hidden">
-    <div class="flex flex-wrap gap-6">
-      <template x-for="(_, i) in Array.from({ length: files.length })">
-        <div class="relative overflow-hidden border rounded-lg cursor-pointer w-28 h-28">
-          <div class="absolute top-0 left-0 z-50 w-full h-full opacity-0 hover:opacity-100">
-            <button @click.prevent="removePhoto(i)" class="absolute bottom-0 right-0 z-50 p-2 rounded-lg bg-trueGray-800">
-              <svg class="w-5 h-5 text-white fill-current"><use xlink:href="#ph_trash-simple-bold"></svg>
-            </button>
-            <span class="absolute w-full h-full bg-trueGray-800 opacity-10"></span>
-          </div>
-          <img :src="thumbnails[i]" class="w-full h-full">
-        </div>
-      </template>
-      <div @click="$refs.inputFile.click()" :class="{ hidden: filesAtMax() }" class="{{ session('errors.photos') ? 'border-red-500' : border-trueGray-400 }} grid border-2 rounded-lg cursor-pointer w-28 h-28 place-content-center">
+  <div x-data="uploadZoneData" id="uploadZone" @dragover.prevent="ondragover($el)" @dragleave.prevent="ondragleave($el)" @drop.prevent="ondropfiles($event.dataTransfer.files, $el.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray'))" class="relative w-full h-full rounded-lg">
+    <input x-ref="inputFile" @change.prevent="ondropfiles($el.files)" type="file" multiple name="photos[]" id="photos" class="hidden">
+    <div id="thumbnails-container" class="flex flex-wrap gap-6">
+
+      <div id="upload-btn" @click="$refs.inputFile.click()" class="{{ session('errors.photos') ? 'border-red-500' : border-trueGray-400 }} grid border-2 rounded-lg cursor-pointer w-28 h-28 place-content-center">
         <svg class="fill-current w-9 h-9 text-trueGray-400">
           <use xlink:href="#ph_upload-simple">
         </svg>
       </div>
+      
     </div>
   </div>
 {% endmacro %}

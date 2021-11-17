@@ -130,3 +130,4 @@ node_modules
 
 # Distribution files
 public/css/*
+public/js/*

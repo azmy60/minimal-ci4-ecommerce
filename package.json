@@ -23,6 +23,8 @@
   },
   "homepage": "https://github.com/azmy60/ci4-catalog#readme",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "autoprefixer": "^10.4.0",
     "browser-sync": "^2.27.7",
     "cssnano": "^5.0.9",
@@ -33,10 +35,13 @@
     "gulp-svg-sprite": "^1.5.0",
     "postcss": "^8.3.11",
     "postcss-import": "^14.0.2",
+    "rollup": "^2.60.0",
+    "rollup-plugin-terser": "^7.0.2",
     "tailwindcss": "^2.2.19",
     "through2": "^4.0.2"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.3.4"
+    "@tailwindcss/forms": "^0.3.4",
+    "downscale": "^1.0.6"
   }
 }

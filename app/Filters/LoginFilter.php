@@ -45,7 +45,10 @@ class LoginFilter implements FilterInterface
 		if (! $authenticate->check())
 		{
 			session()->set('redirect_url', current_url());
-			return redirect()->setHeader('HX-Redirect', base_url('login'));
+			if ($request->hasHeader('HX-Request'))
+				return redirect()->setHeader('HX-Redirect', route_to('login'));;
+			
+			return redirect('login');
 		}
 	}
 

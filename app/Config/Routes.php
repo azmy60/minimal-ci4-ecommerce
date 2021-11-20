@@ -89,3 +89,5 @@ $routes->group('admin', ['filter' => 'login'], function($routes) {
     $routes->get('add-product', 'AdminController::addProduct');
     $routes->post('add-product', 'AdminController::attemptAddProduct');
 });
+
+$routes->get('photos/(:alpha)/(:segment)', 'ContentController::photos/$1/$2', ['as' => 'content-photos']);

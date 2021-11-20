@@ -2,6 +2,7 @@
 
 ## Requirements
 - php 7.3+, 8.0+
+- php gd library `sudo apt-get install php-gd`
 - A SQLite driver `sudo apt-get install php-sqlite3`
 - [A local email server](https://gist.github.com/raelgc/6031274) for testing email verification and forgot password
 
@@ -38,3 +39,15 @@ npm run dev
 ## UI Resources
 - Phosphor icons (see [official website](https://phosphoricons.com/))
 - Twemoji (see [official website](https://twemoji.twitter.com/))
+
+## Troubleshooting
+```
+PHP Warning:  PHP Startup: ^(text/|application/xhtml\+xml) (offset=0): unrecognised compile-time option bit(s) in Unknown on line 0
+```
+To solve the above issue, run this command:
+```bash
+sudo apt-get install --only-upgrade libpcre2-16-0 libpcre2-32-0 libpcre2-8-0 libpcre2-dev libpcre2-posix2
+
+```
+source:
+[https://github.com/oerdnj/deb.sury.org/issues/1674#issuecomment-964284447](https://github.com/oerdnj/deb.sury.org/issues/1674#issuecomment-964284447)

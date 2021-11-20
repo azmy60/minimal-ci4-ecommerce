@@ -131,3 +131,6 @@ node_modules
 # Distribution files
 public/css/*
 public/js/*
+
+# Generated contents
+writable/content/*

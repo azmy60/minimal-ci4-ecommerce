@@ -56,7 +56,7 @@
   <div x-data
     :style="{ left: `${document.querySelector('#main').offsetLeft}px`, width: `${document.querySelector('#main').offsetWidth}px`, height: `${window.innerHeight}px` }"
     id="main-indicator" class="absolute top-0 grid bg-white htmx-indicator place-content-center">
-    {% include "components/loading_spinner.html" %}
+    {% include "components/loading_spinner_base.html" %}
   </div>
 
   <script>

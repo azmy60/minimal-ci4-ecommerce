@@ -36,10 +36,11 @@ class ProductPhotoModel extends Model
      */
     public function store($productId, $photoFile)
     {
-        $path = $photoFile->store();
+        $filename = $photoFile->getRandomName();
+        $path = $photoFile->store('product-photos', $filename);
         return $this->insert([
             'product_id' => $productId,
-            'filename' => $path,
+            'filename' => $filename,
         ]);
     }
 }

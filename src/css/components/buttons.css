@@ -1,7 +1,7 @@
 @layer components {
   /* Base */
   .btn {
-    @apply disabled:opacity-40 flex items-center self-center gap-2 px-4 py-2 font-semibold rounded-lg;
+    @apply disabled:opacity-40 inline-flex items-center gap-2 font-semibold rounded-lg;
   }
   
   /* Sizes */

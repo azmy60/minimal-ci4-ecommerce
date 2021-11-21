@@ -24,7 +24,7 @@
   {% set common_classes = (options.error is not empty ? 'border-red-500' : 'border-trueGray-400') ~ ' py-2.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500' %}
   {% if options.type == 'password' %}
   <div x-data="{ show: false }" class="{{ options.class }} relative" {{ options.inputAttributes|raw }}>
-    <div @click="$refs.passwordInput.focus(); show = !show" class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
+    <div x-cloak @click="$refs.passwordInput.focus(); show = !show" class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
       <svg x-show="!show" class="w-full h-full fill-current">
         <use xlink:href="#ph_eye" />
       </svg>
@@ -55,10 +55,12 @@ switch options:
 - checked [true|false]
 - activeText
 - inactiveText
+- attributes
+- class
 #}
 {% macro switch(options) %}
-<div x-data="{ checked: {{ options.checked ? 'true': 'false' }} }" class="flex items-center space-x-2">
-  <input x-ref="{{ options.name }}" :checked="checked" {{ options.checked ? 'checked' }} id="{{ options.name }}" name="{{ options.name }}" value="{{ options.value }}" type="checkbox" class="hidden">
+<div x-data="{ checked: {{ options.checked ? 'true': 'false' }} }" class="{{ options.class }} flex items-center space-x-2" {{ options.attributes|raw }}>
+  <input x-ref="{{ options.name }}" id="{{ options.name }}" name="{{ options.name }}" value="{{ options.value }}" class="hidden">
   <div @click="checked = !checked" :class="{'bg-emerald-500': checked, 'bg-trueGray-300': !checked}" class="relative cursor-pointer w-14 h-7 rounded-3xl">
     <div :class="{'left-8': checked, 'left-1': !checked }" class="absolute w-5 h-5 bg-white rounded-full left-8 top-1"></div>
   </div>

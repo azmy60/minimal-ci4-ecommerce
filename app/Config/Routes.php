@@ -53,7 +53,7 @@ if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
 /*
  * Myth:Auth routes file.
  */
-$routes->group('', ['namespace' => 'App\Controllers'], function ($routes) {
+$routes->group('', function ($routes) {
     // Login/out
     $routes->get('login', 'AuthController::login', ['as' => 'login']);
     $routes->post('login', 'AuthController::attemptLogin');

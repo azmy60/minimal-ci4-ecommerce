@@ -68,3 +68,29 @@ switch options:
   </div>
 </div>
 {% endmacro %}
+
+{#
+dropdown options:
+- class
+- attributes
+- selections [array of objects]
+  . text
+  . icon
+  . dangerTheme [true|false]
+  . attributes
+> dispatch this element with 'toggle' event. hint: dropdownEl.dispatchEvent(new CustomEvent('toggle'))
+#}
+{% macro dropdown(options) %}
+<div x-cloak x-data="{ show: false }" @toggle="show = !show" @click.outside="show = false" x-show="show" class="{{ class }} absolute z-50 overflow-hidden bg-white border divide-y rounded-lg drop-shadow border-trueGray-200 divide-trueGray-200" {{ options.attributes|raw }}>
+  {% for selection in options.selections %}
+  <button class="{{ selection.dangerTheme ? 'bg-red-50 text-red-500 hover:bg-red-200' : 'hover:bg-trueGray-200' }} flex items-center gap-4 justify-between w-full px-4 py-2 select-none" {{ selection.attributes|raw }} >
+    <span>{{ selection.text }}</span>
+    {% if selection.icon %}
+    <svg class="w-5 h-5 fill-current">
+      <use xlink:href="#ph_{{ selection.icon }}">
+    </svg>
+    {% endif %}
+  </button>
+  {% endfor %}
+</div>
+{% endmacro %}

@@ -1,0 +1,24 @@
+@layer components {
+  /* Base */
+  .chip {
+    @apply flex gap-1 px-4 leading-4 rounded-full cursor-pointer select-none bg-white border border-trueGray-300 text-trueGray-800;
+  }
+
+  /* Sizes */
+  .chip-sm {
+    @apply py-2;
+  }
+
+  .chip-base {
+    @apply py-3;
+  }
+
+  /* Selected */
+  .chip[selected] {
+    @apply bg-trueGray-800 text-white;
+  }
+
+  .chip:not([selected]) {
+    @apply bg-white text-trueGray-800 border;
+  }
+}

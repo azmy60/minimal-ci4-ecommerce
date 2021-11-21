@@ -4,6 +4,7 @@
 @import './pages/login';
 @import './components/loadingSpinner';
 @import './components/buttons';
+@import './components/chips';
 
 @layer base {
   @font-face {

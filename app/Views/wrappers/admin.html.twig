@@ -18,33 +18,44 @@
         <use xlink:href="#ph_x-bold" />
       </svg>
     </div>
-    <div
-      class="absolute text-2xl font-semibold leading-none transform -translate-x-1/2 -translate-y-1/2 md:text-4xl md:w-full md:px-6 md:mt-4 md:text-center lg:text-left md:static md:transform-none left-1/2 top-1/2">
-      <span class="md:hidden">
-        Nama Toko
-      </span>
-      <span class="hidden md:inline lg:hidden">
-        N
-      </span>
-      <span class="hidden lg:inline">
-        Nama
-      </span>
+    <div class="absolute text-xl transform -translate-x-1/2 -translate-y-1/2 md:border-b md:border-trueGray-800 left-1/2 top-1/2 md:text-base md:w-full md:mt-4 lg:mt-0 lg:py-4 md:text-center md:static md:transform-none">
+      <a target="_blank" href="{{ route_to('/') }}">
+        <span class="font-semibold md:hidden">
+          {{ '[[STORENAME]]' }}
+        </span>
+        <div class="flex-col items-center justify-center hidden h-20 md:flex lg:flex-row-reverse lg:items-start lg:h-auto lg:justify-between lg:px-4">
+          <svg class="fill-current w-7 h-7 lg:w-6 lg:h-6">
+            <use xlink:href="#ph_arrow-square-out" />
+          </svg>
+          <div class="lg:text-left">
+            <span class="lg:hidden">
+              {{ store.name|u.truncate(8, '...') }}
+            </span>
+            <span class="hidden lg:block">
+              {{ store.name|u.truncate(19, '...') }}
+            </span>
+            <span class="hidden text-sm lg:block text-trueGray-400">
+              {{ base_url('/')|u.truncate(25, '...') }}
+            </span>
+          </div>
+        </div>
+      </a>
     </div>
     <nav hx-boost="true" hx-indicator="#main-indicator" hx-target="#main" x-data="navData()" x-show="showNav"
-      x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static md:mt-8 bg-trueGray-900 admin-nav">
+      x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static bg-trueGray-900 admin-nav">
       <div class="relative">
         {{ _self.nav_group_skeleton() }}
         {{ _self.nav_item('Home', 'house', route_to('admin')) }}
-        {{ _self.nav_item('Products', 'package', route_to('admin/products')) }}
-        {{ _self.nav_item('Categories', 'squares-four', route_to('admin/categories')) }}
-        {{ _self.nav_item('Settings', 'gear-six', route_to('admin/settings')) }}
-        {{ _self.nav_item('Help', 'question', route_to('admin/help')) }}
+        {{ _self.nav_item('Produk', 'package', route_to('admin/products')) }}
+        {{ _self.nav_item('Kategori', 'squares-four', route_to('admin/categories')) }}
+        {{ _self.nav_item('Pengaturan', 'gear-six', route_to('admin/settings')) }}
+        {{ _self.nav_item('Bantuan', 'question', route_to('admin/help')) }}
       </div>
       
       <div class="relative border-t border-trueGray-800">
         {{ _self.nav_group_skeleton() }}
-        {{ _self.nav_item('Logout', 'sign-out', route_to('logout'), 'hx-disable hx-ignore') }}
-        {{ _self.nav_item('Send feedback', 'chat-text', route_to('admin/send-feedback'), 'hx-disable hx-ignore') }}
+        {{ _self.nav_item('Logout', 'sign-out', route_to('logout'), 'hx-disable hx-ignore x-ignore') }}
+        {{ _self.nav_item('Beri saran/kritik', 'chat-text', route_to('admin/send-feedback'), 'hx-disable hx-ignore x-ignore') }}
       </div>
     </nav>
   </aside>

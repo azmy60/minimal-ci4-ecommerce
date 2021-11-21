@@ -182,6 +182,7 @@ class AdminController extends BaseController
     {
         $dontExtend = $this->request->hasHeader('HX-Request');
         $data['template'] = $dontExtend ? 'wrappers/admin_empty.html.twig' : 'wrappers/admin.html.twig';
+        $data['store'] = model(StoreModel::class)->getStoreInfo();
         return $this->twig->render("admin/$name.html", $data);
     }
 }

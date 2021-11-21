@@ -42,4 +42,7 @@ class StoreModel extends Model
         return $this->first() == null;
     }
 
+    function getStoreInfo() {{
+        return $this->first();
+    }}
 }

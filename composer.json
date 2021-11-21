@@ -9,7 +9,8 @@
         "codeigniter4/framework": "^4",
         "myth/auth": "^1.0",
         "twig/twig": "^3.0",
-        "kenjis/codeigniter-ss-twig": "^4.0"
+        "kenjis/codeigniter-ss-twig": "^4.0",
+        "twig/string-extra": "^3.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",

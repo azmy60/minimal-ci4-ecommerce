@@ -9,6 +9,7 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Twig\Extra\String\StringExtension;
 
 /**
  * Class BaseController
@@ -55,6 +56,7 @@ class BaseController extends Controller
             'functions' => ['route_to', 'base_url', 'old', 'session']
         ];
         $this->twig = new \Kenjis\CI4Twig\Twig($config);
+        $this->twig->getTwig()->addExtension(new StringExtension());
         
         $this->store = new StoreModel();
     }

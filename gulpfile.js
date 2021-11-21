@@ -108,5 +108,6 @@ function serve() {
   return phpServer
 }
 
+exports.iconset = series(svg)
 exports.build = series(clean, svg, css, js)
 exports.default = series(clean, svg, css, js, serve)

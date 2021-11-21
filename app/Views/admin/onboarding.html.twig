@@ -18,6 +18,7 @@
     {{ components.input({
       name: 'name',
       type: 'text',
+      size: 'lg',
       placeholder: 'Masukkan nama toko',
       inputAttributes: 'x-ref="name" @input="$refs.nameBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.nameBtn.click() " @keyup.shift.enter="$refs.backName.click()"',
       class: 'mt-6 w-112',
@@ -37,6 +38,7 @@
     {{ components.input({
       name: 'phone',
       type: 'tel',
+      size: 'lg',
       placeholder: 'Contoh, (+62) 333-4444-5555',
       inputAttributes: 'x-ref="phone" @input="$refs.phoneBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.phoneBtn.click()" @keyup.shift.enter="$refs.backPhone.click()"',
       class: 'mt-6 w-112',

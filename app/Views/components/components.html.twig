@@ -1,11 +1,15 @@
 <!--
-  input_field options: 
+  Use this component if you need an input field wrapped with a label and a helper text,
+  otherwise use a regular html <input> with 'input' class for simple use cases.
+  hint: <input type="text" class="input input-default"> (see /src/css/components/input.css) 
+  
+  input options: 
   - label
   - name
   - placeholder
   - helper
   - autocomplete [true|false]
-  - size [small|medium|large]
+  - size [sm|base|lg]
   - type [text|password|textarea|or whatever]
   - rows [for textarea]
   - error
@@ -21,7 +25,8 @@
   </label>
   {% endif %}
 
-  {% set common_classes = (options.error is not empty ? 'border-red-500' : 'border-trueGray-400') ~ ' py-2.5 bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500' %}
+  {% set input_color = options.error ? 'input-danger' : 'input-default' %}
+  {% set input_size = options.size == 'sm' ? 'input-sm' : options.size == 'lg' ? 'input-lg' : 'input-base' %}
   {% if options.type == 'password' %}
   <div x-data="{ show: false }" class="{{ options.class }} relative" {{ options.inputAttributes|raw }}>
     <div x-cloak @click="$refs.passwordInput.focus(); show = !show" class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
@@ -32,12 +37,12 @@
         <use xlink:href="#ph_eye-slash" />
       </svg>
     </div>
-    <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" autocomplete="{{ options.autocomplete }}" type="password" class="{{ common_classes }} w-full pl-4 pr-12">
+    <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" autocomplete="{{ options.autocomplete }}" type="password" class="w-full input-password {{ input_size }} {{ input_color }}">
   </div>
   {% elseif options.type == 'textarea' %}
-  <textarea id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" autocomplete="{{ options.autocomplete }}" rows="{{ options.rows }}" class="{{ common_classes }} px-4" {{ options.inputAttributes|raw }}></textarea>
+  <textarea id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" rows="{{ options.rows }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}></textarea>
   {% else %}  
-  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" autocomplete="{{ options.autocomplete }}" type="{{ options.type }}" class="{{ common_classes }} px-4" {{ options.inputAttributes|raw }}>
+  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" autocomplete="{{ options.autocomplete }}" type="{{ options.type }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}>
   {% endif %}
 
   {% if options.error is not empty %}

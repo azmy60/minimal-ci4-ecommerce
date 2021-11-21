@@ -5,6 +5,7 @@
 @import './components/loadingSpinner';
 @import './components/buttons';
 @import './components/chips';
+@import './components/input';
 
 @layer base {
   @font-face {

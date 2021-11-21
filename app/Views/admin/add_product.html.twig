@@ -36,7 +36,7 @@
       for: 'title',
       input_area: 
         components.input({
-          name: 'title', type: 'text', error: session('errors.title'), class: 'w-full'
+          name: 'title', type: 'text', size: 'lg', error: session('errors.title'), class: 'w-full'
         }),
       }) }}
 
@@ -46,7 +46,7 @@
       for: 'desc',
       input_area:
         components.input({ 
-          name: 'desc', type: 'textarea', rows: 6, error: session('errors.desc'), class: 'w-full'
+          name: 'desc', type: 'textarea', size: 'lg', rows: 6, error: session('errors.desc'), class: 'w-full'
         }),
       }) }}
 
@@ -56,7 +56,7 @@
       for: 'cat_id',
       input_area: 
         components.input({
-          name: 'cat_id', type: 'text', error: session('errors.cat_id'), class: 'w-full', attributes: 'disabled'
+          name: 'cat_id', type: 'text', size: 'lg', error: session('errors.cat_id'), class: 'w-full', attributes: 'disabled'
         }),
       }) }}
     </section>
@@ -94,7 +94,7 @@
       for: 'price',
       input_area:
         components.input({
-          name: 'price', type: 'number', attributes: 'min="1", step="any"', error: session('errors.price'), class: 'w-full'
+          name: 'price', type: 'number', size: 'lg', attributes: 'min="1", step="any"', error: session('errors.price'), class: 'w-full'
         }),
       }) }}
 

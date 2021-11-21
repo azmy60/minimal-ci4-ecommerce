@@ -25,10 +25,10 @@
     <div class="space-y-4">
       {% import "components/components.html.twig" as components %}
       {{ components.input({ 
-        label: 'New password', name: 'password', type: 'password', size: 'large', error: session('errors.password')
+        label: 'New password', name: 'password', type: 'password', size: 'lg', error: session('errors.password')
       }) }}
       {{ components.input({
-        label: 'Confirm new password', name: 'pass_confirm', type: 'password', size: 'large', error: session('errors.pass_confirm')
+        label: 'Confirm new password', name: 'pass_confirm', type: 'password', size: 'lg', error: session('errors.pass_confirm')
       }) }}
     </div>
 

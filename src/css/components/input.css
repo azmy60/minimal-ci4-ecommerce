@@ -1,0 +1,39 @@
+@layer components {
+  /* Don't use _input as a base */
+  ._input {
+    @apply bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent placeholder-trueGray-500;
+  }
+
+  /* Base */
+  /* Use this instead */
+  .input {
+    @apply px-4 _input;
+  }
+
+  /* or this */
+  .input-password {
+    @apply pl-4 pr-12 _input;
+  }
+  
+  /* Sizes */
+  .input-sm {
+    @apply py-1;
+  }
+  
+  .input-base {
+    @apply py-2;
+  }
+  
+  .input-lg {
+    @apply py-2.5;
+  }
+
+  /* Colors */
+  .input-default {
+    @apply border-trueGray-400;
+  }
+
+  .input-danger {
+    @apply border-red-500;
+  }
+}

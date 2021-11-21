@@ -64,7 +64,8 @@
             <td>{{ 
               components.switch({
                 name: "stock",
-                value: product.stock == 1 ? 0 : 1,
+                checkedValue: 1,
+                uncheckedValue: 0,
                 checked: product.stock == 1,
                 activeText: 'Ada',
                 inactiveText: 'Habis',

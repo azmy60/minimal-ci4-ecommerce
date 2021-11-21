@@ -43,4 +43,14 @@ class ProductPhotoModel extends Model
             'filename' => $filename,
         ]);
     }
+
+    /**
+     * @param int $productId
+     * 
+     * @return array
+     */
+    public function getFilenames($productId)
+    {
+        return $this->select('filename')->where('product_id', $productId)->get()->getResultArray();
+    }
 }

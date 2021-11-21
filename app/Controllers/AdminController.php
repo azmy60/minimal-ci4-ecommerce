@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\ProductModel;
 use App\Models\ProductPhotoModel;
 use App\Models\StoreModel;
 
@@ -23,7 +24,45 @@ class AdminController extends BaseController
 			return redirect()->to('admin/onboarding');
         }
 
-        return $this->render('products');
+        $productModel = model(ProductModel::class);
+        $productPhotoModel = model(ProductPhotoModel::class);
+
+        $products = $productModel->getLimitAll(10);
+        foreach ($products as $index => $_) {
+            $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
+        }
+
+        $data['products'] = $products;
+        $data['products_length'] = count($products);
+
+        return $this->render('products', $data);
+    }
+
+    public function updateStock($id = null)
+    {
+        if($id == null)
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            
+        $stockValue = $this->request->getRawInput()['stock'];
+        $productModel = model(ProductModel::class);
+
+        $productModel->update($id, [
+            'stock' => $stockValue,
+        ]);
+
+
+        return $this->products();
+    }
+
+    public function deleteProduct($id = null)
+    {
+        if($id == null)
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        
+        $productModel = model(ProductModel::class);
+        $productModel->delete($id);
+
+        return $this->products();
     }
 
     public function categories()
@@ -139,11 +178,10 @@ class AdminController extends BaseController
     }
 
     // Only use render() for views that is wrapped in wrappers/admin
-    function render($name)
+    function render($name, $data = [])
     {
         $dontExtend = $this->request->hasHeader('HX-Request');
-        return $this->twig->render("admin/$name.html", [
-            'template' => $dontExtend ? 'wrappers/admin_empty.html.twig' : 'wrappers/admin.html.twig',
-        ]);
+        $data['template'] = $dontExtend ? 'wrappers/admin_empty.html.twig' : 'wrappers/admin.html.twig';
+        return $this->twig->render("admin/$name.html", $data);
     }
 }

@@ -43,4 +43,14 @@ class ProductModel extends Model
         ]);
         return $success ? $this->getInsertID() : -1;
     }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     *  
+     * @return array
+     */
+    function getLimitAll($limit = 0, $offset = 0) {
+        return $this->findAll($limit, $offset);
+    }
 }

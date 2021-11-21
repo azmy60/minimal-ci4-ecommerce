@@ -85,9 +85,12 @@ $routes->group('admin', ['filter' => 'login'], function($routes) {
     $routes->get('categories', 'AdminController::categories');
     $routes->get('settings', 'AdminController::settings');
     $routes->get('help', 'AdminController::help');
-
+    
     $routes->get('add-product', 'AdminController::addProduct');
     $routes->post('add-product', 'AdminController::attemptAddProduct');
+    
+    $routes->put('products/(:num)', 'AdminController::updateStock/$1', ['as' => 'update-stock']);
+    $routes->delete('products/(:num)', 'AdminController::deleteProduct/$1', ['as' => 'delete-product']);
 });
 
 $routes->get('photos/(:alpha)/(:segment)', 'ContentController::photos/$1/$2', ['as' => 'content-photos']);

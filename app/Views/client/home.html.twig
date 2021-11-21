@@ -1,0 +1,22 @@
+{% extends "wrappers/base.html.twig" %}
+{% block body %}
+<body class="bg-trueGray-100">
+  <h1 class="text-8xl">
+    Ori bekas.<br>
+    Masih ganteng.
+  </h1>
+  
+  <main class="flex w-full gap-6">
+    {% for product in products %}
+    <div>
+      <img src="{{ route_to('content-photos', 'sm', product.filenames[0].filename) }}">
+      <div>{{ product.title }}</div>
+      <div>
+        <span>Rp</span>
+        <span>{{ product.price }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </main>
+</body>
+{% endblock body %}

@@ -11,19 +11,11 @@ class AdminController extends BaseController
 {
     public function home()
     {
-        if($this->store->needOnboarding()) {
-			return redirect()->to('admin/onboarding');
-        }
-
         return $this->render('home');
     }
 
     public function products()
     {
-        if($this->store->needOnboarding()) {
-			return redirect()->to('admin/onboarding');
-        }
-
         $productModel = model(ProductModel::class);
         $productPhotoModel = model(ProductPhotoModel::class);
 
@@ -67,46 +59,26 @@ class AdminController extends BaseController
 
     public function categories()
     {
-        if($this->store->needOnboarding()) {
-			return redirect()->to('admin/onboarding');
-        }
-
         return $this->render('categories');
     }
 
     public function settings()
     {
-        if($this->store->needOnboarding()) {
-			return redirect()->to('admin/onboarding');
-        }
-
         return $this->render('settings');
     }
 
     public function help()
     {
-        if($this->store->needOnboarding()) {
-			return redirect()->to('admin/onboarding');
-        }
-
         return $this->render('help');
     }
 
     public function addProduct()
     {
-        if($this->store->needOnboarding()) {
-			return redirect()->to('admin/onboarding');
-        }
-
         return $this->twig->render('admin/add_product.html');
     }
 
     public function attemptAddProduct()
     {
-        if($this->store->needOnboarding()) {
-			return redirect()->to('admin/onboarding');
-        }
-        
         $photos = $this->request->getFileMultiple('photos');
         $title = $this->request->getPost('title');
         $desc = $this->request->getPost('desc');

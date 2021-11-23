@@ -76,10 +76,10 @@ $routes->group('', function ($routes) {
     $routes->get('reset-email-has-been-sent', 'AuthController::resetSent');
 });
 
-$routes->group('admin', ['filter' => 'login'], function($routes) {
-    $routes->get('onboarding', 'AdminController::onboarding');
-    $routes->post('onboarding-setup', 'AdminController::onboardingSetup');
-    
+$routes->get('admin/onboarding', 'AdminController::onboarding', ['filter' => 'login']);
+$routes->post('admin/onboarding-setup', 'AdminController::onboardingSetup', ['filter' => 'login']);
+
+$routes->group('admin', ['filter' => 'admin'], function($routes) {
     $routes->get('', 'AdminController::home');
     $routes->get('products', 'AdminController::products');
     $routes->get('categories', 'AdminController::categories');

@@ -22,6 +22,10 @@ class Filters extends BaseConfig
         'login'      => \App\Filters\LoginFilter::class,
         'role'       => \Myth\Auth\Filters\RoleFilter::class,
         'permission' => \Myth\Auth\Filters\PermissionFilter::class,
+        'admin' => [
+            \App\Filters\LoginFilter::class,
+            \App\Filters\OnboardingFilter::class,
+        ],
     ];
 
     /**

@@ -8,7 +8,6 @@
   - name
   - placeholder
   - helper
-  - autocomplete [true|false]
   - size [sm|base|lg]
   - type [text|password|textarea|or whatever]
   - rows [for textarea]
@@ -37,12 +36,12 @@
         <use xlink:href="#ph_eye-slash" />
       </svg>
     </div>
-    <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" autocomplete="{{ options.autocomplete }}" type="password" class="w-full input-password {{ input_size }} {{ input_color }}">
+    <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" type="password" class="w-full input-password {{ input_size }} {{ input_color }}">
   </div>
   {% elseif options.type == 'textarea' %}
   <textarea id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" rows="{{ options.rows }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}></textarea>
   {% else %}  
-  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" autocomplete="{{ options.autocomplete }}" type="{{ options.type }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}>
+  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" type="{{ options.type }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}>
   {% endif %}
 
   {% if options.error is not empty %}

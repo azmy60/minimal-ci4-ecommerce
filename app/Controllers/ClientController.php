@@ -24,6 +24,7 @@ class ClientController extends BaseController
     {
         $dontExtend = $this->request->hasHeader('HX-Request');
         $data['template'] = $dontExtend ? 'wrappers/client_empty.html.twig' : 'wrappers/client.html.twig';
+        $data['store'] = model(StoreModel::class)->getStoreInfo();
         return $this->twig->render("client/$name.html", $data);
     }
 }

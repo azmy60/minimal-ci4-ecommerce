@@ -4,51 +4,51 @@
 {% block main %}
 
 {% import "components/components.html.twig" as components %}
-<form x-data="{ section: 0 }" x-show="$store.onboarding" x-init="$store.onboarding=true" x-transition:leave.duration.500ms action={{ route_to('admin/onboarding-setup') }} method="post" class="flex items-center justify-start w-full h-full px-6 bg-white">
+<form x-data="{ section: 0 }" x-show="$store.onboarding" x-init="$store.onboarding=true" x-transition:leave.duration.500ms action={{ route_to('admin/onboarding-setup') }} method="post" autocomplete="off" class="flex items-center justify-start w-full h-full px-6 bg-white">
   {{ csrf_field() }}
   <section x-show="section === 0">
     <h1 class="text-5xl font-bold">Selamat Datang!</h1>
     <p class="mt-2 text-lg">Tinggal beberapa langkah lagi tokomu siap di pamerkan!</p>
-    <button x-ref="nameBtn" @click="section++; $nextTick(() => $refs.name.focus());" class="mt-6 btn btn-base btn-black">
+    <button type="button" x-ref="nameBtn" @click="section++; $nextTick(() => $refs.name.focus());" class="mt-6 btn btn-base btn-black">
       <svg><use xlink:href="#ph_caret-right-bold"></svg>
       <span>Selanjutnya</span>
     </button>
   </section>
   <section x-show="section === 1">
-    <h2 class="text-4xl font-bold">Perkenalkan toko mu ke calon pembeli</h2>
-    <p class="mt-2 text-lg">Masukkan nama toko untuk dipasang di website mu. Kalau perlu, kamu juga bisa mengubah nama di lain waktu.</p>
+    <h2 class="text-4xl font-bold">Nama toko supaya dikenal</h2>
+    <p class="mt-2 text-lg w-[32rem]">Masukkan nama toko untuk dipasang di website mu. Kalau perlu, kamu bisa mengubah nama di lain waktu.</p>
     {{ components.input({
       name: 'name',
       type: 'text',
       size: 'lg',
       placeholder: 'Masukkan nama toko',
-      inputAttributes: 'x-ref="name" @input="$refs.nameBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.nameBtn.click() " @keyup.shift.enter="$refs.backName.click()"',
+      inputAttributes: 'x-ref="name" @input="$refs.nameBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.nameBtn.click()" @keyup.shift.enter="$refs.backName.click()" autocomplete="off"',
       class: 'mt-6 w-112',
       error: session('errors.name')
     }) }}
     <div class="flex mt-6 space-x-4">
-      <button x-ref="backName" @click="section--;" class="btn btn-base btn-outlined-black">Kembali</button>
-      <button x-ref="nameBtn" @click="section++; $nextTick(() => $refs.phone.focus());" :disabled="$refs.name.value.match(/^ *$/) !== null" class="btn btn-base btn-black">
+      <button type="button" x-ref="backName" @click="section--;" class="btn btn-base btn-outlined-black">Kembali</button>
+      <button type="button" x-ref="nameBtn" @click="section++; $nextTick(() => $refs.phone.focus());" :disabled="$refs.name.value.match(/^ *$/) !== null" class="btn btn-base btn-black">
         <svg><use xlink:href="#ph_caret-right-bold"></svg>
         <span>Selanjutnya</span>
       </button>
     </div>
   </section>
   <section x-show="section === 2">
-    <h2 class="text-4xl font-bold ">Kontak utama lewat WhatsApp</h2>
-    <p class="mt-2 text-lg">Calon pembeli akan menggunakan nomor ini untuk menghubungi kamu. Masukkan nomor WhatsApp mu yang aktif. </p>
+    <h2 class="text-4xl font-bold">Kontak WhatsApp</h2>
+    <p class="mt-2 text-lg w-[32rem]">Masukkan nomor WhatsApp mu yang aktif. Calon pembeli akan menggunakan nomor ini untuk menghubungi kamu.</p>
     {{ components.input({
       name: 'phone',
       type: 'tel',
       size: 'lg',
-      placeholder: 'Contoh, (+62) 333-4444-5555',
-      inputAttributes: 'x-ref="phone" @input="$refs.phoneBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.phoneBtn.click()" @keyup.shift.enter="$refs.backPhone.click()"',
+      placeholder: '(+62) 333-4444-5555',
+      inputAttributes: 'x-ref="phone" @input="$refs.phoneBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.phoneBtn.click()" @keyup.shift.enter="$refs.backPhone.click()" autocomplete="off"',
       class: 'mt-6 w-112',
       error: session('errors.phone')
     }) }}
     <div class="flex mt-6 space-x-4">
-      <button x-ref="backPhone" @click="section--;" class="btn btn-base btn-outlined-black">Kembali</button>
-      <button x-ref="phoneBtn" @click="$store.onboarding = false;" :disabled="$refs.phone.value.match(/^ *$/) !== null" type="submit" class="btn btn-base btn-outlined-black">Selesai</button>
+      <button type="button" x-ref="backPhone" @click="section--;" class="btn btn-base btn-outlined-black">Kembali</button>
+      <button x-ref="phoneBtn" @click="$store.onboarding = false;" :disabled="$refs.phone.value.match(/^ *$/) !== null" type="submit" class="btn btn-base btn-black">Selesai</button>
     </div>
   </section>
 </form>

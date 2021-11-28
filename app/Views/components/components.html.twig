@@ -6,6 +6,7 @@
   input options: 
   - label
   - name
+  - value
   - placeholder
   - helper
   - size [sm|base|lg]
@@ -39,9 +40,9 @@
     <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" type="password" class="w-full input-password {{ input_size }} {{ input_color }}">
   </div>
   {% elseif options.type == 'textarea' %}
-  <textarea id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" rows="{{ options.rows }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}></textarea>
+  <textarea id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" rows="{{ options.rows }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}>{{ options.value }}</textarea>
   {% else %}  
-  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" type="{{ options.type }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}>
+  <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" type="{{ options.type }}" value="{{ options.value }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}>
   {% endif %}
 
   {% if options.error is not empty %}
@@ -88,7 +89,7 @@ dropdown options:
 > dispatch this element with 'toggle' event. hint: dropdownEl.dispatchEvent(new CustomEvent('toggle'))
 #}
 {% macro dropdown(options) %}
-<div x-cloak x-data="{ show: false }" @toggle="show = !show" @click.outside="show = false" x-show="show" class="{{ class }} absolute z-50 overflow-hidden bg-white border divide-y rounded-lg drop-shadow border-trueGray-200 divide-trueGray-200" {{ options.attributes|raw }}>
+<div x-cloak x-data="{ show: false }" @toggle="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="{{ class }} absolute z-50 overflow-hidden bg-white border divide-y rounded-lg drop-shadow border-trueGray-200 divide-trueGray-200" {{ options.attributes|raw }}>
   {% for selection in options.selections %}
   <button class="{{ selection.dangerTheme ? 'bg-red-50 text-red-500 hover:bg-red-200' : 'hover:bg-trueGray-200' }} flex items-center gap-4 justify-between w-full px-4 py-2 select-none" {{ selection.attributes|raw }} >
     <span>{{ selection.text }}</span>

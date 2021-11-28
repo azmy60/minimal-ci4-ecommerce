@@ -30,18 +30,29 @@ class AdminController extends BaseController
         return $this->render('products', $data);
     }
 
-    public function updateStock($id = null)
+    // public function updateStock($id = null)
+    // {
+    //     if($id == null)
+    //         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            
+    //     $stockValue = $this->request->getRawInput()['stock'];
+    //     $productModel = model(ProductModel::class);
+
+    //     $productModel->update($id, [
+    //         'stock' => $stockValue,
+    //     ]);
+
+
+    //     return $this->products();
+    // }
+
+    public function updateProduct($id = null)
     {
         if($id == null)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-            
-        $stockValue = $this->request->getRawInput()['stock'];
+        
         $productModel = model(ProductModel::class);
-
-        $productModel->update($id, [
-            'stock' => $stockValue,
-        ]);
-
+        $productModel->update($id, $this->request->getRawInput());
 
         return $this->products();
     }

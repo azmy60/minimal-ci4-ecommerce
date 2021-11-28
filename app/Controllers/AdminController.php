@@ -78,6 +78,21 @@ class AdminController extends BaseController
         return $this->render('settings');
     }
 
+
+    public function updateStore()
+    {
+        $data = $this->request->getRawInput();
+        // return var_dump($data);
+        
+        $storeModel = model(StoreModel::class);
+        $id = $storeModel->first()['id'];
+        // return $id;
+
+        $storeModel->update($id, $data);
+
+        return $this->settings();
+    }
+
     public function help()
     {
         return $this->render('help');

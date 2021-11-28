@@ -15,7 +15,7 @@ class StoreModel extends Model
     protected $protectFields        = true;
     protected $allowedFields        = [
         'name', 'desc', 'address', 'phone', 'owner_name', 'owner_phone',
-        'email', 'socials', 
+        'email', 'instagram', 'status', 'message'
     ];
 
     // Dates

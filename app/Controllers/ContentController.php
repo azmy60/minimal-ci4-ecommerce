@@ -11,7 +11,8 @@ class ContentController extends BaseController
   public function photos($size = false, $name = false)
   {
     $sizes = [
-      'sm' => '110',
+      'sm' => '112',
+      'lg' => '1000',
     ];
 
     if(!array_key_exists($size, $sizes)) {

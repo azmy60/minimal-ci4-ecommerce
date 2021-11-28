@@ -65,7 +65,7 @@ switch options:
 - class
 #}
 {% macro switch(options) %}
-<div x-data="{ checked: {{ options.checked ? 'true': 'false' }} }" class="{{ options.class }} flex items-center space-x-2" {{ options.attributes|raw }}>
+<div x-data="{ checked: {{ options.checked ? 'true': 'false' }} }" class="{{ options.class }} flex items-center gap-2" {{ options.attributes|raw }}>
   <input x-ref="{{ options.name }}" id="{{ options.name }}" value="{{ options.checked ? options.checkedValue : options.uncheckedValue }}" name="{{ options.name }}" class="hidden">
   <div @click="checked = !checked; $el.previousElementSibling.value = checked ? '{{ options.checkedValue }}' : '{{ options.uncheckedValue }}'" :class="{'bg-emerald-500': checked, 'bg-trueGray-300': !checked}" class="relative cursor-pointer w-14 h-7 rounded-3xl">
     <div :class="{'left-8': checked, 'left-1': !checked }" class="absolute w-5 h-5 bg-white rounded-full left-8 top-1"></div>

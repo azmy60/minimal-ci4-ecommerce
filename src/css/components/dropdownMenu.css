@@ -1,0 +1,32 @@
+@layer components {
+  /* Base */
+  .dropdown-menu {
+    @apply z-50 overflow-hidden bg-white border divide-y rounded-lg drop-shadow border-trueGray-200 divide-trueGray-200;
+  }
+
+  .dropdown-menu > * {
+    @apply flex items-center gap-4 justify-between w-full px-4 py-2 select-none cursor-pointer;
+  }
+  
+  /* Sizes */
+  .dropdown-menu-sm > * {
+    @apply py-1;
+  }
+  
+  .dropdown-menu-base > * {
+    @apply py-2;
+  }
+  
+  .dropdown-menu-lg > * {
+    @apply py-2.5;
+  }
+
+  /* Colors for one item */
+  .dropdown-menu > *:not(.dropdown-menu-item-danger) {
+    @apply hover:bg-trueGray-200;
+  }
+
+  .dropdown-menu > .dropdown-menu-item-danger {
+    @apply bg-red-50 text-red-500 hover:bg-red-200;
+  }
+}

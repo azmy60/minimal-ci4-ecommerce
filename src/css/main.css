@@ -6,6 +6,7 @@
 @import './components/buttons';
 @import './components/chips';
 @import './components/input';
+@import './components/dropdownMenu';
 
 @layer base {
   @font-face {

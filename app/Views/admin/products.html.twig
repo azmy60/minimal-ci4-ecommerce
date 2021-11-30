@@ -79,19 +79,20 @@
             </div>
             <div class="space-x-6">
               <button disabled class="btn">Lihat statistik</button>
-              <button x-data @click="$el.nextElementSibling.dispatchEvent(new CustomEvent('toggle'))" class="opacity-0 group-hover:opacity-100">
+              <button x-data @click="$dispatch('dropdownproduct{{ product.id }}')" class="opacity-0 group-hover:opacity-100">
                 <svg class="inline w-6 h-6 fill-current text-trueGray-700">
                   <use xlink:href="#ph_dots-three-vertical-bold">
                 </svg>
               </button>
-              {{ components.dropdown({
-                selections: [
-                  { text: 'Edit', attributes: '@click="openProductForm(' ~ product.id ~ ')"' },
-                  { text: 'Link untuk share' },
-                  { text: 'Tambah varian', attributes: 'disabled' },
-                  { text: 'Hapus permanen', icon: 'trash-simple', attributes: 'hx-delete="' ~ route_to('delete-product', product.id) ~ '" hx-confirm="Anda yakin ingin menghapus produk ini?" hx-target="#main" hx-indicator="#main-indicator"' , dangerTheme: true },
-                ]
-              }) }}
+              <ul x-cloak x-data="{ show: false }" @dropdownproduct{{ product.id }}.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute dropdown-menu dropdown-menu-base">
+                <li @click="openProductForm({{ product.id }})">Edit</li>
+                <li>Link untuk share</li>
+                <li>Tambah varian</li>
+                <li hx-delete="{{ route_to('delete-product', product.id) }}" hx-confirm="Anda yakin ingin menghapus produk ini?" hx-target="#main" hx-indicator="#main-indicator" class="dropdown-menu-item-danger">
+                  <span>Hapus permanen</span>
+                  <svg class="w-5 h-5 fill-current"><use xlink:href="#ph_trash-simple"></svg>
+                </li>
+              </ul>
             </div>
           </div>
           <form x-cloak x-data="{show: false}" @open="show = true" @close="show = false" @click.outside="closeProductForm({{ product.id }})" x-transition x-show="show" hx-put="{{ route_to('update-product', product.id) }}"  hx-target="#main" hx-indicator="#main-indicator" class="product{{ product.id }}Form py-2 pl-12 space-y-6">

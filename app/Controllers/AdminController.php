@@ -106,11 +106,7 @@ class AdminController extends BaseController
     public function attemptAddProduct()
     {
         $photos = $this->request->getFileMultiple('photos');
-        $title = $this->request->getPost('title');
-        $desc = $this->request->getPost('desc');
-        $price = $this->request->getPost('price');
-        $stock = $this->request->getPost('stock');
-        // $catId = $this->request->getPost('catId');
+        $productData = $this->request->getPost();
         
         // Photo validation
         foreach ($photos as $index => $photo) {
@@ -127,11 +123,12 @@ class AdminController extends BaseController
         }
 
         $productsModel = model(ProductModel::class);
-        $productId = $productsModel->add($title, $desc, $price, $stock, 0);
-        if($productId < 0) {
+        $success = $productsModel->insert($productData);
+        if(!$success) {
             return redirect()->setStatusCode(500)->back()->withInput()->with('error', 'Cannot insert a new product');
         }
 
+        $productId = $productsModel->getInsertID();
         $productPhotoModel = model(ProductPhotoModel::class);
         foreach ($photos as $photo) {
             $productPhotoModel->store($productId, $photo);

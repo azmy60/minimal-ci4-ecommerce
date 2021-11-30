@@ -13,7 +13,7 @@ class ProductModel extends Model
     protected $returnType           = 'array';
     protected $useSoftDeletes       = true;
     protected $protectFields        = true;
-    protected $allowedFields        = ['title', 'desc', 'price', 'stock', 'cat_id'];
+    protected $allowedFields        = ['title', 'desc', 'price', 'stock'];
 
     // Dates
     protected $useTimestamps        = true;
@@ -27,22 +27,6 @@ class ProductModel extends Model
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
-
-    /**
-     * Returns -1 on failure 
-     * @return int
-     */
-    function add($title, $desc, $price, $stock, $catId)
-    {
-        $success = $this->insert([
-            'title' => $title,
-            'desc' => $desc,
-            'price' => $price,
-            'stock' => $stock,
-            'cat_id' => $catId,
-        ]);
-        return $success ? $this->getInsertID() : -1;
-    }
 
     /**
      * @param int $limit

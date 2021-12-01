@@ -60,4 +60,11 @@ class Validation
         'price'         => 'required|numeric',
         'stock'         => 'required|in_list[0,1]',
     ];
+    
+    public $attemptAddCategory = [
+        'name'          => 'required|max_length[80]',
+        'desc'          => 'max_length[4000]',
+        'productIds.*'    => 'permit_empty|integer',
+        'is_visible'    => 'required|in_list[0,1]',
+    ];
 }

@@ -93,6 +93,9 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
     $routes->put('products/(:num)', 'AdminController::updateProduct/$1', ['as' => 'update-product']);
     $routes->delete('products/(:num)', 'AdminController::deleteProduct/$1', ['as' => 'delete-product']);
     
+    $routes->get('add-category', 'AdminController::addCategory');
+    $routes->post('add-category', 'AdminController::attemptAddCategory');
+
     $routes->put('settings/store-information', 'AdminController::updateStore', ['as' => 'update-store']);
     $routes->put('settings/message-template', 'AdminController::updateStore', ['as' => 'update-message']);
     $routes->put('settings/social-profiles', 'AdminController::updateStore', ['as' => 'update-profiles']);

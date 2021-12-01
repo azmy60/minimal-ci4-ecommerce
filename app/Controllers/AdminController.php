@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\CategoryModel;
+use App\Models\ProductCategoryModel;
 use App\Models\ProductModel;
 use App\Models\ProductPhotoModel;
 use App\Models\StoreModel;
@@ -135,6 +137,60 @@ class AdminController extends BaseController
         }
 
         return redirect()->route('admin/products')->with('message', 'Berhasil menambahkan produk baru');
+    }
+
+    public function addCategory()
+    {
+        $storeModel = model(StoreModel::class);
+        $productModel = model(ProductModel::class);
+        $productPhotoModel = model(ProductPhotoModel::class);
+        
+        $store = $storeModel->first();
+        $products = $productModel->findAll();
+
+        foreach ($products as $index => $_) {
+            $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
+        }
+        
+        $data = [
+            'products' => $products,
+            'store' => $store,
+        ];
+        
+        return $this->twig->render('admin/add_category.html', $data);
+    }
+
+    public function attemptAddCategory()
+    {
+        if(!$this->validate('attemptAddCategory')) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $data = $this->request->getPost();
+        $productIds = null;
+        if(array_key_exists('productIds', $data)) {
+            $productIds = $data['productIds'];
+            unset($data['products']);
+        }
+
+        $categoryModel = model(CategoryModel::class);
+        $success = $categoryModel->insert($data);
+        if(!$success) {
+            return redirect()->setStatusCode(500)->back()->withInput()->with('error', 'Cannot insert a new category');
+        }
+
+        if($productIds != null) {
+            $catId = $categoryModel->getInsertID();
+            $productCategoryModel = model(ProductCategoryModel::class);
+            foreach ($productIds as $productId) {
+                $productCategoryModel->insert([
+                    'product_id' => $productId,
+                    'cat_id' => $catId,
+                ]);
+            }
+        }
+
+        return $this->categories();
     }
 
     public function onboarding()

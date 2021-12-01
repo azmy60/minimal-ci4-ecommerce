@@ -29,7 +29,11 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    extends: {
+      borderWidth: ['last'],
+    }
+  },
   plugins: [
     require('@tailwindcss/forms'),
   ],

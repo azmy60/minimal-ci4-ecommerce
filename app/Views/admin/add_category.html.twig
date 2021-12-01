@@ -1,0 +1,148 @@
+{% extends "wrappers/base.html.twig" %}
+{% block head %}
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+{% endblock head %}
+{% block title %}Tambah kategori - {{ store.name }}{% endblock title %}
+
+{% block body %}
+
+{% include "dest/symbol/iconset.svg" %}
+
+<header class="flex items-center py-4 space-x-12 px-7">
+  <a href="{{ route_to('admin/categories') }}">
+    <svg class="fill-current w-11 h-11">
+      <use xlink:href="#ph_caret-left">
+    </svg>
+  </a>
+  <h1 class="block text-3xl font-bold">Tambah kategori</h1>
+</header>
+
+<main class="w-full mt-8">
+  <form x-data="addCatData()" class="pb-16 mx-auto space-y-24 w-min" action="{{ route_to('admin/add-category') }}" method="post" enctype="multipart/form-data">
+    {{ csrf_field() }}
+
+    {% import "components/components.html.twig" as components %}
+    
+    <section class="space-y-10">
+      {{ _self.input_row({
+      label: 'Judul',
+      helper: 'Cantumkan maks. 80 karakter.',
+      for: 'name',
+      input_area: 
+        components.input({
+          name: 'name', type: 'text', size: 'lg', error: session('errors.name'), class: 'w-full'
+        }),
+      }) }}
+
+      {{ _self.input_row({
+      label: 'Deskripsi (opsional)',
+      helper: 'Cantumkan maks. 4000 karakter.',
+      for: 'desc',
+      input_area:
+        components.input({ 
+          name: 'desc', type: 'textarea', size: 'lg', rows: 6, error: session('errors.desc'), class: 'w-full'
+        }),
+      }) }}
+
+      {{ _self.input_row({
+        label: 'Daftar produk',
+        helper: 'Tambahkan produk yang akan dimasukkan ke kategori ini.',
+        for: 'products[]',
+        input_area: '',
+        bottom_area: '',
+      }) }}
+
+      {% set product_error = session('errors.productIds[]') %}
+      {{ product_error }}
+
+      <div class="relative">
+        <button x-data @click="$dispatch('dropdownproduct')" type="button" class="flex items-center justify-between w-full input input-lg input-default text-trueGray-400">
+          <span>Tambahkan produk disini</span>
+          <svg class="w-6 h-6 fill-current">
+            <use xlink:href="#ph_caret-down">
+          </svg>
+        </button>
+        <ul x-cloak x-data="{ show: false }" @dropdownproduct.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute left-0 w-full top-full dropdown-menu dropdown-menu-lg">
+          {% for product in products %}
+            <li x-data="{ show: true }" x-show="show" @dropdownitem{{ product.id }}.window="show = $event.detail.show" @click="addProduct({{ product.id }}, '{{ product.title }}', '{{ product.filenames[0].filename }}')">{{ product.title }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <ul>
+        <template x-for="product in products" :key="product.id">
+          <li class="flex justify-between py-2 border-t last:border-b border-trueGray-200">
+            <input type="hidden" name="productIds[]" :value="product.id">
+            <div class="flex items-center gap-6">
+              <img :src="`/photos/sm/${product.filename}`" class="rounded-lg w-14 h-14 bg-trueGray-300">
+              <span x-text="product.title"></span>
+            </div>
+            <button @click="removeProduct(product.id)" type="button" class="mr-6">
+              <svg class="w-6 h-6 text-black fill-current">
+                <use xlink:href="#ph_x">
+              </svg>
+            </button>
+          </li>
+        </template>
+      </ul>
+    </section>
+
+    <section>
+      {{ _self.input_row({
+      label: 'Tampilkan kategori ini?',
+      for: 'is_visible',
+      input_area: components.switch({
+        name: 'is_visible',
+        checkedValue: 1,
+        uncheckedValue: 0,
+        checked: true,
+        activeText: 'Tampilkan',
+        inactiveText: 'Jangan tampilkan',
+      }),
+      }) }}
+    </section>
+
+    <section class="flex justify-end space-x-3">
+      <a href="{{ route_to('admin/categories') }}">
+        <button type="button" class="btn btn-base btn-outlined-black">Batalkan</button>
+      </a>
+      <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
+    </section>
+  </form>
+</main>
+<script>
+  function addCatData() {
+    return {
+      products: {},
+      addProduct(id, title, filename) {
+        this.products[id] = {id, title, filename}
+        window.dispatchEvent(new CustomEvent(`dropdownitem${id}`, { detail: { show: false } }))
+      },
+      removeProduct(id) {
+        delete this.products[id]
+        window.dispatchEvent(new CustomEvent(`dropdownitem${id}`, { detail: { show: true } }))
+      }
+    }
+  }
+</script>
+{% endblock body %}
+
+{#
+input_row options:
+- label
+- helper
+- for
+- bottom_area
+- input_area
+- class
+#}
+{% macro input_row(options) %}
+<div class="{{ options.class }} flex gap-20">
+  <div class="space-y-1 w-72">
+    <label for="{{ options.for }}" class="text-xl font-semibold">{{ options.label }}</label>
+    <p class="text-base">{{ options.helper|raw }}</p>
+  </div>
+  <div class="w-[37rem]">{{ options.input_area|raw }}</div>
+  {{ options.bottom_area }}
+</div>
+{% endmacro %}

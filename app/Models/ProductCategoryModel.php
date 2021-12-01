@@ -28,4 +28,23 @@ class ProductCategoryModel extends Model
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
+
+    public function getPhotoFilename($catId) {
+        $productCat = $this->where('cat_id', $catId)->first();
+        if(!$productCat)
+            return '';
+        
+        $productId = $productCat['product_id'];
+
+        $productPhotoModel = model(ProductPhotoModel::class);
+        $filenames = $productPhotoModel->getFilenames($productId);
+        
+        return $filenames[0]['filename'];
+    }
+
+    public function getProductCount($catId) {
+        $productCats = $this->where('cat_id', $catId)->findAll();
+        $productCount = count($productCats);
+        return $productCount;
+    }
 }

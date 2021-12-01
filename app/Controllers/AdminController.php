@@ -72,7 +72,23 @@ class AdminController extends BaseController
 
     public function categories()
     {
-        return $this->render('categories');
+        $categoryModel = model(CategoryModel::class);
+        $productCategoryModel = model(ProductCategoryModel::class);
+
+        $categories = $categoryModel->findAll();
+        foreach ($categories as $index => $category) {
+            $id = $category['id'];
+            $filename = $productCategoryModel->getPhotoFilename($id);
+            $categories[$index]['filename'] = $filename;
+
+            $productCount = $productCategoryModel->getProductCount($id);
+            $categories[$index]['product_count'] = $productCount;
+        }
+
+        $data['categories'] = $categories;
+        $data['categories_length'] = count($categories);
+
+        return $this->render('categories', $data);
     }
 
     public function settings()
@@ -189,6 +205,17 @@ class AdminController extends BaseController
                 ]);
             }
         }
+
+        return $this->categories();
+    }
+
+    public function deleteCategory($id = null)
+    {
+        if($id == null)
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        
+        $categoryModel = model(CategoryModel::class);
+        $categoryModel->delete($id);
 
         return $this->categories();
     }

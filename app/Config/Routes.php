@@ -95,6 +95,8 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
     
     $routes->get('add-category', 'AdminController::addCategory');
     $routes->post('add-category', 'AdminController::attemptAddCategory');
+    
+    $routes->delete('categories/(:num)', 'AdminController::deleteCategory/$1', ['as' => 'delete-category']);
 
     $routes->put('settings/store-information', 'AdminController::updateStore', ['as' => 'update-store']);
     $routes->put('settings/message-template', 'AdminController::updateStore', ['as' => 'update-message']);

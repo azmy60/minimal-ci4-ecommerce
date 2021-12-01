@@ -1,0 +1,28 @@
+@layer components {
+  /* Base */
+  .lozenge {
+    @apply px-1 font-semibold rounded-md;
+  }
+
+  /* Sizes */
+  .lozenge-sm {
+    @apply text-xs;
+  }
+
+  .lozenge-base {
+    @apply text-sm;
+  }
+
+  /* Themes */
+  .lozenge-default {
+    @apply bg-trueGray-300 text-trueGray-900;
+  }
+
+  .lozenge-success {
+    @apply bg-emerald-100 text-emerald-700;
+  }
+
+  .lozenge-warning {
+    @apply bg-yellow-100 text-yellow-600;
+  }
+}

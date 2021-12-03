@@ -3,4 +3,50 @@
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 {% endblock head %}
 {% block body %}
+<body class="relative flex flex-col w-full h-screen bg-trueGray-100">
+  {% include "dest/symbol/iconset.svg" %}
+  <header x-data="{ showNav: false }" @click.outside="showNav = false" class="fixed top-0 z-50 w-full px-4 py-4 select-none lg:px-8 md:static md:py-5 md:items-center md:px-8 md:flex md:gap-24 bg-trueGray-100">
+    <div @click="showNav = !showNav" class="w-6 h-6 cursor-pointer fill-current md:hidden">
+      <svg x-show="!showNav" class="w-full h-full">
+        <use xlink:href="#ph_list-bold">
+      </svg>
+      <svg x-show="showNav" class="w-full h-full">
+        <use xlink:href="#ph_x-bold">
+      </svg>
+    </div>
+    <div class="absolute text-lg font-semibold transform -translate-x-1/2 -translate-y-1/2 md:text-2xl md:transform-none md:static left-1/2 top-1/2">
+      <a href="{{ route_to('/') }}">{{ store.name }}</a>
+    </div>
+    <nav class="hidden gap-10 text-lg md:flex">
+      {% for category in categories %}
+        <a href="{{ route_to('category-page', category.name) }}">{{ category.name }}</a>
+      {% endfor %}
+    </nav>
+  </header>
+  <main class="flex-grow px-4 mx-auto mt-14 md:mt-0 md:px-8 lg:px-8 max-w-7xl">
+    {% block main %}{% endblock main %}
+  </main>
+  <footer class="grid gap-6 px-4 pt-8 pb-12 text-white lg:px-8 md:px-8 bg-trueGray-800">
+    <div class="text-3xl font-bold">{{ store.name }}</div>
+    <div class="flex flex-col gap-6 md:flex-row md:gap-32">
+      <div class="fill-current">
+        <div class="space-x-1.5">
+          <svg class="inline-block w-6 h-6">
+            <use xlink:href="#ph_instagram-logo" />
+          </svg>
+          <span class="text-lg"><a href="https://www.instagram.com/{{ store.instagram }}/">{{ store.instagram }}</a></span>
+        </div>
+        <div class="space-x-1.5">
+          <svg class="inline-block w-6 h-6">
+            <use xlink:href="#ph_whatsapp-logo" />
+          </svg>
+          <span class="text-lg"><a href="https://wa.me/{{ store.phone }}">{{ store.phone }}</a></span>
+        </div>
+      </div>
+      <div>
+        {{ store.address }}
+      </div>
+    </div>
+  </footer>
+</body>
 {% endblock body %}

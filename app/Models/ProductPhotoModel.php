@@ -53,4 +53,13 @@ class ProductPhotoModel extends Model
     {
         return $this->select('filename')->where('product_id', $productId)->get()->getResultArray();
     }
+
+    public function getProductsFilenames($productIds)
+    {
+        $productsFilenames = [];
+        foreach ($productIds as $productId) {
+            $productsFilenames['product_id'] = $this->getFilenames($productId);
+        }
+        return $productsFilenames;
+    }
 }

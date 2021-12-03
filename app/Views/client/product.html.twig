@@ -1,0 +1,31 @@
+{% extends "wrappers/client.html.twig" %}
+{% block title %}{{ product.title }} - {{ store.name }}{% endblock title %}
+
+{% block main %}
+  <div class="max-w-5xl mb-10 md:grid md:grid-cols-7 lg:grid-cols-2 md:gap-8 md:mb-20">
+    <div class="md:col-span-3 lg:col-span-1">
+      <div>
+        <img src="{{ route_to('content-photos', 'lg', photos[0].filename) }}" class="w-full h-auto">
+      </div>
+      <div class="flex w-full gap-3 mt-3 overflow-x-auto md:mt-5">
+        {% for photo in photos %}
+        <img src="{{ route_to('content-photos', 'sm', photo.filename) }}" class="w-20 h-20 md:w-16 md:h-16">
+        {% endfor %}
+      </div>
+    </div>
+    <div class="md:col-span-4 lg:col-span-1">
+      <h1 class="mt-5 text-4xl font-bold md:mt-0 lg:text-5xl">{{ product.title }}</h1>
+      <h2 class="mt-1 text-2xl lg:mt-2">Rp {{ product.price|number_format(0, '', '.') }}</h2>
+      <p class="mt-4 mb-5 lg:text-lg">{{ product.desc }}</p>
+      <div class="sticky bottom-0 py-3 md:static">
+        <a target="_blank" href="https://wa.me/{{ store.phone }}?text={{ store.message|url_encode }}">
+          <button class="justify-center w-full md:w-auto btn btn-lg btn-black">
+            <svg><use xlink:href="#ph_whatsapp-logo-bold"></svg>
+            Tanya via WhatsApp
+          </button>
+        </a>
+        </div>
+      <p class="text-trueGray-800 md:w-80">Pengiriman & pembayaran bisa didiskusikan melalui WhatsApp.</p>
+    </div>
+  </div>
+{% endblock main %}

@@ -47,4 +47,20 @@ class ProductCategoryModel extends Model
         $productCount = count($productCats);
         return $productCount;
     }
+
+    public function getProducts($catId) {
+        $product_ids = $this->where('cat_id', $catId)->findColumn('product_id');
+        if(!$product_ids)
+            return [];
+        
+        $productModel = model(ProductModel::class);
+        $products = $productModel->find($product_ids);
+
+        $productPhotoModel = model(ProductPhotoModel::class);
+        foreach ($products as $index => $product) {
+            $products[$index]['filenames'] = $productPhotoModel->getFilenames($product['id']);
+        }
+
+        return $products;
+    }
 }

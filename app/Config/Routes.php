@@ -104,3 +104,6 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
 });
 
 $routes->get('photos/(:alpha)/(:segment)', 'ContentController::photos/$1/$2', ['as' => 'content-photos']);
+
+$routes->get('product/(:segment)', 'ClientController::product/$1', ['as' => 'product-page']);
+$routes->get('category/(:segment)', 'ClientController::category/$1', ['as' => 'category-page']);

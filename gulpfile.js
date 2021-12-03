@@ -90,8 +90,6 @@ async function js() {
 
 // Run php server + live reload
 function serve() {
-  const phpServer = spawn('php', 'spark serve'.split(' '), {stdio: 'inherit'})
-  
   setTimeout(() => {
     browserSync({ proxy: '[::1]:8080', notify: false })
   }, 300)
@@ -104,8 +102,8 @@ function serve() {
 
   // Watch js
   watch('src/js/**/*.js', series(js))
-
-  return phpServer
+  
+  return phpServer = spawn('php', 'spark serve'.split(' '), {stdio: 'inherit'})
 }
 
 exports.iconset = series(svg)

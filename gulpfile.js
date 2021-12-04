@@ -5,6 +5,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 const rollup = require('rollup')
 const gulpIf = require('gulp-if')
 const postcss = require('gulp-postcss')
+const url = require('postcss-url')
 const tailwindcss = require('tailwindcss')
 const autoprefixer = require('autoprefixer')
 const cssnano = require('cssnano')
@@ -14,6 +15,9 @@ const svgSprite = require('gulp-svg-sprite')
 const through2 = require('through2')
 const { terser } = require('rollup-plugin-terser')
 const reload = browserSync.reload
+
+// Define as it is the app.baseURL in .env
+const APP_BASEURL = ''
 
 // Remove files in public/css
 function clean() {
@@ -57,6 +61,9 @@ function css() {
     .pipe(
       postcss([
         atImport(),
+        url([
+          { filter: '**/*', url: (asset) => APP_BASEURL + asset.url },
+        ]),
         tailwindcss(),
         autoprefixer(),
         ...process.env.NODE_ENV === 'production' 
@@ -109,3 +116,4 @@ function serve() {
 exports.iconset = series(svg)
 exports.build = series(clean, svg, css, js)
 exports.default = series(clean, svg, css, js, serve)
+exports.css = series(css)

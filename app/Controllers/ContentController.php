@@ -39,7 +39,7 @@ class ContentController extends BaseController
     }
 
     header('Content-Type: ' . mime_content_type($contentPathname));
-    header('Content-Length : ' . filesize($contentPathname));
+    header('Content-Length: ' . filesize($contentPathname));
     header('Content-Disposition: inline; filename="' . $name . '";');
     readfile($contentPathname);
     exit;

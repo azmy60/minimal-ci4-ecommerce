@@ -8,13 +8,32 @@
 
 ## Setup
 1. Install the php dependencies `composer install`
-2. Edit **app/Config/Email.php** and verify that **fromName** and **fromEmail** are set as that is used when sending emails for password reset, etc. Hint:
+2. Copy env file to .env, and update the database configurations
+3. Edit **app/Config/Email.php** and verify that **fromName** and **fromEmail** are set as that is used when sending emails for password reset, etc. Hint:
     ```php
     $fromName = '<your-user>';
     $fromEmail = '<your-user>@localhost'`;
     ```
 3. Apply database migration `php spark migrate --all`. This includes migrations from Myth:Auth
+4. Run these npm commands
+```bash
+npm install
+npm run prod
+```
 
+## Creating a new account
+### Using CLI
+```bash
+php spark auth:create_user
+php spark auth:set_password # Identity: <your-email>
+php spark auth:activate_user # Identity: <your-email>
+```
+
+### On browser
+1. Go to http://localhost/register
+2. Use \<your-user\>@localhost.com (from your local email server)
+3. Check your email and click the verification link
+    
 ## Running a local server
 Before you launch a local server, it's important to run `npm run prod` everytime there are changes in the ***src*** directory.
 ```bash

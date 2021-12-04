@@ -48,26 +48,11 @@
         label: 'Daftar produk',
         helper: 'Tambahkan produk yang akan dimasukkan ke kategori ini.',
         for: 'products[]',
-        input_area: '',
-        bottom_area: '',
+        input_area: block('add_product_input'),
       }) }}
 
       {% set product_error = session('errors.productIds[]') %}
       {{ product_error }}
-
-      <div class="relative">
-        <button x-data @click="$dispatch('dropdownproduct')" type="button" class="flex items-center justify-between w-full input input-lg input-default text-trueGray-400">
-          <span>Tambahkan produk disini</span>
-          <svg class="w-6 h-6 fill-current">
-            <use xlink:href="#ph_caret-down">
-          </svg>
-        </button>
-        <ul x-cloak x-data="{ show: false }" @dropdownproduct.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute left-0 w-full top-full dropdown-menu dropdown-menu-lg">
-          {% for product in products %}
-            <li x-data="{ show: true }" x-show="show" @dropdownitem{{ product.id }}.window="show = $event.detail.show" @click="addProduct({{ product.id }}, '{{ product.title }}', '{{ product.filenames[0].filename }}')">{{ product.title }}</li>
-          {% endfor %}
-        </ul>
-      </div>
 
       <ul>
         <template x-for="product in products" :key="product.id">
@@ -132,7 +117,6 @@ input_row options:
 - label
 - helper
 - for
-- bottom_area
 - input_area
 - class
 #}
@@ -143,6 +127,21 @@ input_row options:
     <p class="text-base">{{ options.helper|raw }}</p>
   </div>
   <div class="w-[37rem]">{{ options.input_area|raw }}</div>
-  {{ options.bottom_area }}
 </div>
 {% endmacro %}
+
+{% block add_product_input %}
+<div class="relative">
+  <button x-data @click="$dispatch('dropdownproduct')" type="button" class="flex items-center justify-between w-full input input-lg input-default text-trueGray-400">
+    <span>Tambahkan produk disini</span>
+    <svg class="w-6 h-6 fill-current">
+      <use xlink:href="#ph_caret-down">
+    </svg>
+  </button>
+  <ul x-cloak x-data="{ show: false }" @dropdownproduct.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute left-0 w-full top-full dropdown-menu dropdown-menu-lg">
+    {% for product in products %}
+      <li x-data="{ show: true }" x-show="show" @dropdownitem{{ product.id }}.window="show = $event.detail.show" @click="addProduct({{ product.id }}, '{{ product.title }}', '{{ product.filenames[0].filename }}')">{{ product.title }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock add_product_input %}

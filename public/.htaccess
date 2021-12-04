@@ -26,6 +26,12 @@ Options All -Indexes
 	RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 	RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
 
+	# Path-Info...
+	# Redirect URLs of the form "/index.php/my-seo-friendly-uri"
+	# Also handles "/index.php" only
+	RewriteCond %{ENV:REDIRECT_STATUS} ^$
+	RewriteRule ^index.php(?:/(.*))?$ /$1 [R=302,L]
+
 	# Checks to see if the user is attempting to access a valid file,
 	# such as an image or css document, if this isn't true it sends the
 	# request to the front controller, index.php

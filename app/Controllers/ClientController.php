@@ -66,10 +66,13 @@ class ClientController extends BaseController
     function render($name, $data = [])
     {
         $dontExtend = $this->request->hasHeader('HX-Request');
+        
+        $store = model(StoreModel::class)->getStoreInfo();
+        if(!$store)
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 
         $categoryModel = model(CategoryModel::class);
         $categories = $categoryModel->findAll();
-        $store = model(StoreModel::class)->getStoreInfo();
 
         // Show the website only if admin asks to and product table is not empty
         $showStore = $store['status'] == 1 && !empty(model(ProductModel::class)->first());

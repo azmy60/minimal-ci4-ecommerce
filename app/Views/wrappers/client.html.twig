@@ -3,6 +3,8 @@
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 {% endblock head %}
 {% block body %}
+
+{% if show_store %}
 <body class="relative flex flex-col w-full h-screen bg-trueGray-100">
   {% include "dest/symbol/iconset.svg" %}
   <header x-data="{ showNav: false }" @click.outside="showNav = false" class="fixed top-0 z-50 w-full px-4 py-4 select-none lg:px-8 md:static md:py-5 md:items-center md:px-8 md:flex md:gap-24 bg-trueGray-100">
@@ -49,4 +51,29 @@
     </div>
   </footer>
 </body>
+{% else %}
+<body class="grid w-full h-screen text-center place-content-center bg-trueGray-100">
+  {% include "dest/symbol/iconset.svg" %}
+  <h1 class="text-5xl font-bold">{{ store.name }}</h1>
+  <p class="text-lg">{{ store.desc }}</p>
+  <div class="flex gap-8 mt-8">
+    <div class="space-x-1.5 flex items-center">
+      <svg class="inline-block w-6 h-6">
+        <use xlink:href="#ph_whatsapp-logo" />
+      </svg>
+      {% set phone = '0' ~ store.phone[2:3] ~ '-' ~ store.phone[5:4] ~ '-' ~ store.phone[9:] %}
+      <span class="text-lg"><a href="https://wa.me/{{ store.phone }}">{{ phone }}</a></span>
+    </div>
+    {% if store.instagram %}
+    <div class="space-x-1.5 flex items-center">
+      <svg class="inline-block w-6 h-6">
+        <use xlink:href="#ph_instagram-logo" />
+      </svg>
+      <span class="text-lg"><a href="https://www.instagram.com/{{ store.instagram }}/">{{ store.instagram }}</a></span>
+    </div>
+    {% endif %}
+  </div>
+</body>
+{% endif %}
+
 {% endblock body %}

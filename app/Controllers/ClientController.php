@@ -69,10 +69,15 @@ class ClientController extends BaseController
 
         $categoryModel = model(CategoryModel::class);
         $categories = $categoryModel->findAll();
+        $store = model(StoreModel::class)->getStoreInfo();
+
+        // Show the website only if admin asks to and product table is not empty
+        $showStore = $store['status'] == 1 && !empty(model(ProductModel::class)->first());
 
         $data['categories'] = $categories;
         $data['template'] = $dontExtend ? 'wrappers/client_empty.html.twig' : 'wrappers/client.html.twig';
         $data['store'] = model(StoreModel::class)->getStoreInfo();
+        $data['show_store'] = $showStore;
         
         return $this->twig->render("client/$name.html", $data);
     }

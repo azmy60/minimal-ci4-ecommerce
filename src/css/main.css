@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import './pages/login';
+@import './scrollbar';
 @import './components/loadingSpinner';
 @import './components/buttons';
 @import './components/chips';

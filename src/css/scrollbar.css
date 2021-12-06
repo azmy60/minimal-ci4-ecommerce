@@ -1,0 +1,12 @@
+::-webkit-scrollbar {
+  @apply w-4 h-4;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-trueGray-50;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-trueGray-400 border-solid border-trueGray-50 rounded-lg;
+  border-width: 3px;
+}

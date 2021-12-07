@@ -28,17 +28,7 @@
   {% set input_color = options.error ? 'input-danger' : 'input-default' %}
   {% set input_size = options.size == 'sm' ? 'input-sm' : options.size == 'lg' ? 'input-lg' : 'input-base' %}
   {% if options.type == 'password' %}
-  <div x-data="{ show: false }" class="{{ options.class }} relative" {{ options.inputAttributes|raw }}>
-    <div x-cloak @click="$refs.passwordInput.focus(); show = !show" class="absolute w-6 h-6 transform -translate-y-1/2 cursor-pointer right-4 top-1/2 text-trueGray-500">
-      <svg x-show="!show" class="w-full h-full fill-current">
-        <use xlink:href="#ph_eye" />
-      </svg>
-      <svg x-show="show" class="w-full h-full fill-current">
-        <use xlink:href="#ph_eye-slash" />
-      </svg>
-    </div>
-    <input id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" :type="show ? 'text' : 'password'" x-ref="passwordInput" type="password" class="w-full input-password {{ input_size }} {{ input_color }}">
-  </div>
+  <input-password name="{{ options.name }}" placeholder="{{ options.placeholder }}" size="{{ options.size }}" color="{{ options.error ? 'danger' : 'default' }}"></input-password>
   {% elseif options.type == 'textarea' %}
   <textarea id="{{ options.name }}" name="{{ options.name }}" placeholder="{{ options.placeholder }}" rows="{{ options.rows }}" class="input {{ input_size }} {{ input_color }}" {{ options.inputAttributes|raw }}>{{ options.value }}</textarea>
   {% else %}  

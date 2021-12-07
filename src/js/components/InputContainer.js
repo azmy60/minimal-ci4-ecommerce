@@ -9,15 +9,15 @@ class InputContainer extends HTMLElement {
   connectedCallback() {
     const input = this.querySelector('input')
     
-    input.addEventListener('focus', e => {
+    input.addEventListener('focus', () => {
       this.classList.add('focused')
     })
 
-    input.addEventListener('blur', e => {
+    input.addEventListener('blur', () => {
       this.classList.remove('focused')
     })
     
-    this.addEventListener('click', e => {
+    this.addEventListener('click', () => {
       input.focus()
     })
   }

@@ -91,6 +91,11 @@ async function js() {
     plugins: inPlugins,
   })
 
+  const adminBundle = await rollup.rollup({
+    input: 'src/js/admin.js',
+    plugins: inPlugins,
+  })
+
   await addProductBundle.write({
     dir: 'public/js',
     name: 'uploadZoneData',
@@ -102,6 +107,15 @@ async function js() {
   })
 
   await authBundle.write({
+    dir: 'public/js',
+    format: 'iife',
+    sourcemap: true,
+    plugins: [
+      terser(),
+    ]
+  })
+
+  await adminBundle.write({
     dir: 'public/js',
     format: 'iife',
     sourcemap: true,

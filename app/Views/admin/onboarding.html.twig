@@ -37,15 +37,19 @@
   <section x-show="section === 2">
     <h2 class="text-4xl font-bold">Kontak WhatsApp</h2>
     <p class="mt-2 text-lg w-[32rem]">Masukkan nomor WhatsApp mu yang aktif. Calon pembeli akan menggunakan nomor ini untuk menghubungi kamu.</p>
-    {{ components.input({
-      name: 'phone',
-      type: 'tel',
-      size: 'lg',
-      placeholder: '(+62) 333-4444-5555',
-      inputAttributes: 'x-ref="phone" @input="$refs.phoneBtn.disabled = ($event.target.value.match(/^ *$/) !== null)" @keyup.enter="$refs.phoneBtn.click()" @keyup.shift.enter="$refs.backPhone.click()" autocomplete="off"',
-      class: 'mt-6 w-112',
-      error: session('errors.phone')
-    }) }}
+    <input name="phone" type="hidden">
+    <input-container class="mt-6 w-112 input-lg input-default">
+      <span>+62</span>
+      <input x-ref="phone" @input="phoneMask($event); $refs.phoneBtn.disabled = hiddenPhone.value.length < 11;" @keyup.enter="$refs.phoneBtn.click()" @keyup.shift.enter="$refs.backPhone.click()" @focus="$dispatch('telfocus')" @blur="$dispatch('telblur')" type="tel" placeholder="555-5555-5555">
+    </input-container>
+    <script>
+      const hiddenPhone = document.querySelector('[name="phone"]')
+      function phoneMask(e) {
+        const x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,4})(\d{0,4})/)
+        e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2] + (x[3] ? '-' + x[3] : '')
+        hiddenPhone.value = '62' + x[1] + x[2] + x[3]
+      }
+    </script>
     <div class="flex mt-6 space-x-4">
       <button type="button" x-ref="backPhone" @click="section--;" class="btn btn-base btn-outlined-black">Kembali</button>
       <button x-ref="phoneBtn" @click="$store.onboarding = false;" :disabled="$refs.phone.value.match(/^ *$/) !== null" type="submit" class="btn btn-base btn-black">Selesai</button>

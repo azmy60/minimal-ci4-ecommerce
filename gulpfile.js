@@ -76,17 +76,33 @@ function css() {
 }
 
 async function js() {
+  const inPlugins = [
+    nodeResolve(),
+    commonjs(),
+  ]
+
   const addProductBundle = await rollup.rollup({
     input: 'src/js/addProductHelper.js',
-    plugins: [
-      nodeResolve(),
-      commonjs(),
-    ]
+    plugins: inPlugins,
+  })
+
+  const authBundle = await rollup.rollup({
+    input: 'src/js/auth.js',
+    plugins: inPlugins,
   })
 
   await addProductBundle.write({
     dir: 'public/js',
     name: 'uploadZoneData',
+    format: 'iife',
+    sourcemap: true,
+    plugins: [
+      terser(),
+    ]
+  })
+
+  await authBundle.write({
+    dir: 'public/js',
     format: 'iife',
     sourcemap: true,
     plugins: [

@@ -1,0 +1,55 @@
+/*
+  Note:
+  
+  Use alpine to simulate the :focus pseudo class by adding 
+  .focused class to .input-container element when the input
+  tag is being focused.
+
+  Examples:
+
+  <div @click="$refs.phone.focus()" @phonefocus="$el.classList.add('focused')" @phoneblur="$el.classList.remove('focused')" class="mt-6 w-112 input-container input-lg input-default">
+    <span>+62</span>
+    <input x-ref="phone" @focus="$dispatch('phonefocus')" @blur="$dispatch('phoneblur')" type="tel" placeholder="555-5555-5555">
+  </div>
+  
+  <!-- or using input-container custom element -->
+
+  <input-container class="input-lg input-default">
+      <input type="text">
+      <span>hi</span>
+  </input-container>
+
+*/
+
+@layer components {
+  /* Base */
+  input-container, .input-container {
+    @apply px-4 flex items-center gap-2 _input;
+  }
+
+  input-container.focused, .input-container.focused {
+    @apply ring-2 ring-emerald-500 border-transparent;
+  }
+
+  input-container > input, .input-container > input {
+    @apply outline-none flex-grow;
+  }
+
+  input-container svg, .input-container svg {
+    @apply cursor-pointer;
+  }
+
+  /* Sizes */
+  /* For sizing, use classes from components/input.css */
+  input-container.input-sm svg, input-container.input-base svg,
+  .input-container.input-sm svg, .input-container.input-base svg {
+    @apply w-5 h-5;
+  }
+
+  input-container.input-lg svg, .input-container.input-lg svg {
+    @apply w-6 h-6;
+  }
+
+  /* Colors */
+  /* Use colors from components/input.css */
+}

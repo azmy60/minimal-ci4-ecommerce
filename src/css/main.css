@@ -7,6 +7,7 @@
 @import './components/buttons';
 @import './components/chips';
 @import './components/input';
+@import './components/inputContainer';
 @import './components/dropdownMenu';
 @import './components/lozenge';
 

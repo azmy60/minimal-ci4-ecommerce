@@ -15,8 +15,8 @@
     </button>
   </section>
   <section x-show="section === 1">
-    <h2 class="text-4xl font-bold">Nama toko supaya dikenal</h2>
-    <p class="mt-2 text-lg w-[32rem]">Masukkan nama toko untuk dipasang di website mu. Kalau perlu, kamu bisa mengubah nama di lain waktu.</p>
+    <h2 class="text-4xl font-bold">Nama toko</h2>
+    <p class="mt-2 text-lg w-[32rem]">Masukkan nama untuk dipasang di website mu.</p>
     {{ components.input({
       name: 'name',
       type: 'text',
@@ -36,7 +36,7 @@
   </section>
   <section x-show="section === 2">
     <h2 class="text-4xl font-bold">Kontak WhatsApp</h2>
-    <p class="mt-2 text-lg w-[32rem]">Masukkan nomor WhatsApp mu yang aktif. Calon pembeli akan menggunakan nomor ini untuk menghubungi kamu.</p>
+    <p class="mt-2 text-lg w-[32rem]">Calon pembeli akan menggunakan nomor ini untuk menghubungi kamu via WhatsApp. Pastikan nomornya aktif ya. </p>
     <input name="phone" type="hidden">
     <input-container class="mt-6 w-112 input-lg input-default">
       <span>+62</span>

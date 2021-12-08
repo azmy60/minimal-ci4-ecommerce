@@ -2,119 +2,116 @@
 {% block title %}Pengaturan - {{ store.name }}{% endblock title %}
 
 {% block main %}
-
-<div class="flex flex-col w-full h-full">
-  <header class="h-20 py-4 px-7">
-    <h1 class="text-3xl font-bold">Pengaturan</h1>
-  </header>
-  <div x-data="{ currentSection: 'store-information' }" class="flex">
-    <ul class="w-48 text-lg border-r-0 border-trueGray-200">
-      {{ _self.nav_item('Info toko', 'store-information') }}
-      {{ _self.nav_item('Template pesan', 'message-template') }}
-      {{ _self.nav_item('Sosial media', 'social-profiles') }}
-      {{ _self.nav_item('Akun admin', 'admin-account') }}
-    </ul>
-    <div class="pl-8 w-[36rem]">
-      <section x-show="currentSection === 'store-information'" x-transition class="pb-12">
-        <form hx-put="{{ route_to('update-store') }}" hx-target="#main" hx-indicator="#main-indicator" class="space-y-16">
-          <div class="space-y-6">
-            <div>
-              <div>Link website tokomu:</div>
-              <div x-data class="flex items-center gap-2">
-                <span class="text-lg font-semibold">{{ base_url('/') }}</span>
-                <svg @click="$dispatch('successcopy')" data-clipboard-text="{{ base_url('/') }}" class="w-6 h-6 cursor-pointer fill-current btn-copy">
-                  <use xlink:href="#ph_copy-simple-bold">
-                </svg>
-                <span @successcopy.window="$el.classList.remove('opacity-0'); setTimeout(() => $el.classList.add('opacity-0'), 1000)" class="transition-opacity duration-100 opacity-0 lozenge lozenge-base lozenge-success">Disalin!</span>
-              </div>
-            </div>
-            
-            {% import "components/components.html.twig" as components %}
-            {{ components.input({
-              label: 'Nama toko',
-              type: 'text',
-              name: 'name',
-              value: store.name,
-            }) }}
-
-            {{ components.input({
-              label: 'Deskrpsi toko',
-              type: 'textarea',
-              rows: 4,
-              name: 'desc',
-              value: store.desc,
-            }) }}
-
-            {{ components.input({
-              label: 'Alamat',
-              type: 'textarea',
-              rows: 4,
-              name: 'address',
-              value: store.address,
-            }) }}
-            
-          </div>
+<header class="h-20 py-4 px-7">
+  <h1 class="text-3xl font-bold">Pengaturan</h1>
+</header>
+<div x-data="{ currentSection: 'store-information' }" class="flex">
+  <ul class="w-48 text-lg border-r-0 border-trueGray-200">
+    {{ _self.nav_item('Info toko', 'store-information') }}
+    {{ _self.nav_item('Template pesan', 'message-template') }}
+    {{ _self.nav_item('Sosial media', 'social-profiles') }}
+    {{ _self.nav_item('Akun admin', 'admin-account') }}
+  </ul>
+  <div class="pl-8 w-[36rem]">
+    <section x-show="currentSection === 'store-information'" x-transition class="pb-12">
+      <form hx-put="{{ route_to('update-store') }}" hx-target="#main" hx-indicator="#main-indicator" class="space-y-16">
+        <div class="space-y-6">
           <div>
-            <input name="phone" type="hidden" value="{{ store.phone }}">
-            <div class="space-y-1">
-              <label for="phone" class="font-semibold text-trueGray-800">Nomor WhatsApp</label>
-              <input-container class="input-base input-default">
-                <span>+62</span>
-                <input value="{{ store.phone[2:3] ~ '-' ~ store.phone[5:4] ~ '-' ~ store.phone[9:4] }}" x-ref="phone" @input="phoneMask($event);" @keyup.enter="$refs.phoneBtn.click()" @focus="$dispatch('telfocus')" @blur="$dispatch('telblur')" type="tel" placeholder="555-5555-5555">
-              </input-container>
-              <script>
-                function phoneMask(e) {
-                  const x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,4})(\d{0,4})/)
-                  e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2] + (x[3] ? '-' + x[3] : '')
-                  document.querySelector('[name="phone"]').value = '62' + x[1] + x[2] + x[3]
-                }
-              </script>
+            <div>Link website tokomu:</div>
+            <div x-data class="flex items-center gap-2">
+              <span class="text-lg font-semibold">{{ base_url('/') }}</span>
+              <svg @click="$dispatch('successcopy')" data-clipboard-text="{{ base_url('/') }}" class="w-6 h-6 cursor-pointer fill-current btn-copy">
+                <use xlink:href="#ph_copy-simple-bold">
+              </svg>
+              <span @successcopy.window="$el.classList.remove('opacity-0'); setTimeout(() => $el.classList.add('opacity-0'), 1000)" class="transition-opacity duration-100 opacity-0 lozenge lozenge-base lozenge-success">Disalin!</span>
             </div>
           </div>
-          <div class="space-y-6">
-            <div>
-              <div>Tampilkan toko ke publik?</div>
-              {{ components.switch({
-                name: 'status',
-                checkedValue: 1,
-                uncheckedValue: 0,
-                checked: store.status == 1,
-                activeText: 'Tampilkan',
-                inactiveText: 'Sembunyikan',
-                class: 'font-semibold mt-2',
-              }) }}
-            </div>
-          </div>
-          <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
-        </form>
-      </section>
-      <section x-show="currentSection === 'message-template'" x-transition>
-        <form hx-put="{{ route_to('update-message') }}" hx-target="#main" hx-indicator="#main-indicator" class="space-y-4">
+          
+          {% import "components/components.html.twig" as components %}
           {{ components.input({
-            label: 'Template pesan',
-            type: 'textarea',
-            rows: 6,
-            name: 'message',
-            value: store.message,
-          }) }}
-          <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
-        </form>
-      </section>
-      <section x-show="currentSection === 'social-profiles'" x-transition>
-        <form hx-put="{{ route_to('update-profiles') }}" hx-target="#main" hx-indicator="#main-indicator" class="space-y-4">
-          {{ components.input({
-            label: 'Instagram',
+            label: 'Nama toko',
             type: 'text',
-            name: 'instagram',
-            value: store.instagram,
+            name: 'name',
+            value: store.name,
           }) }}
-          <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
-        </form>
-      </section>
-      <section x-show="currentSection === 'admin-account'" x-transition>
-        
-      </section>
-    </div>
+
+          {{ components.input({
+            label: 'Deskrpsi toko',
+            type: 'textarea',
+            rows: 4,
+            name: 'desc',
+            value: store.desc,
+          }) }}
+
+          {{ components.input({
+            label: 'Alamat',
+            type: 'textarea',
+            rows: 4,
+            name: 'address',
+            value: store.address,
+          }) }}
+          
+        </div>
+        <div>
+          <input name="phone" type="hidden" value="{{ store.phone }}">
+          <div class="space-y-1">
+            <label for="phone" class="font-semibold text-trueGray-800">Nomor WhatsApp</label>
+            <input-container class="input-base input-default">
+              <span>+62</span>
+              <input value="{{ store.phone[2:3] ~ '-' ~ store.phone[5:4] ~ '-' ~ store.phone[9:4] }}" x-ref="phone" @input="phoneMask($event);" @keyup.enter="$refs.phoneBtn.click()" @focus="$dispatch('telfocus')" @blur="$dispatch('telblur')" type="tel" placeholder="555-5555-5555">
+            </input-container>
+            <script>
+              function phoneMask(e) {
+                const x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,4})(\d{0,4})/)
+                e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2] + (x[3] ? '-' + x[3] : '')
+                document.querySelector('[name="phone"]').value = '62' + x[1] + x[2] + x[3]
+              }
+            </script>
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div>
+            <div>Tampilkan toko ke publik?</div>
+            {{ components.switch({
+              name: 'status',
+              checkedValue: 1,
+              uncheckedValue: 0,
+              checked: store.status == 1,
+              activeText: 'Tampilkan',
+              inactiveText: 'Sembunyikan',
+              class: 'font-semibold mt-2',
+            }) }}
+          </div>
+        </div>
+        <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
+      </form>
+    </section>
+    <section x-show="currentSection === 'message-template'" x-transition>
+      <form hx-put="{{ route_to('update-message') }}" hx-target="#main" hx-indicator="#main-indicator" class="space-y-4">
+        {{ components.input({
+          label: 'Template pesan',
+          type: 'textarea',
+          rows: 6,
+          name: 'message',
+          value: store.message,
+        }) }}
+        <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
+      </form>
+    </section>
+    <section x-show="currentSection === 'social-profiles'" x-transition>
+      <form hx-put="{{ route_to('update-profiles') }}" hx-target="#main" hx-indicator="#main-indicator" class="space-y-4">
+        {{ components.input({
+          label: 'Instagram',
+          type: 'text',
+          name: 'instagram',
+          value: store.instagram,
+        }) }}
+        <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
+      </form>
+    </section>
+    <section x-show="currentSection === 'admin-account'" x-transition>
+      
+    </section>
   </div>
 </div>
 

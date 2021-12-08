@@ -90,12 +90,14 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
     $routes->post('add-product', 'AdminController::attemptAddProduct');
     
     // $routes->put('products/(:num)', 'AdminController::updateProduct/$1', ['as' => 'update-stock']);
+    $routes->get('products/search', 'AdminController::findProducts', ['as' => 'search-products']);
     $routes->put('products/(:num)', 'AdminController::updateProduct/$1', ['as' => 'update-product']);
     $routes->delete('products/(:num)', 'AdminController::deleteProduct/$1', ['as' => 'delete-product']);
     
     $routes->get('add-category', 'AdminController::addCategory');
     $routes->post('add-category', 'AdminController::attemptAddCategory');
     
+    $routes->get('categories/search', 'AdminController::findCategories', ['as' => 'search-categories']);
     $routes->delete('categories/(:num)', 'AdminController::deleteCategory/$1', ['as' => 'delete-category']);
 
     $routes->put('settings/store-information', 'AdminController::updateStore', ['as' => 'update-store']);

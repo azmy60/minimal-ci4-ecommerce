@@ -1,0 +1,99 @@
+{% for product in products %}
+<div class="product-list-el product-{{ product.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 13.75rem 10rem auto;">
+  <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_square"></svg>
+  <div class="flex-shrink">
+    <img src="{{ route_to('content-photos', 'sm', product.filenames[0].filename) }}" class="inline-block w-16 h-16 mr-6 rounded-lg bg-trueGray-300">
+    <span class="inline-block w-64">{{ product.title }}</span>
+  </div>
+  <div>
+    <span class="text-trueGray-500">Rp</span>
+    <span>{{ product.price }}</span>
+  </div>
+  <div>{{ 
+    components.switch({
+      name: "stock",
+      checkedValue: 1,
+      uncheckedValue: 0,
+      checked: product.stock == 1,
+      activeText: 'Ada',
+      inactiveText: 'Habis',
+      attributes: 'hx-put="' ~ route_to('update-product', product.id) ~ '" hx-include="' ~ ".product-#{ product.id } [name='stock']" ~ '" hx-target="#main" hx-indicator="#main-indicator"',
+    }) }}
+  </div>
+  <div class="space-x-6">
+    <button disabled class="btn">Lihat statistik</button>
+    <button x-data @click="$dispatch('dropdownproduct{{ product.id }}')" class="opacity-0 group-hover:opacity-100">
+      <svg class="inline w-6 h-6 fill-current text-trueGray-700">
+        <use xlink:href="#ph_dots-three-vertical-bold">
+      </svg>
+    </button>
+    <ul x-cloak x-data="{ show: false }" @dropdownproduct{{ product.id }}.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute dropdown-menu dropdown-menu-base">
+      <li @click="openProductForm({{ product.id }})">Edit</li>
+      <li data-clipboard-text="{{ base_url(route_to('product-page', product.title)) }}" class="btn-copy">
+        <span>Link untuk share</span>
+        <svg class="w-5 h-5 fill-current"><use xlink:href="#ph_link-simple-horizontal"></svg>
+      </li>
+      <!-- <li>Tambah varian</li> -->
+      <li hx-delete="{{ route_to('delete-product', product.id) }}" hx-confirm="Anda yakin ingin menghapus produk ini?" hx-target="#main" hx-indicator="#main-indicator" class="dropdown-menu-item-danger">
+        <span>Hapus permanen</span>
+        <svg class="w-5 h-5 fill-current"><use xlink:href="#ph_trash-simple"></svg>
+      </li>
+    </ul>
+  </div>
+</div>
+<form x-cloak x-data="{show: false}" @open="show = true" @close="show = false" @click.outside="closeProductForm({{ product.id }})" x-collapse x-show="show" hx-put="{{ route_to('update-product', product.id) }}"  hx-target="#main" hx-indicator="#main-indicator" class="product{{ product.id }}Form py-2 pl-12 space-y-6">
+  <div class="flex gap-6">
+    <div class="relative overflow-hidden rounded-lg w-28 h-28">
+      <img src="{{ route_to('content-photos', 'sm', product.filenames[0].filename) }}" class="w-full h-full">
+      <a href="#">
+        <span class="absolute bottom-0 grid items-center w-full font-semibold text-center text-white h-7 bg-emerald-500">Ubah foto</span>
+      </a>
+    </div>
+    <div class="space-y-4 w-96">
+      {{
+        components.input({
+          label: 'Judul produk',
+          name: 'title',
+          value: product.title,
+        })
+      }}
+      {{
+        components.input({
+          label: 'Deskripsi',
+          name: 'desc',
+          type: 'textarea',
+          rows: 3,
+          value: product.desc,
+        })
+      }}
+    </div>
+    <div class="space-y-4 w-96">
+      {{
+        components.input({
+          label: 'Harga',
+          name: 'price',
+          type: 'number',
+          value: product.price,
+        })
+      }}
+      {{
+        components.input({
+          label: 'Kategori',
+          name: '_',
+          value: '',
+          class: 'opacity-50',
+        })
+      }}
+    </div>
+  </div>
+  <div class="flex justify-end w-[58rem] gap-3">
+    <button @click="closeProductForm({{ product.id }})" type="button" class="btn btn-base btn-outlined-black">Kembali</button>
+    <button type="submit" class="btn btn-base btn-black">
+      <span>Simpan</span>
+      <svg>
+        <use xlink:href="#ph_check-bold">
+      </svg>
+    </button>
+  </div>
+</form>
+{% endfor %}

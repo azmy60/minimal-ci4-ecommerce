@@ -37,4 +37,15 @@ class ProductModel extends Model
     function getLimitAll($limit = 0, $offset = 0) {
         return $this->findAll($limit, $offset);
     }
+
+    function findProducts($search, $limit = 0, $offset = 0) {
+        if(empty($search))
+            return $this->findAll($limit, $offset);
+        
+        $sql = "SELECT * FROM $this->table WHERE title LIKE '%" .
+        $this->db->escapeLikeString($search) . "%' ESCAPE '!'";
+        
+        $query = $this->db->query($sql); // TODO: handle error
+        return $query->getResultArray();
+    }
 }

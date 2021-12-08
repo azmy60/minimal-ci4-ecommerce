@@ -29,7 +29,11 @@
         <span x-text="chip.text" :class="{ 'font-semibold': selected === index }"></span>
       </button>
     </template>
-    <input type="text" name="search" placeholder="Cari kategori" autocomplete class="flex-grow input input-base input-default">
+    <input-container x-data="{ isEmpty: true }" class="flex-grow input-base input-default">
+      <input x-ref="input" @input="isEmpty = $event.target.value === ''" type="text" name="q" placeholder="Cari kategori" autocomplete="off" hx-get="{{ route_to('search-categories') }}" hx-trigger="keyup changed delay:500ms, click from:#btn-clear" hx-target="#category-list">
+      <svg x-cloak x-show="isEmpty" class="fill-current text-trueGray-400"><use xlink:href="#ph_magnifying-glass"></svg>
+      <svg x-cloak x-show="!isEmpty" @click="$refs.input.value = ''; isEmpty = true;" class="text-black fill-current" id="btn-clear"><use xlink:href="#ph_x"></svg>
+    </input-container>
   </div>
   <div class="px-7 mt-9">
     <div class="w-full">
@@ -38,41 +42,8 @@
         <div>Kategori</div>
         <div>Jumlah produk</div>
       </div>
-      <div class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
-        {% for category in categories %}
-        <div class="category-{{ category.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 12rem 12rem auto;">
-          <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_square"></svg>
-          <div class="flex items-center flex-shrink">
-            <div class="inline-block w-16 h-16 mr-6 overflow-hidden rounded-lg bg-trueGray-300">
-              {% if category.filename %}
-              <img src="{{ route_to('content-photos', 'sm', category.filename) }}" class="w-full h-full">
-              {% endif %}
-            </div>
-            <span class="inline-block w-64">{{ category.name }}</span>
-          </div>
-          <div>
-            {{ category.product_count }}
-          </div>
-          <div>
-            <span class="lozenge lozenge-base {{ category.is_visible == 1 ? 'lozenge-success' : 'lozenge-default'}}">{{ category.is_visible == 1 ? 'Ditampilkan' : 'Tidak tampil' }}</span>
-          </div>
-          <div>
-            <button x-data @click="$dispatch('dropdowncategory{{ category.id }}')" class="opacity-0 group-hover:opacity-100">
-              <svg class="inline w-6 h-6 fill-current text-trueGray-700">
-                <use xlink:href="#ph_dots-three-vertical-bold">
-              </svg>
-            </button>
-            <ul x-cloak x-data="{ show: false }" @dropdowncategory{{ category.id }}.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute dropdown-menu dropdown-menu-base">
-              <li>Edit kategori</li>
-              <li>Link untuk share</li>
-              <li hx-delete="{{ route_to('delete-category', category.id) }}" hx-confirm="Anda yakin ingin menghapus kategori ini?" hx-target="#main" hx-indicator="#main-indicator" class="dropdown-menu-item-danger">
-                <span>Hapus permanen</span>
-                <svg class="w-5 h-5 fill-current"><use xlink:href="#ph_trash-simple"></svg>
-              </li>
-            </ul>
-          </div>
-        </div>
-        {% endfor %}
+      <div id="category-list" class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
+        {% include "admin/category_list_items.html.twig" %}
       </div>
     </div>
   </div>

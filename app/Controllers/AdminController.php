@@ -48,6 +48,24 @@ class AdminController extends BaseController
     //     return $this->products();
     // }
 
+    public function findProducts()
+    {
+        $productModel = model(ProductModel::class);
+        $productPhotoModel = model(ProductPhotoModel::class);
+        $search = $this->request->getGet('q');
+
+        $products = $productModel->findProducts($search);
+        foreach ($products as $index => $_) {
+            $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
+        }
+
+        $data = [
+            'products' => $products,
+        ];
+
+        return $this->render('product_list_items', $data);
+    }
+
     public function updateProduct($id = null)
     {
         if($id == null)
@@ -89,6 +107,30 @@ class AdminController extends BaseController
         $data['categories_length'] = count($categories);
 
         return $this->render('categories', $data);
+    }
+
+    public function findCategories()
+    {
+        $categoryModel = model(CategoryModel::class);
+        $productCategoryModel = model(ProductCategoryModel::class);
+        $search = $this->request->getGet('q');
+
+        $categories = $categoryModel->findCategories($search);
+        foreach ($categories as $index => $category) {
+            $id = $category['id'];
+            $filename = $productCategoryModel->getPhotoFilename($id);
+            $categories[$index]['filename'] = $filename;
+
+            $productCount = $productCategoryModel->getProductCount($id);
+            $categories[$index]['product_count'] = $productCount;
+        }
+
+        $data = [
+            'categories' => $categories,
+            'categories_length' => count($categories),
+        ];
+
+        return $this->render('category_list_items', $data);
     }
 
     public function settings()

@@ -28,4 +28,15 @@ class CategoryModel extends Model
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
+
+    function findCategories($search, $limit = 0, $offset = 0) {
+        if(empty($search))
+            return $this->findAll($limit, $offset);
+        
+        $sql = "SELECT * FROM $this->table WHERE name LIKE '%" .
+        $this->db->escapeLikeString($search) . "%' ESCAPE '!'";
+        
+        $query = $this->db->query($sql); // TODO: handle error
+        return $query->getResultArray();
+    }
 }

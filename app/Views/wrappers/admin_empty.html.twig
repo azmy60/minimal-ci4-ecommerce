@@ -1,4 +1,8 @@
-{% block main %}{% endblock main %}
+{{ store.status == 0 ? block('warning_store_is_not_public', 'wrappers/admin.html.twig') }}
+
+{% block main %}
+{% endblock main %}
+
 <script>
 document.title = '{{ block("title") }}'
 </script>

@@ -62,6 +62,7 @@
   </aside>
 
   <main id="main" class="relative z-0 flex flex-col flex-grow mt-14 md:mt-0">
+    {{ store.status == 0 ? block('warning_store_is_not_public') }}
     {% block main %}{% endblock main %}
   </main>
 
@@ -111,3 +112,10 @@
   <div class="w-full h-12 rounded-lg bg-trueGray-800"></div>
 </div>
 {% endmacro %}
+
+{% block warning_store_is_not_public %}
+<div class="w-full py-3 font-semibold text-yellow-600 bg-yellow-100 px-7 md:flex-shrink">
+  Tokomu telah disembunyikan dari publik. Kamu bisa mengubah ini di 
+  <button x-data @click="document.querySelector(`nav a[href='{{ route_to('admin/settings') }}']`).click()" class="font-semibold underline">pengaturan.</button>
+</div>
+{% endblock warning_store_is_not_public %}

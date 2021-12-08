@@ -1,4 +1,4 @@
-# ci4-catalog
+# etalase.id
 
 ## Requirements
 - php 7.3+, 8.0+
@@ -54,6 +54,7 @@ npm run dev
 - kenjis/codeigniter-ss-twig (see [github](https://github.com/kenjis/codeigniter-ss-twig))
 - TailwindCSS (see [official website](https://tailwindcss.com/))
 - Alpine.js (see [official website](https://alpinejs.dev/))
+- clipboard.js (see [official website](https://clipboardjs.com/))
 
 ## UI Resources
 - Phosphor icons (see [official website](https://phosphoricons.com/))

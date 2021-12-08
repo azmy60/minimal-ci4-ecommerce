@@ -1,11 +1,34 @@
-<p>Someone requested a password reset at this email address for {{ site }}.</p>
-
-<p>To reset the password click this URL.</p>
-
-<a href="{{ link }}">
-  {{ link }}
-</a>
-
-<br>
-
-<p>If you did not request a password reset, you can safely ignore this email.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');</style>
+</head>
+<body style="margin: 0; padding: 0;">
+  <table align="left" border="0" cellpadding="0" cellspacing="0" width="600">
+    <tr><td>
+      <table align="left" border="0" cellpadding="0" cellspacing="0" width="600" style="padding: 24px; padding-right: 132px;">
+        <tr><td align="left" style="font-family: 'Source Sans Pro', sans-serif; font-weight: 700; font-size: 44px;">
+          Permintaan Ubah Password
+        </td></tr>
+        <tr><td align="left" style="padding-top: 12px; font-family: 'Source Sans Pro', sans-serif; font-weight: 400; font-size: 18px;">
+          Kalau kamu meminta ubah password untuk {{ email }}, klik tombol di bawah ini. Kalau tidak, mohon abaikan email ini. 
+        </td></tr>
+        <tr><td align="left" style="padding-top: 24px; height: 34px;">
+          <a href="{{ link }}" style="font-family: 'Source Sans Pro', sans-serif; font-weight: 600; font-size: 18px; text-decoration: none; color: white; background-color: #171717; padding: 8px 16px; border-radius: 8px;">
+            Ubah password
+          </a>
+        </td></tr>
+        <tr><td align="left" style="padding-top: 4px; font-family: 'Source Sans Pro', sans-serif; font-weight: 400; font-size: 16px; color: #404040;">
+          Link berlaku hingga 24 jam.
+        </td></tr>
+        <tr><td align="left" style="padding-top: 24px; font-family: 'Source Sans Pro', sans-serif; font-weight: 400; font-size: 16px; color: #404040;">
+          Email dibuat otomatis. Mohon untuk tidak membalas.
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>

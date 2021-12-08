@@ -34,7 +34,8 @@ class EmailResetter extends BaseResetter implements ResetterInterface
               ->setTo($user->email)
               ->setSubject(lang('Auth.forgotSubject'))
               ->setMessage($twig->render($this->config->views['emailForgot'], [
-                  'site' => site_url(),
+                  'email' => $user->email,
+                  'site' => parse_url(base_url())['host'],
                   'link' => base_url('reset-password') . '?token=' . $user->reset_hash . '&email=' . rawurlencode($user->email),
                 ]))
               ->setMailType('html')

@@ -34,7 +34,8 @@ class EmailActivator extends BaseActivator implements ActivatorInterface
       ->setTo($user->email)
       ->setSubject(lang('Auth.activationSubject'))
       ->setMessage($twig->render($this->config->views['emailActivation'], [
-        'site' => site_url(),
+        'email' => $user->email,
+        'site' => parse_url(base_url())['host'],
         'link' => base_url('activate-account') . '?token=' . $user->activate_hash,
       ]))
       ->setMailType('html')

@@ -95,7 +95,7 @@
               </ul>
             </div>
           </div>
-          <form x-cloak x-data="{show: false}" @open="show = true" @close="show = false" @click.outside="closeProductForm({{ product.id }})" x-transition x-show="show" hx-put="{{ route_to('update-product', product.id) }}"  hx-target="#main" hx-indicator="#main-indicator" class="product{{ product.id }}Form py-2 pl-12 space-y-6">
+          <form x-cloak x-data="{show: false}" @open="show = true" @close="show = false" @click.outside="closeProductForm({{ product.id }})" x-collapse x-show="show" hx-put="{{ route_to('update-product', product.id) }}"  hx-target="#main" hx-indicator="#main-indicator" class="product{{ product.id }}Form py-2 pl-12 space-y-6">
             <div class="flex gap-6">
               <div class="relative overflow-hidden rounded-lg w-28 h-28">
                 <img src="{{ route_to('content-photos', 'sm', product.filenames[0].filename) }}" class="w-full h-full">

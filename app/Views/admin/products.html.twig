@@ -84,7 +84,10 @@
             </button>
             <ul x-cloak x-data="{ show: false }" @dropdownproduct{{ product.id }}.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute dropdown-menu dropdown-menu-base">
               <li @click="openProductForm({{ product.id }})">Edit</li>
-              <li>Link untuk share</li>
+              <li data-clipboard-text="{{ base_url(route_to('product-page', product.title)) }}" class="btn-copy">
+                <span>Link untuk share</span>
+                <svg class="w-5 h-5 fill-current"><use xlink:href="#ph_link-simple-horizontal"></svg>
+              </li>
               <li>Tambah varian</li>
               <li hx-delete="{{ route_to('delete-product', product.id) }}" hx-confirm="Anda yakin ingin menghapus produk ini?" hx-target="#main" hx-indicator="#main-indicator" class="dropdown-menu-item-danger">
                 <span>Hapus permanen</span>

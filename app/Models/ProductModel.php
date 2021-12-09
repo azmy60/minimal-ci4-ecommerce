@@ -34,7 +34,7 @@ class ProductModel extends Model
      *  
      * @return array
      */
-    function getLimitAll($limit = 0, $offset = 0) {
+    function getAll($limit = 0, $offset = 0) {
         return $this->findAll($limit, $offset);
     }
 

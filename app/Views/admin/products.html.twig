@@ -20,9 +20,7 @@
     <template x-data="{
       selected: 0,
       chips: [
-        { text: 'Semua produk ({{ products_length }})' },
-        { text: 'Stok ada' },
-        { text: 'Stok habis' },
+        { text: 'Semua produk ({{ products_count }})' },
       ]
     }"
     x-for="(chip, index) in chips">

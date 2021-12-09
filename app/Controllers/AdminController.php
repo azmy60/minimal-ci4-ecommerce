@@ -27,7 +27,7 @@ class AdminController extends BaseController
         }
 
         $data['products'] = $products;
-        $data['products_length'] = count($products);
+        $data['products_count'] = count($products);
 
         return $this->render('products', $data);
     }
@@ -104,7 +104,7 @@ class AdminController extends BaseController
         }
 
         $data['categories'] = $categories;
-        $data['categories_length'] = count($categories);
+        $data['categories_count'] = count($categories);
 
         return $this->render('categories', $data);
     }
@@ -127,7 +127,7 @@ class AdminController extends BaseController
 
         $data = [
             'categories' => $categories,
-            'categories_length' => count($categories),
+            'categories_count' => count($categories),
         ];
 
         return $this->render('category_list_items', $data);

@@ -97,10 +97,7 @@
       label: 'Harga',
       helper: 'Cantumkan harga asli produkmu',
       for: 'price',
-      input_area:
-        components.input({
-          name: 'price', type: 'number', size: 'lg', attributes: 'min="1", step="any"', error: session('errors.price'), class: 'w-full'
-        }),
+      input_area: block('input_price'),
       }) }}
 
       {#
@@ -162,3 +159,29 @@ input_row options:
     </div>
   </div>
 {% endmacro %}
+
+{% block input_price %}
+<input name="price" type="hidden">
+<input-container class="w-full input-lg input-default">
+  <span>Rp</span>
+  <input x-data @input="priceMask($event)" type="text">
+</input-container>
+<script>
+  function priceMask(e) {
+    const x = e.target.value.replace(/\D/g, '')
+    const rem = x.length % 3
+    const x2 = x.substring(rem).match(/(\d{3})/g)
+    let formated = ''
+
+    if(rem > 0)
+      formated = x.substring(0, rem)
+
+    if(x2)
+      formated += (rem > 0 ? '.' : '') + x2.join('.')
+
+    e.target.value = formated
+    console.log(x)
+    document.querySelector('[name="price"]').value =  x
+  }
+</script>
+{% endblock input_price %}

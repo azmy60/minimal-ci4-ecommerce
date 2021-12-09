@@ -4,6 +4,8 @@
 {% endblock head %}
 {% block body %}
 
+{% set phone_formated = '0' ~ store.phone[2:3] ~ '-' ~ store.phone[5:4] ~ '-' ~ store.phone[9:] %}
+
 {% if show_store %}
 <body class="relative flex flex-col w-full h-screen bg-trueGray-100">
   {% include "dest/symbol/iconset.svg" %}
@@ -42,7 +44,7 @@
           <svg class="inline-block w-6 h-6">
             <use xlink:href="#ph_whatsapp-logo" />
           </svg>
-          <span class="text-lg"><a href="https://wa.me/{{ store.phone }}">{{ store.phone }}</a></span>
+          <span class="text-lg"><a href="https://wa.me/{{ store.phone }}">{{ phone_formated }}</a></span>
         </div>
       </div>
       <div>
@@ -61,8 +63,7 @@
       <svg class="inline-block w-6 h-6">
         <use xlink:href="#ph_whatsapp-logo" />
       </svg>
-      {% set phone = '0' ~ store.phone[2:3] ~ '-' ~ store.phone[5:4] ~ '-' ~ store.phone[9:] %}
-      <span class="text-lg"><a href="https://wa.me/{{ store.phone }}">{{ phone }}</a></span>
+      <span class="text-lg"><a href="https://wa.me/{{ store.phone }}">{{ phone_formated }}</a></span>
     </div>
     {% if store.instagram %}
     <div class="space-x-1.5 flex items-center">

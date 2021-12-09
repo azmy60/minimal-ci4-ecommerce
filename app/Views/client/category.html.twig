@@ -14,7 +14,7 @@
         <div class="text-lg font-semibold">{{ product.title }}</div>
         <div class="text-base">
           <span>Rp</span>
-          <span>{{ product.price }}</span>
+          <span>{{ product.price|number_format(0, '', '.') }}</span>
         </div>
       </a>
     </div>

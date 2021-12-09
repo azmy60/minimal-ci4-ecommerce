@@ -2,6 +2,8 @@
 {% block title %}Kategori - {{ store.name }}{% endblock title %}
 
 {% block main %}
+{% from "components/components.html.twig" import products_categories_filters_n_search_bar %}
+
 <header class="flex justify-between py-4 px-7">
   <h1 class="text-3xl font-bold">Kategori</h1>
   {% if categories %}
@@ -15,36 +17,27 @@
 </header>
 
 {% if categories %}
-  <div class="flex items-center w-full gap-4 px-7 mt-7">
-    <template x-data="{
-      selected: 0,
+  {{ products_categories_filters_n_search_bar({
+      hx_get: route_to('search-categories'),
       chips: [
-        { text: 'Semua kategori ({{ categories_count }})' },
-        { text: 'Ditampilkan' },
-        { text: 'Tidak tampil' },
-      ]
-    }"
-    x-for="(chip, index) in chips">
-      <button :selected="selected === index" @click="selected = index" class="chip chip-base">
-        <span x-text="chip.text" :class="{ 'font-semibold': selected === index }"></span>
-      </button>
-    </template>
-    <input-container x-data="{ isEmpty: true }" class="flex-grow input-base input-default">
-      <input x-ref="input" @input="isEmpty = $event.target.value === ''" type="text" name="q" placeholder="Cari kategori" autocomplete="off" hx-get="{{ route_to('search-categories') }}" hx-trigger="keyup changed delay:500ms, click from:#btn-clear" hx-target="#category-list">
-      <svg x-cloak x-show="isEmpty" class="fill-current text-trueGray-400"><use xlink:href="#ph_magnifying-glass"></svg>
-      <svg x-cloak x-show="!isEmpty" @click="$refs.input.value = ''; isEmpty = true;" class="text-black fill-current" id="btn-clear"><use xlink:href="#ph_x"></svg>
-    </input-container>
-  </div>
-  <div class="px-7 mt-9">
+        { text: "Semua kategori (#{categories_count})", filter: 'all' },
+        { text: "Ditampilkan (#{visibles_count})", filter: 'visibles' },
+        { text: "Tidak tampil (#{invisibles_count})", filter: 'invisibles' },
+      ],
+  }) }}
+  <div class="relative px-7 mt-9">
     <div class="w-full">
       <div class="grid items-center mb-3 text-lg font-semibold" style="grid-template-columns: 3rem 24rem 12rem;">
         <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_square"></svg>
         <div>Kategori</div>
         <div>Jumlah produk</div>
       </div>
-      <div id="category-list" class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
+      <div id="list-container" class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
         {% include "admin/category_list_items.html.twig" %}
       </div>
+    </div>
+    <div id="list-indicator" class="absolute top-0 left-0 justify-center w-full h-full pt-6 bg-white htmx-indicator bg-opacity-70">
+      {% include "components/loading_spinner_base.html" %}
     </div>
   </div>
 {% else %}

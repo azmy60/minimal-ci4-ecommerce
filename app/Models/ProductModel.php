@@ -38,13 +38,32 @@ class ProductModel extends Model
         return $this->findAll($limit, $offset);
     }
 
-    function findProducts($search, $limit = 0, $offset = 0) {
-        if(empty($search))
-            return $this->findAll($limit, $offset);
+    function findProducts($search = '', $limit = 0, $offset = 0) {
+        return $this->_search($search, '', $limit, $offset);
+    }
+
+    function findInStocks($search = '', $limit = 0, $offset = 0) {
+        return $this->_search($search, 'stock = 1', $limit, $offset);
+    }
+
+    function findOutOfStocks($search = '', $limit = 0, $offset = 0) {
+        return $this->_search($search, 'stock = 0', $limit, $offset);
+    }
+
+    function _search($search = '', $where = '', $limit = 0, $offset = 0) {
+        $limit_q = $limit ? "LIMIT $limit" : '';
+        $offset_q = $offset ? "OFFSET $offset" : '';
+        $sql = "SELECT * FROM $this->table $limit_q $offset_q";
+        $query = null;
         
-        $sql = "SELECT * FROM $this->table WHERE title LIKE '%" .
-        $this->db->escapeLikeString($search) . "%' ESCAPE '!'";
-        
+        if(empty($search)) {
+            $sql .= !empty($where) ? "WHERE $where" : '';
+        } else {
+            $sql .= 'WHERE ' . (!empty($where) ? "$where AND " : '') .
+            "title LIKE '%" . $this->db->escapeLikeString($search) .
+            "%' ESCAPE '!'";
+        }
+
         $query = $this->db->query($sql); // TODO: handle error
         return $query->getResultArray();
     }

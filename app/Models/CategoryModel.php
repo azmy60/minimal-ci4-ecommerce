@@ -29,13 +29,32 @@ class CategoryModel extends Model
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
-    function findCategories($search, $limit = 0, $offset = 0) {
-        if(empty($search))
-            return $this->findAll($limit, $offset);
+    function findCategories($search = '', $limit = 0, $offset = 0) {
+        return $this->_search($search, '', $limit, $offset);
+    }
+
+    function findVisibles($search = '', $limit = 0, $offset = 0) {
+        return $this->_search($search, 'is_visible = 1', $limit, $offset);
+    }
+
+    function findInvisibles($search = '', $limit = 0, $offset = 0) {
+        return $this->_search($search, 'is_visible = 0', $limit, $offset);
+    }
+
+    function _search($search = '', $where = '', $limit = 0, $offset = 0) {
+        $limit_q = $limit ? "LIMIT $limit" : '';
+        $offset_q = $offset ? "OFFSET $offset" : '';
+        $sql = "SELECT * FROM $this->table $limit_q $offset_q";
+        $query = null;
         
-        $sql = "SELECT * FROM $this->table WHERE name LIKE '%" .
-        $this->db->escapeLikeString($search) . "%' ESCAPE '!'";
-        
+        if(empty($search)) {
+            $sql .= !empty($where) ? "WHERE $where" : '';
+        } else {
+            $sql .= 'WHERE ' . (!empty($where) ? "$where AND " : '') .
+            "name LIKE '%" . $this->db->escapeLikeString($search) .
+            "%' ESCAPE '!'";
+        }
+
         $query = $this->db->query($sql); // TODO: handle error
         return $query->getResultArray();
     }

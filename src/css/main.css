@@ -58,7 +58,7 @@
   transition: none !important;
 }
 
-#main-indicator.htmx-indicator.htmx-request {
+.htmx-indicator.htmx-request {
   display: grid;
 }
 

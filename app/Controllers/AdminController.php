@@ -26,8 +26,13 @@ class AdminController extends BaseController
             $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
         }
 
+        $inStocks = $productModel->findInStocks();
+        $outOfStocks = $productModel->findOutOfStocks();
+
         $data['products'] = $products;
         $data['products_count'] = count($products);
+        $data['in_stocks_count'] = count($inStocks);
+        $data['out_of_stocks_count'] = count($outOfStocks);
 
         return $this->render('products', $data);
     }
@@ -53,8 +58,17 @@ class AdminController extends BaseController
         $productModel = model(ProductModel::class);
         $productPhotoModel = model(ProductPhotoModel::class);
         $search = $this->request->getGet('q');
+        $filter = $this->request->getGet('filter');
+        $products = [];
 
-        $products = $productModel->findProducts($search);
+        if($filter == 'all') {
+            $products = $productModel->findProducts($search);
+        } else if($filter == 'inStocks') {
+            $products = $productModel->findInStocks($search);
+        } else if($filter == 'outOfStocks') {
+            $products = $productModel->findOutOfStocks($search);
+        }
+
         foreach ($products as $index => $_) {
             $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
         }
@@ -103,8 +117,13 @@ class AdminController extends BaseController
             $categories[$index]['product_count'] = $productCount;
         }
 
+        $visibles = $categoryModel->findVisibles();
+        $invisibles = $categoryModel->findInvisibles();
+
         $data['categories'] = $categories;
         $data['categories_count'] = count($categories);
+        $data['visibles_count'] = count($visibles);
+        $data['invisibles_count'] = count($invisibles);
 
         return $this->render('categories', $data);
     }
@@ -114,8 +133,17 @@ class AdminController extends BaseController
         $categoryModel = model(CategoryModel::class);
         $productCategoryModel = model(ProductCategoryModel::class);
         $search = $this->request->getGet('q');
+        $filter = $this->request->getGet('filter');
+        $categories = [];
 
-        $categories = $categoryModel->findCategories($search);
+        if($filter == 'all') {
+            $categories = $categoryModel->findCategories($search);
+        } else if($filter == 'visibles') {
+            $categories = $categoryModel->findVisibles($search);
+        } else if($filter == 'invisibles') {
+            $categories = $categoryModel->findInvisibles($search);
+        }
+
         foreach ($categories as $index => $category) {
             $id = $category['id'];
             $filename = $productCategoryModel->getPhotoFilename($id);
@@ -127,7 +155,6 @@ class AdminController extends BaseController
 
         $data = [
             'categories' => $categories,
-            'categories_count' => count($categories),
         ];
 
         return $this->render('category_list_items', $data);

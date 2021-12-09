@@ -14,7 +14,7 @@ class ClientController extends BaseController
         $productModel = model(ProductModel::class);
         $productPhotoModel = model(ProductPhotoModel::class);
 
-        $products = $productModel->getAll(10);
+        $products = $productModel->getAll();
         foreach ($products as $index => $_) {
             $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
         }

@@ -56,10 +56,7 @@
       label: 'Kategori (opsional)',
       helper: 'Produkmu bisa dikategorikan agar memudahkan calon pembeli. Pelajari tips mengkategorikan produk.',
       for: 'cat_id',
-      input_area: 
-        components.input({
-          name: 'cat_id', type: 'text', size: 'lg', error: session('errors.cat_id'), class: 'w-full', attributes: 'disabled'
-        }),
+      input_area: block('add_categories_input'),
       }) }}
     </section>
 
@@ -145,7 +142,7 @@ input_row options:
 {% endmacro %}
 
 {% macro upload_zone() %}
-  <div x-data="uploadZoneData" id="uploadZone" @dragover.prevent="ondragover($el)" @dragleave.prevent="ondragleave($el)" @drop.prevent="ondropfiles($event.dataTransfer.files, $el.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray'))" class="relative w-full h-full rounded-lg">
+  <div x-data="helper.uploadZoneData" id="uploadZone" @dragover.prevent="ondragover($el)" @dragleave.prevent="ondragleave($el)" @drop.prevent="ondropfiles($event.dataTransfer.files, $el.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray'))" class="relative w-full h-full rounded-lg">
     <input x-ref="inputFile" @change.prevent="ondropfiles($el.files)" type="file" multiple name="photos[]" id="photos" class="hidden">
     <div id="thumbnails-container" class="flex flex-wrap gap-6">
 
@@ -184,3 +181,30 @@ input_row options:
   }
 </script>
 {% endblock input_price %}
+
+{% block add_categories_input %}
+<script>
+  const catJson = JSON.parse('{{ categories|json_encode()|raw }}')
+</script>
+<div x-data="helper.addCatData(catJson)" class="relative">
+  <input name="cats" type="hidden" :value="JSON.stringify(selectedCats)">
+  <input x-ref="input" @focus="show = true" x-model="inputVal" @input="searchCat(inputVal)" @keydown.enter.prevent @clearinput.window="$el.value = ''" placeholder="Ketik kategori disini" class="w-full input input-lg input-default">
+  <div class="flex gap-2 mt-4">
+    <template x-for="cat in selectedCats">
+      <span class="chip chip-sm">
+        <span class="lozenge lozenge-sm lozenge-success" x-show="cat.id < 0">Baru</span>
+        <span x-text="cat.name"></span>
+        <svg @click="removeCat(cat)"><use xlink:href="#ph_x"></svg>
+      </span>
+    </template>
+  </div>
+  <ul x-cloak x-show="show" @click="show = false" @click.outside="show = $event.target === $refs.input" :style="{ top: `calc(${$refs.input.clientHeight}px + 1rem)` }" class="absolute left-0 w-full top-full dropdown-menu dropdown-menu-lg">
+    <template x-for="cat in cats">
+      <li x-text="cat.name" @click="addCat(cat); $dispatch('clearinput')"></li>
+    </template>
+    <template x-if="cats.length === 0 && inputVal.trim()">
+      <li x-text="'Tambah kategori ' + inputVal" @click="addCat({id: newIdCounter(), name: inputVal }); inputVal = ''; "></li>
+    </template>
+  </ul>
+</div>
+{% endblock add_categories_input %}

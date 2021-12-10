@@ -187,7 +187,15 @@ class AdminController extends BaseController
 
     public function addProduct()
     {
-        return $this->twig->render('admin/add_product.html');
+        $categoryModel = model(CategoryModel::class);
+        $categories = $categoryModel->findAll();
+
+        // TODO: send id and name of categories only
+        $data = [
+            'categories' => $categories, 
+        ];
+
+        return $this->twig->render('admin/add_product.html', $data);
     }
 
     public function attemptAddProduct()
@@ -219,6 +227,22 @@ class AdminController extends BaseController
         $productPhotoModel = model(ProductPhotoModel::class);
         foreach ($photos as $photo) {
             $productPhotoModel->store($productId, $photo);
+        }
+
+        $cats = json_decode($productData['cats']);
+        if($cats != null) {
+            foreach ($cats as $_ => $cat) {
+                $catId = $cat->id;
+                if($catId < 0) {
+                    $catId = model(CategoryModel::class)->insert([
+                        'name' => $cat->name,
+                    ]);
+                }
+                model(ProductCategoryModel::class)->insert([
+                    'product_id' => $productId,
+                    'cat_id' => $catId,
+                ]);
+            }
         }
 
         return redirect()->route('admin/products')->with('message', 'Berhasil menambahkan produk baru');

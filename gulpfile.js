@@ -98,7 +98,7 @@ async function js() {
 
   await addProductBundle.write({
     dir: 'public/js',
-    name: 'uploadZoneData',
+    name: 'helper',
     format: 'iife',
     sourcemap: true,
     plugins: [

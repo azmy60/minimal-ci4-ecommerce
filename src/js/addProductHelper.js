@@ -1,3 +1,5 @@
+import { remove } from 'lodash'
+import Fuse from 'fuse.js'
 import downscale from 'downscale'
 import UploadZoneThumbnail from './components/UploadZoneThumbnail'
 
@@ -19,7 +21,7 @@ function addThumbnail(file) {
   return key
 }
 
-export default uploadZoneData = {
+export const uploadZoneData = {
   files: [],
   input: document.querySelector('#photos'),
   maxOverlay: document.querySelector('#maxOverlay'),
@@ -86,5 +88,38 @@ export default uploadZoneData = {
 
     if(!this.filesAtMax())
       uploadBtn.classList.remove('hidden')
+  }
+}
+
+export function addCatData(json) {
+  const fuse = new Fuse(json, {
+    keys: ['name'],
+  })
+
+  return {
+    show: false,
+    cats: json.slice(0),
+    selectedCats: [],
+    inputVal: '',
+    _newId: -1,
+    newIdCounter(){
+       return this._newId--
+    },
+    searchCat(q) {
+      this.cats = q === '' ? json : fuse.search(q).map(c => c.item)
+    },
+    addCat(c) {
+      this.selectedCats.push(c)
+      this.cats = json.filter(doc => doc.id !== c.id)
+      if(c.id >= 0)
+        fuse.remove(doc => doc.id === c.id)
+    },
+    removeCat(c) {
+      remove(this.selectedCats, sc => sc.id === c.id)
+      if(c.id >= 0) { // add the cat as a search suggestion if it is from database
+        this.cats.push(c)
+        fuse.add(c)
+      }
+    },
   }
 }

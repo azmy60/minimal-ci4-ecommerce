@@ -55,6 +55,8 @@ npm run dev
 - TailwindCSS (see [official website](https://tailwindcss.com/))
 - Alpine.js (see [official website](https://alpinejs.dev/))
 - clipboard.js (see [official website](https://clipboardjs.com/))
+- fuse.js (see [official website](https://fusejs.io/))
+- Lodash (see [official website](https://lodash.com/))
 
 ## UI Resources
 - Phosphor icons (see [official website](https://phosphoricons.com/))

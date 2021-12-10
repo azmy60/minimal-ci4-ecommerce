@@ -6,7 +6,7 @@
 
   /* Sizes */
   .lozenge-sm {
-    @apply text-xs;
+    @apply text-xs uppercase;
   }
 
   .lozenge-base {

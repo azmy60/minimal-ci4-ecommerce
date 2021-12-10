@@ -1,7 +1,11 @@
 @layer components {
   /* Base */
   .chip {
-    @apply flex gap-1 px-4 leading-4 rounded-full cursor-pointer select-none bg-white border border-trueGray-300 text-trueGray-800;
+    @apply flex gap-1 items-center px-4 leading-4 rounded-full cursor-pointer select-none bg-white border border-trueGray-300 text-trueGray-800;
+  }
+
+  .chip > svg {
+    @apply w-4 h-4;
   }
 
   /* Sizes */

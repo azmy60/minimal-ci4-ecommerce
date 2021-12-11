@@ -38,6 +38,35 @@ class ProductModel extends Model
         return $this->findAll($limit, $offset);
     }
 
+    function getCats($id) {
+        $productCats = model(ProductCategoryModel::class)->getProductCatsByCatId($id);
+        if(empty($productCats))
+            return [];
+        
+        return model(CategoryModel::class)->find($productCats);;
+    }
+
+    function updateCats($id, $cats) {
+        $categoryModel = model(CategoryModel::class);
+        $productCategoryModel = model(ProductCategoryModel::class);
+        foreach ($cats as $_ => $cat) {
+            $catId = $cat->id;
+            if($catId < 0) {
+                $catId = $categoryModel->insert([
+                    'name' => $cat->name,
+                ]);
+            }
+            if(!$productCategoryModel->getProductCat($id, $catId)) {
+                $productCategoryModel->insert([
+                    'product_id' => $id,
+                    'cat_id' => $catId,
+                ]);
+            } else if(property_exists($cat, 'remove') && $cat->remove > 0) {
+                $productCategoryModel->deleteProductCat($id, $catId);
+            }
+        }
+    }
+
     function findProducts($search = '', $limit = 0, $offset = 0) {
         return $this->_search($search, '', $limit, $offset);
     }

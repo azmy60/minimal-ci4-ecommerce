@@ -33,7 +33,7 @@
         <div class="w-16">Harga</div>
         <div class="w-16">Stok</div>
       </div>
-      <div x-data="{
+      <div id="list-wrapper" x-data="{
         openProductForm(id) {
           document.querySelector(`.product${id}Form`).dispatchEvent(new CustomEvent('open'))
           document.querySelectorAll('.product-list-el').forEach(el=>el.classList.add('opacity-50'))
@@ -43,9 +43,7 @@
           document.querySelectorAll('.product-list-el').forEach(el=>el.classList.remove('opacity-50'))
         }
       }">
-        <div id="list-container" class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
-          {% include "admin/product_list_items.html.twig" %}
-        </div>
+        {% include "admin/product_list_items.html.twig" %}
       </div>
     </div>
     <div id="list-indicator" class="absolute top-0 left-0 justify-center w-full h-full pt-6 bg-white htmx-indicator bg-opacity-70">

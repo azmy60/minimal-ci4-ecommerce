@@ -20,19 +20,24 @@ class AdminController extends BaseController
     {
         $productModel = model(ProductModel::class);
         $productPhotoModel = model(ProductPhotoModel::class);
+        $categoryModel = model(CategoryModel::class);
 
         $products = $productModel->getAll();
         foreach ($products as $index => $_) {
             $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
+            $products[$index]['categories'] = $productModel->getCats($products[$index]['id']);
         }
 
         $inStocks = $productModel->findInStocks();
         $outOfStocks = $productModel->findOutOfStocks();
 
+        $categories = $categoryModel->findAll();
+
         $data['products'] = $products;
         $data['products_count'] = count($products);
         $data['in_stocks_count'] = count($inStocks);
         $data['out_of_stocks_count'] = count($outOfStocks);
+        $data['categories'] = $categories;
 
         return $this->render('products', $data);
     }
@@ -57,6 +62,7 @@ class AdminController extends BaseController
     {
         $productModel = model(ProductModel::class);
         $productPhotoModel = model(ProductPhotoModel::class);
+        $categoryModel = model(CategoryModel::class);
         $search = $this->request->getGet('q');
         $filter = $this->request->getGet('filter');
         $products = [];
@@ -71,10 +77,13 @@ class AdminController extends BaseController
 
         foreach ($products as $index => $_) {
             $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
+            $products[$index]['categories'] = $productModel->getCats($products[$index]['id']);
         }
 
+        $categories = $categoryModel->findAll();
         $data = [
             'products' => $products,
+            'categories' => $categories,
         ];
 
         return $this->render('product_list_items', $data);
@@ -85,8 +94,14 @@ class AdminController extends BaseController
         if($id == null)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         
+        $productData = $this->request->getRawInput();
+        
         $productModel = model(ProductModel::class);
-        $productModel->update($id, $this->request->getRawInput());
+        $productModel->update($id, $productData);
+
+        $cats = json_decode($productData['cats']);
+        if($cats != null)
+            $productModel->updateCats($id, $cats);
 
         return $this->products();
     }
@@ -230,20 +245,8 @@ class AdminController extends BaseController
         }
 
         $cats = json_decode($productData['cats']);
-        if($cats != null) {
-            foreach ($cats as $_ => $cat) {
-                $catId = $cat->id;
-                if($catId < 0) {
-                    $catId = model(CategoryModel::class)->insert([
-                        'name' => $cat->name,
-                    ]);
-                }
-                model(ProductCategoryModel::class)->insert([
-                    'product_id' => $productId,
-                    'cat_id' => $catId,
-                ]);
-            }
-        }
+        if($cats != null)
+            $productsModel->updateCats($productId, $cats);
 
         return redirect()->route('admin/products')->with('message', 'Berhasil menambahkan produk baru');
     }

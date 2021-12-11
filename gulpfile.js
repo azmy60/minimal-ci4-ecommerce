@@ -81,6 +81,10 @@ async function js() {
     commonjs(),
   ]
 
+  const outPlugins = [
+    process.env.NODE_ENV === 'production' ? terser() : null,
+  ]
+
   const addProductBundle = await rollup.rollup({
     input: 'src/js/addProductHelper.js',
     plugins: inPlugins,
@@ -101,27 +105,22 @@ async function js() {
     name: 'helper',
     format: 'iife',
     sourcemap: true,
-    plugins: [
-      terser(),
-    ]
+    plugins: outPlugins,
   })
 
   await authBundle.write({
     dir: 'public/js',
     format: 'iife',
     sourcemap: true,
-    plugins: [
-      terser(),
-    ]
+    plugins: outPlugins,
   })
 
   await adminBundle.write({
     dir: 'public/js',
     format: 'iife',
+    name: 'helper',
     sourcemap: true,
-    plugins: [
-      terser(),
-    ]
+    plugins: outPlugins,
   })
 }
 

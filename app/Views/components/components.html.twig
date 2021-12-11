@@ -78,12 +78,12 @@ products_categories_filters_n_search_bar props:
 <div x-data="{ selected: 0 }" class="flex items-center w-full gap-4 px-7 mt-7">
   <input type="hidden" name="filter" value="all">
   {% for chip in props.chips %}
-  <button hx-get="{{ props.hx_get }}" hx-vals='{ "filter": "{{ chip.filter }}" }' hx-include="[name='q']" hx-target="#list-container" hx-indicator="#list-indicator" :selected="selected === {{ loop.index0 }}" @click="selected = {{ loop.index0 }}; document.querySelector(`[name='filter']`).value = '{{ chip.filter }}'" class="chip chip-base">
+  <button hx-get="{{ props.hx_get }}" hx-vals='{ "filter": "{{ chip.filter }}" }' hx-include="[name='q']" hx-target="#list-wrapper" hx-indicator="#list-indicator" :selected="selected === {{ loop.index0 }}" @click="selected = {{ loop.index0 }}; document.querySelector(`[name='filter']`).value = '{{ chip.filter }}'" class="chip chip-base">
     <span :class="{ 'font-semibold': selected === {{ loop.index0 }} }">{{ chip.text }}</span>
   </button>
   {% endfor %}
   <input-container x-data="{ isEmpty: true }" class="flex-grow input-base input-default">
-    <input x-ref="input" @input="isEmpty = $event.target.value === ''" type="text" name="q" placeholder="Cari produk" autocomplete="off" hx-get="{{ props.hx_get }}" hx-include="[name='filter']" hx-trigger="keyup changed delay:500ms, click from:#btn-clear" hx-target="#list-container" hx-indicator="#list-indicator">
+    <input x-ref="input" @input="isEmpty = $event.target.value === ''" type="text" name="q" placeholder="Cari produk" autocomplete="off" hx-get="{{ props.hx_get }}" hx-include="[name='filter']" hx-trigger="keyup changed delay:500ms, click from:#btn-clear" hx-target="#list-wrapper" hx-indicator="#list-indicator">
     <svg x-cloak x-show="isEmpty" class="fill-current text-trueGray-400"><use xlink:href="#ph_magnifying-glass"></svg>
     <svg x-cloak x-show="!isEmpty" @click="$refs.input.value = ''; isEmpty = true;" class="text-black fill-current" id="btn-clear"><use xlink:href="#ph_x"></svg>
   </input-container>

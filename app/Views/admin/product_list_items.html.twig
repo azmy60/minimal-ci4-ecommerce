@@ -1,5 +1,7 @@
 {% import "components/components.html.twig" as components %}
 
+<div x-data='{ categories: JSON.parse(`{{ categories|json_encode()|raw }}`) }' class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
+
 {% for product in products %}
 <div class="product-list-el product-{{ product.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 13.75rem 10rem auto;">
   <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_square"></svg>
@@ -80,14 +82,28 @@
         </input-container>
       </div>
 
-      {{
-        components.input({
-          label: 'Kategori',
-          name: '_',
-          value: '',
-          class: 'opacity-50',
-        })
-      }}
+      <div x-data='helper.addCatData(categories, JSON.parse(`{{ product.categories|json_encode()|raw }}`))' @click.stop class="relative grid gap-1">
+        <input name="cats" type="hidden" :value="JSON.stringify(updatedCats)">
+        <label for="cats" class="font-semibold text-trueGray-800">Kategori</label>
+        <input x-ref="input" @focus="show = true" x-model="inputVal" @input="searchCat(inputVal)" @keydown.enter.prevent @clearinput.window="$el.value = ''" placeholder="Ketik kategori disini" class="w-full input input-lg input-default">
+        <div class="flex flex-wrap gap-2 pt-2">
+          <template x-for="cat in updatedCats">
+            <span class="chip chip-sm" x-show="cat.id < 0 || !cat.remove">
+              <span class="lozenge lozenge-sm lozenge-success" x-show="cat.id < 0">Baru</span>
+              <span x-text="cat.name"></span>
+              <svg @click="removeCat(cat);"><use xlink:href="#ph_x"></svg>
+            </span>
+          </template>
+        </div>
+        <ul x-cloak x-show="show" @click="show = false" @click.outside="show = $event.target === $refs.input" class="absolute left-0 w-full top-20 dropdown-menu dropdown-menu-lg">
+          <template x-for="cat in dropdownCats">
+            <li x-text="cat.name" @click="addCat(cat); $dispatch('clearinput')"></li>
+          </template>
+          <template x-if="dropdownCats.length === 0 && inputVal.trim()">
+            <li x-text="'Tambah kategori ' + inputVal" @click="addNewCat(inputVal); inputVal = ''; "></li>
+          </template>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="flex justify-end w-[58rem] gap-3">
@@ -119,3 +135,5 @@
     document.querySelector('[name="price"]').value =  x
   }
 </script>
+
+</div>

@@ -3,13 +3,28 @@
 
 {% block main %}
   <div class="max-w-5xl mb-10 md:grid md:grid-cols-7 lg:grid-cols-2 md:gap-8 md:mb-20">
-    <div class="md:col-span-3 lg:col-span-1">
-      <div>
-        <img src="{{ route_to('content-photos', 'lg', photos[0].filename) }}" class="w-full h-auto">
-      </div>
-      <div class="flex w-full gap-3 mt-3 overflow-x-auto md:mt-5">
+    <div x-data="{ current: 0, max: {{ photos|length }}, goto(i){ this.current = i }, next(){ this.current < this.max - 1 ? this.current++ : null }, prev(){ this.current > 0 ? this.current-- : null } }" class="md:col-span-3 lg:col-span-1">
+      <div class="relative">
         {% for photo in photos %}
-        <img src="{{ route_to('content-photos', 'sm', photo.filename) }}" class="w-20 h-20 md:w-16 md:h-16">
+        <img x-show="current === {{ loop.index0 }}" :src="current === {{ loop.index0 }} ? '{{ route_to('content-photos', 'lg', photo.filename) }}' : ''" width="1000" height="1000" class="h-auto max-w-full">
+        {% endfor %}
+        <div class="absolute top-0 left-0 items-center justify-between hidden w-full h-full p-6 transition-opacity opacity-0 select-none md:flex hover:opacity-100">
+          <div @click="prev()" class="p-2 bg-white rounded-full cursor-pointer opacity-70">
+            <svg class="w-6 h-6 fill-current text-trueGray-900"><use xlink:href="#ph_caret-left-bold"></svg>
+          </div>
+          <div @click="next()" class="p-2 bg-white rounded-full cursor-pointer opacity-70">
+            <svg class="w-6 h-6 fill-current text-trueGray-900"><use xlink:href="#ph_caret-right-bold"></svg>
+          </div>
+        </div>
+        <div class="absolute flex justify-center w-full gap-2 md:hidden bottom-6">
+          {% for photo in photos %}
+            <div :class="{ 'opacity-50': current !== {{ loop.index0 }} }" class="w-2 h-2 rounded-full bg-trueGray-800"></div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="relative flex w-full gap-3 mt-3 overflow-x-auto md:mt-5" style="scroll-behavior: smooth;">
+        {% for photo in photos %}
+        <img x-init="$watch('current', v => v === {{ loop.index0 }} && window.innerWidth > 768 ? $el.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'center'}) : null)" @click="goto({{ loop.index0 }})" :class="{'opacity-70': current !== {{ loop.index0 }}}" src="{{ route_to('content-photos', 'sm', photo.filename) }}" width="112" height="112" class="w-20 h-20 cursor-pointer md:w-16 md:h-16">
         {% endfor %}
       </div>
     </div>

@@ -310,7 +310,10 @@ class AdminController extends BaseController
         if($id == null)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         
+        $productCategoryModel = model(ProductCategoryModel::class);
         $categoryModel = model(CategoryModel::class);
+
+        $productCategoryModel->where('cat_id', $id)->delete();
         $categoryModel->delete($id);
 
         return $this->categories();

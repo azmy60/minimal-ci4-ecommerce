@@ -34,18 +34,20 @@
     <div class="text-3xl font-bold">{{ store.name }}</div>
     <div class="flex flex-col gap-6 md:flex-row md:gap-32">
       <div class="fill-current">
-        <div class="space-x-1.5">
+        {% if store.instagram %}
+        <a href="https://www.instagram.com/{{ store.instagram }}/" class="block space-x-1.5">
           <svg class="inline-block w-6 h-6">
             <use xlink:href="#ph_instagram-logo" />
           </svg>
-          <span class="text-lg"><a href="https://www.instagram.com/{{ store.instagram }}/">{{ store.instagram }}</a></span>
-        </div>
-        <div class="space-x-1.5">
+          <span class="text-lg">{{ store.instagram }}</span>
+        </a>
+        {% endif %}
+        <a href="https://wa.me/{{ store.phone }}" class="block space-x-1.5">
           <svg class="inline-block w-6 h-6">
             <use xlink:href="#ph_whatsapp-logo" />
           </svg>
-          <span class="text-lg"><a href="https://wa.me/{{ store.phone }}">{{ phone_formated }}</a></span>
-        </div>
+          <span class="text-lg">{{ phone_formated }}</span>
+        </a>
       </div>
       <div>
         {{ store.address }}
@@ -59,18 +61,18 @@
   <h1 class="text-5xl font-bold">{{ store.name }}</h1>
   <p class="text-lg">{{ store.desc }}</p>
   <div class="flex gap-8 mt-8">
-    <div class="space-x-1.5 flex items-center">
+    <a href="https://wa.me/{{ store.phone }}" class="space-x-1.5 flex items-center">
       <svg class="inline-block w-6 h-6">
         <use xlink:href="#ph_whatsapp-logo" />
       </svg>
-      <span class="text-lg"><a href="https://wa.me/{{ store.phone }}">{{ phone_formated }}</a></span>
-    </div>
+      <span class="text-lg">{{ phone_formated }}</a></span>
+    </a>
     {% if store.instagram %}
-    <div class="space-x-1.5 flex items-center">
+    <div  href="https://www.instagram.com/{{ store.instagram }}/" class="space-x-1.5 flex items-center">
       <svg class="inline-block w-6 h-6">
         <use xlink:href="#ph_instagram-logo" />
       </svg>
-      <span class="text-lg"><a href="https://www.instagram.com/{{ store.instagram }}/">{{ store.instagram }}</a></span>
+      <span class="text-lg">{{ store.instagram }}</span>
     </div>
     {% endif %}
   </div>

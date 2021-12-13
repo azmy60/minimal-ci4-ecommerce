@@ -1,32 +1,27 @@
-import { remove } from 'lodash'
+import { remove, clone } from 'lodash'
 import Fuse from 'fuse.js'
-import downscale from 'downscale'
+// import downscale from 'downscale'
 import UploadZoneThumbnail from './components/UploadZoneThumbnail'
 
 const maxFile = 10
-const thumbnailsContainer = document.getElementById('thumbnails-container')
+// const thumbnailsContainer = document.getElementById('thumbnails-container')
 const thumbnailWidth = 110
 const thumbnailHeight = 110
 
 const uploadBtn = document.getElementById('upload-btn')
 
-function addThumbnail(file) {
-  const thumbnail = new UploadZoneThumbnail()
-  const key = Math.random().toString(36).substring(2, 15)
-  thumbnail.key = key
-  thumbnail.file = file
-  thumbnail.width = thumbnailWidth
-  thumbnail.height = thumbnailHeight
-  thumbnailsContainer.insertBefore(thumbnail, thumbnailsContainer.lastElementChild)
-  return key
-}
-
 export const uploadZoneData = {
   files: [],
+  muuri: null,
+  prevPos: null,
   input: document.querySelector('#photos'),
   maxOverlay: document.querySelector('#maxOverlay'),
   allowedTypes: new Set(['image/jpeg', 'image/png']),
   allowedSize: 2000000, // 2mb
+  _tid: 0,
+  tidCounter() {
+    return _.clone(this._tid++)
+  },
   filesAtMax() {
     return this.files.length >= maxFile
   },
@@ -36,7 +31,10 @@ export const uploadZoneData = {
   ondragleave(el) {
     el.classList.remove('ring', this.filesAtMax() ? 'ring-trueGray-500': 'ring-emerald-500')
   },
-  ondropfiles(droppedFiles, cb = ()=>{}) {
+  ondropfiles(event, droppedFiles, cb = ()=>{}) {
+    if(event.type == 'drop' && droppedFiles.length === 0)
+      return cb()
+
     if(this.filesAtMax())
       return cb() // TODO: show message (cannot add more than 10 photos)
 
@@ -58,9 +56,11 @@ export const uploadZoneData = {
       dt.items.add(droppedFiles[i])
 
       // Generate a thumbnail
-      const key = addThumbnail(droppedFiles[i])
+      const tid = this.tidCounter()
+      const key = this._addThumbnail(tid, droppedFiles[i])
       this.files.push({
         key,
+        tid: tid,
         file: droppedFiles[i],
       })
     }
@@ -68,16 +68,19 @@ export const uploadZoneData = {
     this.input.files = dt.files
     if(this.filesAtMax())
       uploadBtn.classList.add('hidden')
-    
+
     cb()
   },
-  removePhoto(key) {
+  removePhoto(thumbnail, key) {
     console.log(key)
     const dt = new DataTransfer()
     const newFiles = []
     for(let i = 0; i < this.files.length; i++) {
       if(this.files[i].key === key){
         console.log('removing', key, this.files[i])
+        const tid = this.files[i].tid
+        const item = this.muuri.getItems().find((item) => item.getElement().tid === tid)
+        this.muuri.remove([item], { removeElements: true })
         continue
       }
       dt.items.add(this.files[i].file)
@@ -88,6 +91,15 @@ export const uploadZoneData = {
 
     if(!this.filesAtMax())
       uploadBtn.classList.remove('hidden')
+  },
+  refreshGrid() {
+    this.muuri.refreshItems().layout();
+  },
+  _addThumbnail(tid, file) {
+    const key = Math.random().toString(36).substring(2, 15)
+    const thumbnail = new UploadZoneThumbnail(tid, key, file, thumbnailWidth, thumbnailHeight, this.removePhoto.bind(this))
+    this.muuri.add([thumbnail], { index: this.files.length })
+    return key
   }
 }
 

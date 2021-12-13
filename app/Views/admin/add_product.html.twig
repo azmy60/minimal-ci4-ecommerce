@@ -182,7 +182,7 @@ input_row options:
     }
 
     input.files = dt.files
-  });" x-data="helper.uploadZoneData" id="uploadZone" @dragover.prevent="ondragover($el)" @dragleave.prevent="ondragleave($el)" @drop.prevent="ondropfiles($event, $event.dataTransfer.files, $el.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray'))" class="relative w-full h-full rounded-lg">
+  });" x-data="helper.uploadZoneData()" id="uploadZone" @dragover.prevent="ondragover($el)" @dragleave.prevent="ondragleave($el)" @drop.prevent="ondropfiles($event, $event.dataTransfer.files, $el.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray'))" class="relative w-full h-full rounded-lg">
     <input x-ref="inputFile" @change.prevent="ondropfiles($event, $el.files)" type="file" multiple name="photos[]" id="photos" class="hidden">
     <div x-ref="thumbnails-container" id="thumbnails-container" class="relative w-full -m-3">
 

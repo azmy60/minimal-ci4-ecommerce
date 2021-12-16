@@ -51,7 +51,7 @@ class ProductPhotoModel extends Model
      */
     public function getFilenames($productId)
     {
-        return $this->select('filename')->where('product_id', $productId)->get()->getResultArray();
+        return $this->where('product_id', $productId)->findAll();
     }
 
     public function getProductsFilenames($productIds)

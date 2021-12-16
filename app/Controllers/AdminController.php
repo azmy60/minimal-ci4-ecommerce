@@ -24,7 +24,16 @@ class AdminController extends BaseController
 
         $products = $productModel->getAll();
         foreach ($products as $index => $_) {
-            $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
+            $thumbnails = [];
+            $filenames = $productPhotoModel->getFilenames($products[$index]['id']);
+            foreach ($filenames as $filename) {
+                array_push($thumbnails, [
+                    'src' => route_to('content-photos', 'sm', $filename['filename']),
+                    'order' => $filename['sort_order'],
+                ]);
+            }
+            
+            $products[$index]['thumbnails'] = $thumbnails;
             $products[$index]['categories'] = $productModel->getCats($products[$index]['id']);
         }
 

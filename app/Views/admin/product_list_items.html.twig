@@ -3,10 +3,11 @@
 <div x-data='{ categories: JSON.parse(`{{ categories|json_encode()|raw }}`) }' class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
 
 {% for product in products %}
+{% set thumbnailSrc = product.thumbnails[0].src %}
 <div class="product-list-el product-{{ product.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 13.75rem 10rem auto;">
   <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_square"></svg>
   <div class="flex-shrink">
-    <img src="{{ route_to('content-photos', 'sm', product.filenames[0].filename) }}" class="inline-block w-16 h-16 mr-6 rounded-lg bg-trueGray-300">
+    <img src="{{ thumbnailSrc }}" class="inline-block w-16 h-16 mr-6 rounded-lg bg-trueGray-300">
     <span class="inline-block w-64">{{ product.title }}</span>
   </div>
   <div>
@@ -47,12 +48,10 @@
 </div>
 <form x-cloak x-data="{show: false}" @open="show = true" @close="show = false" @click.outside="closeProductForm({{ product.id }})" x-collapse x-show="show" hx-put="{{ route_to('update-product', product.id) }}"  hx-target="#main" hx-indicator="#main-indicator" class="product{{ product.id }}Form py-2 pl-12 space-y-6">
   <div class="flex gap-6">
-    <div class="relative overflow-hidden rounded-lg w-28 h-28">
-      <img src="{{ route_to('content-photos', 'sm', product.filenames[0].filename) }}" class="w-full h-full">
-      <a href="#">
-        <span class="absolute bottom-0 grid items-center w-full font-semibold text-center text-white h-7 bg-emerald-500">Ubah foto</span>
-      </a>
-    </div>
+    <a href="#" class="relative block overflow-hidden rounded-lg w-28 h-28">
+      <img src="{{ thumbnailSrc }}" class="w-full h-full">
+      <span class="absolute bottom-0 grid items-center w-full font-semibold text-center text-white h-7 bg-emerald-500">Ubah foto</span>
+    </a>
     <div class="space-y-4 w-96">
       {{
         components.input({

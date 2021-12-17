@@ -8,8 +8,7 @@ const templateHtml = /*html*/`
     </button>
     <span class="absolute w-full h-full bg-trueGray-800 opacity-10"></span>
   </div>
-  <img class="w-full h-full">
-  <span class="kko w-full h-full absolute left-0 top-0 bg-white bg-opacity-70"></span>
+  <img width="112" height="112" class="w-full h-full">
 </div>
 `
 const template = document.createElement('template')
@@ -21,11 +20,11 @@ class UploadZoneThumbnail extends HTMLElement {
     this.querySelector('img').src = src
   }
 
-  constructor(tid, key, file, width, height, removeCb = () => {}) {
+  constructor(tid, order, file, width, height, removeCb = () => {}) {
     super()
 
     this.tid = tid
-    this.key = key
+    this.order = order
     this.file = file
     this.width = width
     this.height = height
@@ -34,25 +33,32 @@ class UploadZoneThumbnail extends HTMLElement {
     this.originalFileSrc = null
   }
 
+  updateOrder(order) {
+    this.order = order
+  }
+
   connectedCallback() {
     this.appendChild(template.content.cloneNode(true))
 
-    const reader = new FileReader()
-    reader.onload = _ => {
-      downscale(reader.result, this.width, this.height).then(dataurl => {
-        this.originalFileSrc = dataurl
-        this.setImageSource(dataurl)
-      })
+    if(typeof(this.file) === 'string') {
+      this.setImageSource(this.file)
+    } else {
+      const reader = new FileReader()
+      reader.onload = _ => {
+        downscale(reader.result, this.width, this.height).then(dataurl => {
+          this.originalFileSrc = dataurl
+          this.setImageSource(dataurl)
+        })
+      }
+      reader.readAsDataURL(this.file)
     }
-    reader.readAsDataURL(this.file)
+
 
     this.querySelector('.delete-btn').addEventListener('click', e => {
       e.preventDefault()
-      this.removeCb(this, this.key)
+      this.removeCb(this.tid)
       // this.remove()
     })
-
-    this.querySelector('.kko').textContent = this.tid
   }
 }
 

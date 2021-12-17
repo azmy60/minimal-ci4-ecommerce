@@ -44,6 +44,11 @@
   }
 }
 
+upload-zone .thumbnails-container > * {
+  position: absolute;
+  margin: 0.75rem;
+}
+
 /* Fix CodeIgniter toolbar from breaking the main layout */
 #toolbarContainer {
   @apply absolute;

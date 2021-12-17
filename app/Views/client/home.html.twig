@@ -7,7 +7,7 @@
     {% for product in products %}
     <div>
       <a href="{{ route_to('product-page', product.title) }}">
-        <img class="w-full h-auto md:" src="{{ route_to('content-photos', 'lg', product.filenames[0].filename) }}">
+        <img width="1000" height="1000" class="h-auto max-w-full md:" src="{{ route_to('content-photos', 'lg', product.filenames[0].filename) }}">
         <div class="text-lg font-semibold">{{ product.title }}</div>
         <div class="text-base">
           <span>Rp</span>

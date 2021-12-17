@@ -50,6 +50,32 @@
       {% include "components/loading_spinner_base.html" %}
     </div>
   </div>
+  <div
+    x-cloak
+    x-data="{ show: false, title: '', id: null }"
+    x-show="show"
+    @manage-photo.window="
+      $refs.uploadZone.addThumbnailsFromDB($event.detail.thumbnails);
+      $refs.productId.value = $event.detail.productId;
+      title = $event.detail.title;
+      show = true;
+      $nextTick(function(){ $refs.uploadZone.refreshGrid() });
+    "
+    class="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-30">
+    <form x-ref="form" hx-post="{{ route_to('update-photos') }}" hx-encoding="multipart/form-data" hx-target="#main" hx-indicator="#main-indicator" class="left-1/2 rounded-lg top-1/2 absolute space-y-8 -translate-x-1/2 -translate-y-1/2 bg-white w-[54rem] p-6">
+      <label x-text="`Foto ${title}`" for="photos[]" class="block pb-4 text-2xl font-semibold"></label>
+      <input x-ref="productId" type="hidden" name="product_id" class="hidden">
+      <upload-zone x-ref="uploadZone"></upload-zone>
+      <div class="max-w-sm text-trueGray-800">
+        <p>Format foto .jpg .jpeg .png dengan ukuran minimal 1000x1000px dan maksimal 2MB.</p>
+        <p class="mt-2">Pilih foto atau tarik dan letakkan di kotak hingga 10 foto. Geser foto sesuai urutan yang diinginkan.</p>
+      </div>
+      <div class="flex justify-end w-full gap-4">
+        <button @click="show = false; $refs.uploadZone.reset();" type="button" class="btn btn-base btn-outlined-black">Kembali</button>
+        <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
+      </div>
+    </form>
+  </div>
 {% else %}
   <section class="grid flex-grow w-full place-content-center">
     <div class="flex flex-col gap-6 mx-auto w-96">

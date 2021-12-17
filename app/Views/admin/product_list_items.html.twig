@@ -48,10 +48,10 @@
 </div>
 <form x-cloak x-data="{show: false}" @open="show = true" @close="show = false" @click.outside="closeProductForm({{ product.id }})" x-collapse x-show="show" hx-put="{{ route_to('update-product', product.id) }}"  hx-target="#main" hx-indicator="#main-indicator" class="product{{ product.id }}Form py-2 pl-12 space-y-6">
   <div class="flex gap-6">
-    <a href="#" class="relative block overflow-hidden rounded-lg w-28 h-28">
+    <button @click='$dispatch("manage-photo", { productId: {{ product.id }}, title: "{{ product.title }}", thumbnails: {{ product.thumbnails|json_encode()|raw }} })' type="button" class="relative block overflow-hidden rounded-lg w-28 h-28">
       <img src="{{ thumbnailSrc }}" class="w-full h-full">
-      <span class="absolute bottom-0 grid items-center w-full font-semibold text-center text-white h-7 bg-emerald-500">Ubah foto</span>
-    </a>
+      <span class="absolute bottom-0 grid items-center w-full font-semibold text-center text-white h-7 bg-emerald-500">Atur foto</span>
+    </button>
     <div class="space-y-4 w-96">
       {{
         components.input({

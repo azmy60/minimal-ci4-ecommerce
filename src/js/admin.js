@@ -2,6 +2,7 @@ import './components/InputContainer'
 import ClipboardJS from 'clipboard'
 import Fuse from 'fuse.js'
 import { remove } from 'lodash'
+import './components/UploadZone'
 
 new ClipboardJS('.btn-copy')
 

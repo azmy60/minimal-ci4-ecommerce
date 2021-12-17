@@ -1,8 +1,6 @@
 {% extends "wrappers/base.html.twig" %}
 {% block head %}
 <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/muuri@0.9.5/dist/muuri.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 {% endblock head %}
 {% block title %}Tambah produk - {{ store.name }}{% endblock title %}
 
@@ -20,7 +18,7 @@
 </header>
 
 <main class="w-full mt-8">
-  <form class="pb-16 mx-auto space-y-24 w-min" action="{{ route_to('admin/add_product') }}" method="post" enctype="multipart/form-data">
+  <form class="pb-16 mx-auto space-y-24 w-min" action="{{ route_to('admin/add-product') }}" method="post" enctype="multipart/form-data">
     {{ csrf_field() }}
     <section>
       {% import "components/components.html.twig" as components %}
@@ -29,7 +27,7 @@
         helper: 'Format foto .jpg .jpeg .png dengan ukuran minimal 1000 x 1000px dan maksimal 2MB.<br><br>
         Pilih foto atau tarik dan letakkan di kotak hingga 10 foto. Geser foto sesuai urutan yang diinginkan.',
         name: 'photos',
-        input_area: _self.upload_zone(),
+        input_area: '<upload-zone></upload-zone>',
       }) }}
     </section>
 
@@ -141,65 +139,6 @@ input_row options:
   </div>
   <div class="w-[37rem]">{{ options.input_area|raw }}</div>
 </div>
-{% endmacro %}
-
-{% macro upload_zone() %}
-  <div x-init="muuri = new Muuri($refs['thumbnails-container'], {
-    dragEnabled: true,
-    dragStartPredicate: (item, event) => {
-      if(!event.target.closest('upload-zone-thumbnail'))
-          return false
-      return Muuri.ItemDrag.defaultStartPredicate(item, event)
-    },
-    dragSortPredicate: (item) => {
-      const result = Muuri.ItemDrag.defaultSortPredicate(item)
-      return result && result.index === files.length ? false : result
-    },
-  });
-  muuri.on('dragStart', (item) => {
-    const itemId = item.getElement().tid
-    prevPos = muuri.getItems().findIndex((it) => it.getElement().tid === itemId)
-  });
-  muuri.on('dragReleaseEnd', (item) => {
-    // Sort element based on uploadZoneThumbnail.tid
-    
-    const itemId = item.getElement().tid
-    const items = muuri.getItems()
-    items.pop() // remove the upload-btn from the list
-    
-    const currentPos = items.findIndex((item) => item.getElement().tid === itemId)
-    
-    if(currentPos === prevPos) // no swapping
-      return
-
-    const slicedFiles = files.splice(prevPos, 1)
-
-    files.splice(currentPos, 0, slicedFiles[0])
-
-    const dt = new DataTransfer()
-    for(let i = 0; i < files.length; i++) {
-      dt.items.add(files[i].file)
-    }
-
-    input.files = dt.files
-  });" x-data="helper.uploadZoneData()" id="uploadZone" @dragover.prevent="ondragover($el)" @dragleave.prevent="ondragleave($el)" @drop.prevent="ondropfiles($event, $event.dataTransfer.files, $el.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray'))" class="relative w-full h-full rounded-lg">
-    <input x-ref="inputFile" @change.prevent="ondropfiles($event, $el.files)" type="file" multiple name="photos[]" id="photos" class="hidden">
-    <div x-ref="thumbnails-container" id="thumbnails-container" class="relative w-full -m-3">
-
-      <div id="upload-btn" @click="$refs.inputFile.click()" class="{{ session('errors.photos') ? 'border-red-500' : border-trueGray-400 }} grid border-2 rounded-lg cursor-pointer w-28 h-28 place-content-center">
-        <svg class="fill-current w-9 h-9 text-trueGray-400">
-          <use xlink:href="#ph_upload-simple">
-        </svg>
-      </div>
-      
-    </div>
-    <style>
-      #thumbnails-container > * {
-        position: absolute;
-        margin: 0.75rem;
-      }
-    </style>
-  </div>
 {% endmacro %}
 
 {% block input_price %}

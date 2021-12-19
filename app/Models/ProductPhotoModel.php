@@ -13,7 +13,7 @@ class ProductPhotoModel extends Model
     protected $returnType           = 'array';
     protected $useSoftDeletes       = false;
     protected $protectFields        = true;
-    protected $allowedFields        = ['product_id', 'filename'];
+    protected $allowedFields        = ['product_id', 'sort_order', 'filename'];
 
     // Dates
     protected $useTimestamps        = false;
@@ -34,12 +34,13 @@ class ProductPhotoModel extends Model
      *
      * @return boolean
      */
-    public function store($productId, $photoFile)
+    public function store($productId, $photoFile, $order = null)
     {
         $filename = $photoFile->getRandomName();
         $path = $photoFile->store('product-photos', $filename);
         return $this->insert([
             'product_id' => $productId,
+            'sort_order' => $order,
             'filename' => $filename,
         ]);
     }
@@ -51,7 +52,7 @@ class ProductPhotoModel extends Model
      */
     public function getFilenames($productId)
     {
-        return $this->where('product_id', $productId)->findAll();
+        return $this->where('product_id', $productId)->orderBy('sort_order', 'asc')->findAll();
     }
 
     public function getProductsFilenames($productIds)
@@ -61,5 +62,16 @@ class ProductPhotoModel extends Model
             $productsFilenames['product_id'] = $this->getFilenames($productId);
         }
         return $productsFilenames;
+    }
+
+    public function setOrders($productId, $orders) {
+        // $ids = $this->where('product_id', $productId)->findColumn('id');
+        // echo '<pre>'.var_export($orders,true).'</pre>';
+        $batch = array_map(fn($order) => [
+            'id' => $order['id'],
+            'sort_order' => $order['order'],
+        ], $orders);
+        // return $batch;
+        return $this->updateBatch($batch, 'id');
     }
 }

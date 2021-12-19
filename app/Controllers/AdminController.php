@@ -28,6 +28,7 @@ class AdminController extends BaseController
             $filenames = $productPhotoModel->getFilenames($products[$index]['id']);
             foreach ($filenames as $filename) {
                 array_push($thumbnails, [
+                    'id' => $filename['id'],
                     'src' => route_to('content-photos', 'sm', $filename['filename']),
                     'order' => $filename['sort_order'],
                 ]);
@@ -111,6 +112,43 @@ class AdminController extends BaseController
         $cats = json_decode($productData['cats']);
         if($cats != null)
             $productModel->updateCats($id, $cats);
+
+        return $this->products();
+    }
+
+    public function updatePhotos()
+    {
+        $photos = $this->request->getFileMultiple('photos') ?? [];
+        $photosData = $this->request->getPost();
+        $productId = $photosData['product_id'];
+        $photosOrders = json_decode($photosData['photos_orders'], true);
+        $dbOrders = json_decode($photosData['db_orders'], true);
+        $deleteIds = json_decode($photosData['delete_ids'], true);
+
+        // echo '<pre>'.var_export($photos,true).'</pre>';
+        // echo '<pre>'.var_export($photosOrders,true).'</pre>';
+        // echo '<pre>'.var_export($dbOrders,true).'</pre>';
+        // return '<pre>'.var_export($deleteIds,true).'</pre>';
+        
+        $productPhotoModel = model(ProductPhotoModel::class);
+
+        // Photo validation
+        foreach ($photos as $index => $photo) {
+            if (!$photo->isValid()) {
+                return redirect()->back()->withInput()->with("errors.photos", $photo->getErrorString());
+            }
+            if(!$this->validate(["photos.$index" => "max_size[photos.$index,2048]|mime_in[photos.$index,image/png,image/jpeg]"])) {
+                return redirect()->back()->withInput()->with('errors.photos', $this->validator->getErrors());
+            }
+
+            // $newOrders = explode(',', $photosData['new_orders']);
+            $productPhotoModel->store($productId, $photo, $photosOrders[$index] ?? null);
+        }
+
+        // $orders = explode(',', $photosData['old_orders']);
+        if(!empty($dbOrders)) $productPhotoModel->setOrders($productId, $dbOrders);
+
+        if(!empty($deleteIds)) $productPhotoModel->delete($deleteIds);
 
         return $this->products();
     }

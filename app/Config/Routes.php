@@ -92,6 +92,7 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
     // $routes->put('products/(:num)', 'AdminController::updateProduct/$1', ['as' => 'update-stock']);
     $routes->get('products/search', 'AdminController::findProducts', ['as' => 'search-products']);
     $routes->put('products/(:num)', 'AdminController::updateProduct/$1', ['as' => 'update-product']);
+    $routes->post('products/update-photos', 'AdminController::updatePhotos', ['as' => 'update-photos']);
     $routes->delete('products/(:num)', 'AdminController::deleteProduct/$1', ['as' => 'delete-product']);
     
     $routes->get('add-category', 'AdminController::addCategory');

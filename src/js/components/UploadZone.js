@@ -1,18 +1,22 @@
-// contains 3 inputs:
+// contains 4 inputs:
 // photos[] - multiple files
-// new_orders - a string of numbers separated with , (comma) or empty string. ex: '0,1,3,4'.
-//              represents the order of the files that will be uploaded
-// old_orders - same format.
-//              represents the order of the files that are added with addThumbnailsFromDB
+// photos_orders  - a json string consisting of an array of numbers. ex: '[1,2,4]'.
+//                  representing the order of each file in input photos[] accordingly.
+// db_orders      - a json string consisting of an array of objects with id and order as the attributes. ex: '[{ "id": 0, "order": 4 }]'.
+//                  corresponds to the array that is added with addThumbnailsFromDB.
+// delete_ids     - same as photos_orders.
+//                  the ids correspond to the ids that are passed in addThumbnailsFromDB.
 
 import Grid from 'muuri'
 import UploadZoneThumbnail from './UploadZoneThumbnail'
 
 const templateHtml = /* html */`
 <div class="relative w-full h-full rounded-lg">
+  <input type="file" multiple class="hidden for_file_selection_dialog">
   <input type="file" multiple name="photos[]" class="hidden">
-  <input type="hidden" name="new_orders">
-  <input type="hidden" name="old_orders">
+  <input type="hidden" name="photos_orders">
+  <input type="hidden" name="db_orders">
+  <input type="hidden" name="delete_ids">
   <div class="relative w-full -m-3 thumbnails-container">
     <div class="grid place-content-center w-28 h-28 border rounded-lg border-trueGray-400 cursor-pointer upload-btn">
       <svg class="fill-current w-9 h-9 text-trueGray-400"><use xlink:href="#ph_upload-simple"></svg>
@@ -41,15 +45,19 @@ class UploadZone extends HTMLElement {
     this.root = null
     this._tid = 0
     this.prevPos = -1
-    this.inputFiles = null
-    this.oldOrdersInput = null
-    this.newOrdersInput = null
-    this.oldOrders = []
-    this.newOrders = []
+    this.filesInput = null
+    this.dbOrdersInput = null
+    this.photosOrdersInput = null
+    this.deleteIdsInput = null
+    this.deleteIds = []
   }
 
   isFull() {
     return this.files.length >= this.maxFiles
+  }
+
+  isFileFromDB(file) {
+    return file.id !== null
   }
 
   addRing() {
@@ -61,18 +69,16 @@ class UploadZone extends HTMLElement {
   }
 
   hideUploadBtn() {
-    this.muuri.hide([this.muuri.getItems()[0]])
-    // this.uploadBtn.classList.add('hidden')
+    this.muuri.hide([this.muuri.getItems().pop()])
   }
 
   showUploadBtn() {
-    this.muuri.show([this.muuri.getItems()[0]])
-    // this.uploadBtn.classList.remove('hidden')
+    this.muuri.show([this.muuri.getItems().pop()])
   }
 
   getThumbnails() {
     const thumbnails = this.muuri.getItems()
-    thumbnails.shift() // remove the upload-btn from the list
+    thumbnails.pop() // remove the upload-btn from the list
     return thumbnails
   }
 
@@ -80,11 +86,11 @@ class UploadZone extends HTMLElement {
     this._tid = 0
     this.prevPos = -1
     this.files = []
-    this.oldOrders = []
-    this.newOrders = []
-    this.inputFiles.value = ''
-    this.oldOrdersInput.value = ''
-    this.newOrdersInput.value = ''
+    this.deleteIds = []
+    this.ffsdInput.value = ''
+    this.filesInput.value = ''
+    this.dbOrdersInput.value = ''
+    this.photosOrdersInput.value = ''
     this.muuri.remove(this.getThumbnails(), { removeElements: true })
   }
 
@@ -96,101 +102,84 @@ class UploadZone extends HTMLElement {
     return this._tid++; 
   }
 
-  makeOrder(tid, order) {
-    return { tid, order }
+  updateDbOrdersInput() {
+    const orders = this.files
+      .filter((file) => this.isFileFromDB(file))
+      .map((file) => { return { id: file.id, order: file.order } })
+    this.dbOrdersInput.value = JSON.stringify(orders)
   }
 
-  findIndexOldOrder(tid) {
-    return this.oldOrders.findIndex((o) => o.tid === tid)
-  }
-
-  findIndexNewOrder(tid) {
-    return this.newOrders.findIndex((o) => o.tid === tid)
-  }
-
-  updateOldOrdersInput() {
-    this.oldOrdersInput.value = this.oldOrders.map((o) => o.order).join(',')
-  }
-
-  updateNewOrdersInput() {
-    this.newOrdersInput.value = this.newOrders.map((o) => o.order).join(',')
+  updatePhotosOrdersInput() {
+    const orders = this.files
+      .filter((file) => !this.isFileFromDB(file))
+      .map((file) => file.order)
+    this.photosOrdersInput.value = JSON.stringify(orders)
   }
   
   resetOrder() {
     this.files.forEach((file, i) => {
       this.files[i].order = i
       file.thumbnail.updateOrder(i) 
-
-      if(file.isFromDB) {
-        const i = this.findIndexOldOrder(file.tid)
-        if(i !== -1)  this.oldOrders[i].order = file.order
-      }
-      else {
-        const i = this.findIndexNewOrder(file.tid)
-        if(i !== -1)  this.newOrders[i].order = file.order
-      }
     })
 
-    this.updateOldOrdersInput()
-    this.updateNewOrdersInput()
+    this.updateDbOrdersInput()
+    this.updatePhotosOrdersInput()
   }
 
-  addFile(tid, file, order, isFromDB) {
+  addFile(id, tid, file, order) {
+    if(this.files.length === 0)
+      this.dispatchEvent(new CustomEvent('uploadzonefilled', { bubbles: true, composed: true, cancelable: true }))
+    
     const thumbnail = new UploadZoneThumbnail(tid, order, file, this.thumbnailWidth, this.thumbnailHeight, this.removeFile.bind(this))
-    this.files.push({ tid, file, order, isFromDB, thumbnail })
-    this.muuri.add([thumbnail], { index: this.files.length })
+    const muuriItem = this.muuri.add([thumbnail], { index: this.files.length })[0]
+    this.files.push({ id, tid, file, order, thumbnail, muuriItem })
   }
 
   removeFile(tid) {
     const dt = new DataTransfer()
-    const keepFiles = []
 
-    this.files.forEach((file) => {
+    this.files = this.files.filter((file) => {
       if(file.tid !== tid) {
-        if(!file.isFromDB) dt.items.add(file.file)
-        return keepFiles.push(file) 
+        if(!this.isFileFromDB(file)) dt.items.add(file.file)
+        return true // keep this file
       }
 
-      const item = this.getThumbnails().find((item) => item.getElement().tid === tid)
-      this.muuri.remove([item], { removeElements: true })
+      this.muuri.remove([file.muuriItem], { removeElements: true })
 
-      if(file.isFromDB) {
-        const i = this.findIndexOldOrder(tid)
-        if(i !== -1) this.oldOrders.splice(i, 1)
-      }
-      else {
-        const i = this.findIndexNewOrder(tid)
-        if(i !== -1) this.newOrders.splice(i, 1)
-      }
+      if(this.isFileFromDB(file)) this.deleteIds.push(file.id)
+
+      return false // remove this file
     })
-
-    this.files = keepFiles
 
     this.resetOrder()
 
-    this.inputFiles.files = dt.files
+    this.deleteIdsInput.value = JSON.stringify(this.deleteIds)
+
+    this.filesInput.files = dt.files
 
     if(!this.isFull()) this.showUploadBtn()
+
+    if(this.files.length === 0)
+      this.dispatchEvent(new CustomEvent('uploadzoneemptied', { bubbles: true, composed: true, cancelable: true }))
   }
 
   /**
-   * @param {Array} thumbnails - an array of object containing img source and order { src: <string>, order: <number|null> } 
+   * @param {Array} files - an array of object containing img source and order { id: <number>, src: <string>, order: <number|null> } 
    */
-  addThumbnailsFromDB(thumbnails) {
-    thumbnails.forEach((thumbnail) => {
+  addFilesFromDB(files) {
+    files.forEach((file) => {
       const tid = this.tidCounter()
-      this.addFile(tid, thumbnail.src, thumbnail.order, true)
-      this.oldOrders.push(this.makeOrder(tid, thumbnail.order))
+      this.addFile(file.id, tid, file.src, file.order)
     })
 
-    this.updateOldOrdersInput()
+    this.updateDbOrdersInput()
 
     if(this.isFull()) this.hideUploadBtn()
   }
 
   getDataTransferFromFiles() {
     const dt = new DataTransfer()
-    this.files.forEach((file) => !file.isFromDB ? dt.items.add(file.file) : null)
+    this.files.forEach((file) => !this.isFileFromDB(file) ? dt.items.add(file.file) : null)
     return dt
   }
 
@@ -205,7 +194,7 @@ class UploadZone extends HTMLElement {
 
     for(let i = 0; i < droppedFiles.length; i++) {
       // File validation
-      if(dt.files.length >= this.maxFiles)
+      if(this.isFull())
         break // TODO: show message (cannot add more than 10 photos)
       if(!this.allowedTypes.has(droppedFiles[i].type)) // TODO: use built-in accept attribute in input tag
         continue // TODO: show message (unsupported file type)
@@ -217,13 +206,14 @@ class UploadZone extends HTMLElement {
 
       // Register a new file to files
       const tid = this.tidCounter()
-      this.addFile(tid, droppedFiles[i], null, false)
-      this.newOrders.push(this.makeOrder(tid, null))
+      this.addFile(null, tid, droppedFiles[i], this.files.length)
     }
     
-    this.inputFiles.files = dt.files
+    this.filesInput.files = dt.files
 
-    this.updateNewOrdersInput()
+    this.ffsdInput.value = ''
+
+    this.updatePhotosOrdersInput()
 
     if(this.isFull()) this.hideUploadBtn()
   }
@@ -231,15 +221,17 @@ class UploadZone extends HTMLElement {
   connectedCallback() {
     this.appendChild(template.content.cloneNode(true))
     this.root = this.children[0]
-    this.inputFiles = this.root.querySelector('input[type="file"]')
-    this.oldOrdersInput = this.root.querySelector('input[name="old_orders"]')
-    this.newOrdersInput = this.root.querySelector('input[name="new_orders"]')
+    this.filesInput = this.root.querySelector('input[name="photos[]"]')
+    this.ffsdInput = this.root.querySelector('.for_file_selection_dialog')
+    this.dbOrdersInput = this.root.querySelector('input[name="db_orders"]')
+    this.photosOrdersInput = this.root.querySelector('input[name="photos_orders"]')
+    this.deleteIdsInput = this.root.querySelector('input[name="delete_ids"]')
     this.thumbnailsContainer = this.root.querySelector('.thumbnails-container')
     this.uploadBtn = this.root.querySelector('.upload-btn')
 
-    this.inputFiles.addEventListener('change', this.onDropFiles.bind(this))
+    this.ffsdInput.addEventListener('change', this.onDropFiles.bind(this))
     
-    this.uploadBtn.addEventListener('click', () => { this.inputFiles.click() })
+    this.uploadBtn.addEventListener('click', () => { this.ffsdInput.click() })
 
     this.muuri = new Grid(this.thumbnailsContainer, {
       dragEnabled: true,
@@ -250,7 +242,7 @@ class UploadZone extends HTMLElement {
       },
       dragSortPredicate: (thumbnail) => {
         const result = Grid.ItemDrag.defaultSortPredicate(thumbnail)
-        return result && result.index === 0 ? false : result
+        return result && result.index === this.files.length ? false : result
       },
     })
 
@@ -277,7 +269,7 @@ class UploadZone extends HTMLElement {
 
       this.resetOrder()
   
-      this.inputFiles.files = this.getDataTransferFromFiles().files
+      this.filesInput.files = this.getDataTransferFromFiles().files
     });
 
     this.addEventListener('dragover', (e) => {

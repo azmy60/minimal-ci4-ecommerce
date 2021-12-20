@@ -94,12 +94,14 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
     $routes->put('products/(:num)', 'AdminController::updateProduct/$1', ['as' => 'update-product']);
     $routes->post('products/update-photos', 'AdminController::updatePhotos', ['as' => 'update-photos']);
     $routes->delete('products/(:num)', 'AdminController::deleteProduct/$1', ['as' => 'delete-product']);
+    $routes->delete('products', 'AdminController::deleteProducts', ['as' => 'products-bulk-delete']);
     
     $routes->get('add-category', 'AdminController::addCategory');
     $routes->post('add-category', 'AdminController::attemptAddCategory');
     
     $routes->get('categories/search', 'AdminController::findCategories', ['as' => 'search-categories']);
     $routes->delete('categories/(:num)', 'AdminController::deleteCategory/$1', ['as' => 'delete-category']);
+    $routes->delete('categories', 'AdminController::deleteCategories', ['as' => 'categories-bulk-delete']);
 
     $routes->put('settings/store-information', 'AdminController::updateStore', ['as' => 'update-store']);
     $routes->put('settings/message-template', 'AdminController::updateStore', ['as' => 'update-message']);

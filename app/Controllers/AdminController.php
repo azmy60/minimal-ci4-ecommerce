@@ -164,6 +164,18 @@ class AdminController extends BaseController
         return $this->products();
     }
 
+    public function deleteProducts()
+    {
+        $data = $this->request->getRawInput();
+        $ids = json_decode($data['ids'], true);
+
+        if(empty($ids)) return $this->products();
+
+        model(ProductModel::class)->delete($ids);
+
+        return $this->products();
+    }
+
     public function categories()
     {
         $categoryModel = model(CategoryModel::class);
@@ -220,6 +232,19 @@ class AdminController extends BaseController
         ];
 
         return $this->render('category_list_items', $data);
+    }
+
+    public function deleteCategories()
+    {
+        $data = $this->request->getRawInput();
+        $ids = json_decode($data['ids'], true);
+
+        if(empty($ids)) return $this->categories();
+
+        model(ProductCategoryModel::class)->whereIn('cat_id', $ids)->delete();
+        model(CategoryModel::class)->delete($ids);
+
+        return $this->categories();
     }
 
     public function settings()

@@ -1,11 +1,24 @@
 {% import "components/components.html.twig" as components %}
 
-<div x-data='{ categories: JSON.parse(`{{ categories|json_encode()|raw }}`) }' class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
+<div x-init="base.productCount = {{ products|length }}" x-data='{ categories: JSON.parse(`{{ categories|json_encode()|raw }}`) }' class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
 
 {% for product in products %}
 {% set thumbnailSrc = product.thumbnails[0].src %}
 <div class="product-list-el product-{{ product.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 13.75rem 10rem auto;">
-  <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_square"></svg>
+  <button
+    x-data="{ checked: false }"
+    @click="
+      checked = !checked;
+      $dispatch(checked ? 'checked' : 'unchecked', {{ product.id }});"
+    @selectall.window="
+      checked = true;
+      $dispatch('checked', {{ product.id }});
+    "
+    @unselectall.window="checked = false"
+    class="w-6 h-6">
+    <svg :class="{ 'hidden': checked }" class="w-full h-full fill-current"><use xlink:href="#ph_square"></svg>
+    <svg x-cloak :class="{ 'hidden': !checked }" class="w-full h-full fill-current"><use xlink:href="#ph_check-square-fill"></svg>
+  </button>
   <div class="flex-shrink">
     <img src="{{ thumbnailSrc }}" class="inline-block w-16 h-16 mr-6 rounded-lg bg-trueGray-300">
     <span class="inline-block w-64">{{ product.title }}</span>

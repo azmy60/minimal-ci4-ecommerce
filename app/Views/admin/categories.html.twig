@@ -26,9 +26,62 @@
       ],
   }) }}
   <div class="relative px-7 mt-9">
-    <div class="w-full">
+    <div
+      x-data="{
+        show: false,
+        ids: [],
+        allSelected() {
+          return this.ids.length === base.categoryCount;
+        },
+        addId(id) {
+          if(this.ids.indexOf(id) < 0) this.ids.push(id);
+          this.$refs['bulk-ids'].value = JSON.stringify(this.ids)
+        },
+        removeId(id) {
+          const i = this.ids.indexOf(id);
+          if(i >= 0) this.ids.splice(i, 1);
+          this.$refs['bulk-ids'].value = JSON.stringify(this.ids)
+        },
+        unselectAll() {
+          this.ids = []
+          this.$dispatch('unselectall')
+        },
+        toggleCheckbox() {
+          if(this.allSelected())  
+            return this.unselectAll()
+
+          this.$dispatch('selectall')    
+        },
+      }"
+      class="w-full">
+      <div x-cloak x-show="ids.length > 0" x-collapse class="flex items-center justify-between px-6 py-4 mb-4 rounded-lg bg-trueGray-100">
+        <div class="flex items-center gap-4">
+          <span x-text="`${ids.length} kategori terpilih`"></span>
+          <div class="relative">
+            <button @click="$dispatch('dropdownbulkactions')" class="border btn btn-base input-default">
+              <span>Pilih aturan</span>
+              <svg><use xlink:href="#ph_caret-down"></svg>
+            </button>
+            <ul x-cloak x-data="{ show: false }" @dropdownbulkactions.window="show = true" @click="show = false" @click.outside="show = false" x-show="show" class="absolute w-[max-content] dropdown-menu dropdown-menu-base">
+              <li hx-delete="{{ route_to('categories-bulk-delete') }}" :hx-confirm="`Kamu yakin ingin menghapus ${ids.length} kategori terpilih?`" hx-include="#input-bulk-ids" hx-target="#main" hx-indicator="#main-indicator" class="dropdown-menu-item-danger">Hapus permanen</li>
+            </ul>
+          </div>
+        </div>
+        <button @click="unselectAll">
+          <svg class="w-5 h-5 fill-current"><use xlink:href="#ph_x"></svg>
+        </button>
+        <input x-ref="bulk-ids" id="input-bulk-ids" name="ids" type="hidden" class="hidden">
+      </div>
       <div class="grid items-center mb-3 text-lg font-semibold" style="grid-template-columns: 3rem 24rem 12rem;">
-        <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_square"></svg>
+        <button
+          @checked.window="addId($event.detail)"
+          @unchecked.window="removeId($event.detail)"
+          @click="toggleCheckbox"
+          class="w-6 h-6">
+          <svg :class="{ 'hidden': ids.length > 0 || allSelected() }" class="w-full h-full fill-current"><use xlink:href="#ph_square"></svg>
+          <svg x-cloak :class="{ 'hidden': ids.length === 0 || allSelected() }" class="w-full h-full fill-current"><use xlink:href="#ph_square-logo-fill"></svg>
+          <svg x-cloak :class="{ 'hidden': !allSelected() }" class="w-full h-full fill-current"><use xlink:href="#ph_check-square-fill"></svg>
+        </button>
         <div>Kategori</div>
         <div>Jumlah produk</div>
       </div>

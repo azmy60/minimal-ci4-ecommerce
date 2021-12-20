@@ -1,6 +1,21 @@
+<div x-init="base.categoryCount = {{ categories|length }}"></div>
+
 {% for category in categories %}
 <div class="category-{{ category.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 12rem 12rem auto;">
-  <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_square"></svg>
+  <button
+    x-data="{ checked: false }"
+    @click="
+      checked = !checked;
+      $dispatch(checked ? 'checked' : 'unchecked', {{ category.id }});"
+    @selectall.window="
+      checked = true;
+      $dispatch('checked', {{ category.id }});
+    "
+    @unselectall.window="checked = false"
+    class="w-6 h-6">
+    <svg :class="{ 'hidden': checked }" class="w-full h-full fill-current"><use xlink:href="#ph_square"></svg>
+    <svg x-cloak :class="{ 'hidden': !checked }" class="w-full h-full fill-current"><use xlink:href="#ph_check-square-fill"></svg>
+  </button>
   <div class="flex items-center flex-shrink">
     <div class="inline-block w-16 h-16 mr-6 overflow-hidden rounded-lg bg-trueGray-300">
       {% if category.filename %}

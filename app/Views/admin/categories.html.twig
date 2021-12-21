@@ -85,7 +85,17 @@
         <div>Kategori</div>
         <div>Jumlah produk</div>
       </div>
-      <div id="list-container" class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
+      <div id="list-container" x-data="{
+        openCategoryForm(id) {
+          document.querySelector(`.category${id}Form`).dispatchEvent(new CustomEvent('open'))
+          document.querySelectorAll('.category-list-el').forEach(el=>el.classList.add('opacity-50'))
+        },
+        closeCategoryForm(id) {
+          document.querySelector(`.category${id}Form`).dispatchEvent(new CustomEvent('close'))
+          document.querySelectorAll('.category-list-el').forEach(el=>el.classList.remove('opacity-50'))
+        }
+      }"
+      class="pb-6 border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
         {% include "admin/category_list_items.html.twig" %}
       </div>
     </div>

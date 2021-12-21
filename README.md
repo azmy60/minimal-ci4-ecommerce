@@ -21,6 +21,7 @@ npm install
 npm run prod
 ```
 5. Set the php config's `post_max_size` to `21M` at minimum. https://stackoverflow.com/a/6135485/10012118
+6. Disable `ONLY_FULL_GROUP_BY` sql mode. https://stackoverflow.com/a/36033983/10012118
 
 ## Creating a new account
 ### Using CLI

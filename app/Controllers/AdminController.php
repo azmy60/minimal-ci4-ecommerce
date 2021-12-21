@@ -181,11 +181,36 @@ class AdminController extends BaseController
         $categoryModel = model(CategoryModel::class);
         $productCategoryModel = model(ProductCategoryModel::class);
 
+        $products = model(ProductModel::class)->findAll();
+        foreach ($products as $index => $_) {
+            $products[$index]['filenames'] = model(ProductPhotoModel::class)->getFilenames($products[$index]['id']);
+        }
+
         $categories = $categoryModel->findAll();
         foreach ($categories as $index => $category) {
             $id = $category['id'];
-            $filename = $productCategoryModel->getPhotoFilename($id);
-            $categories[$index]['filename'] = $filename;
+            $selectedProducts = \Config\Database::connect()
+                ->query("
+                    SELECT
+                        product_categories.product_id,
+                        products.title,
+                        product_photos.filename
+                    FROM product_categories
+                    LEFT JOIN (
+                        SELECT filename, MIN(product_id) product_id
+                        FROM product_photos
+                        GROUP BY product_id
+                    ) product_photos ON product_categories.product_id = product_photos.product_id
+                    LEFT JOIN products ON product_categories.product_id = products.id
+                    WHERE product_categories.cat_id = $id
+                ")
+                ->getResultArray();
+
+            $selectedIds = array_map(fn($product) => $product['product_id'], $selectedProducts);
+            $unselectedProducts = array_filter($products, fn($product) => !in_array($product['id'], $selectedIds));
+
+            $categories[$index]['selected_products'] = $selectedProducts;
+            $categories[$index]['unselected_products'] = $unselectedProducts;
 
             $productCount = $productCategoryModel->getProductCount($id);
             $categories[$index]['product_count'] = $productCount;
@@ -194,6 +219,7 @@ class AdminController extends BaseController
         $visibles = $categoryModel->findVisibles();
         $invisibles = $categoryModel->findInvisibles();
 
+        $data['products'] = $products;
         $data['categories'] = $categories;
         $data['categories_count'] = count($categories);
         $data['visibles_count'] = count($visibles);
@@ -232,6 +258,37 @@ class AdminController extends BaseController
         ];
 
         return $this->render('category_list_items', $data);
+    }
+
+    public function updateCategory($catId) {
+        $data = $this->request->getRawInput();
+        $name = $data['name'];
+        $productIds = $data['productIds'] ?? [];
+
+        model(CategoryModel::class)->update($catId, [
+            'name' => $name,
+        ]);
+        
+        $productCategoryModel = model(ProductCategoryModel::class);
+        if(!empty($productIds)) {
+            $productCategoryModel->where('cat_id', $catId)->whereNotIn('product_id', $productIds)->delete();
+            
+            foreach ($productIds as $productId) {
+                if($productCategoryModel
+                    ->where('cat_id', $catId)
+                    ->where('product_id', $productId)
+                    ->countAllResults() == 0) {
+                    $productCategoryModel->insert([
+                        'cat_id' => $catId,
+                        'product_id' => $productId,
+                    ]);
+                }
+            }            
+        } else {
+            $productCategoryModel->where('cat_id', $catId)->delete();
+        }
+
+        return $this->categories();
     }
 
     public function deleteCategories()

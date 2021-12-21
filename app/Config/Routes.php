@@ -100,6 +100,7 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
     $routes->post('add-category', 'AdminController::attemptAddCategory');
     
     $routes->get('categories/search', 'AdminController::findCategories', ['as' => 'search-categories']);
+    $routes->put('categories/(:num)', 'AdminController::updateCategory/$1', ['as' => 'update-category']);
     $routes->delete('categories/(:num)', 'AdminController::deleteCategory/$1', ['as' => 'delete-category']);
     $routes->delete('categories', 'AdminController::deleteCategories', ['as' => 'categories-bulk-delete']);
 

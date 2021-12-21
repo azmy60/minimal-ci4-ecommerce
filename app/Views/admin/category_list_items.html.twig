@@ -1,7 +1,7 @@
 <div x-init="base.categoryCount = {{ categories|length }}"></div>
 
 {% for category in categories %}
-<div class="category-{{ category.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 12rem 12rem auto;">
+<div class="category-list-el category-{{ category.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 12rem 12rem auto;">
   <button
     x-data="{ checked: false }"
     @click="
@@ -18,8 +18,8 @@
   </button>
   <div class="flex items-center flex-shrink">
     <div class="inline-block w-16 h-16 mr-6 overflow-hidden rounded-lg bg-trueGray-300">
-      {% if category.filename %}
-      <img src="{{ route_to('content-photos', 'sm', category.filename) }}" class="w-full h-full">
+      {% if category.selected_products is not empty %}
+      <img src="{{ route_to('content-photos', 'sm', category.selected_products[0].filename) }}" class="w-full h-full">
       {% endif %}
     </div>
     <span class="inline-block w-64">{{ category.name }}</span>
@@ -37,7 +37,7 @@
       </svg>
     </button>
     <ul x-cloak x-data="{ show: false }" @dropdowncategory{{ category.id }}.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute dropdown-menu dropdown-menu-base">
-      <li>Edit kategori</li>
+      <li @click="openCategoryForm({{ category.id }})">Edit kategori</li>
       <li>Link untuk share</li>
       <li hx-delete="{{ route_to('delete-category', category.id) }}" hx-confirm="Anda yakin ingin menghapus kategori ini?" hx-target="#main" hx-indicator="#main-indicator" class="dropdown-menu-item-danger">
         <span>Hapus permanen</span>
@@ -46,4 +46,90 @@
     </ul>
   </div>
 </div>
+<form
+  x-cloak
+  x-init="
+    products.forEach(p => $dispatch(`dropdownitem${p.product_id}`, { show: false }))
+  "
+  x-data='{
+    show: false,
+    products: {{ category.selected_products|json_encode()|raw }},
+    addProduct(product_id, title, filename) {
+      this.products.push({product_id, title, filename})
+      this.$dispatch(`dropdownitem${product_id}`, { show: false })
+    },
+    removeProduct(product_id) {
+      this.products.splice(this.products.findIndex(p => p.product_id === product_id), 1)
+      this.$dispatch(`dropdownitem${product_id}`, { show: true })
+    },
+  }'
+  x-show="show"
+  @open="show = true"
+  @close="show = false"
+  @click.outside="!$event.target.closest('.ignore-outside-click') && closeCategoryForm({{ category.id }})"
+  x-collapse
+  hx-put="{{ route_to('update-category', category.id) }}"
+  hx-target="#main"
+  hx-indicator="#main-indicator"
+  class="w-full pl-12 mt-2 category{{ category.id }}Form">
+  
+  <div class="flex gap-6">
+
+    <div class="space-y-1">
+      <label for="name{{ category.id }}" class="block font-semibold text-trueGray-800">Judul kategori</label>
+      <input id="name{{ category.id }}" name="name" type="text" value="{{ category.name }}" class="input input-base input-default">
+    </div>
+    
+    <div class="flex-grow">
+      <div class="relative flex-grow">
+        <label for="productIds[]" class="font-semibold text-trueGray-800">Daftar produk</label>
+        <button x-data @click="$dispatch('dropdownproduct')" type="button" class="flex items-center justify-between w-full mt-1 input input-base input-default text-trueGray-400">
+          <span>Tambahkan produk disini</span>
+          <svg class="w-6 h-6 fill-current">
+            <use xlink:href="#ph_caret-down">
+          </svg>
+        </button>
+        <ul x-cloak x-data="{ show: false }" @dropdownproduct.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute left-0 w-full top-full dropdown-menu dropdown-menu-lg">
+          {% for product in category.selected_products %} 
+          <li x-data="{ show: false }" x-show="show" @dropdownitem{{ product.product_id }}.window="show = $event.detail.show" @click="addProduct({{ product.product_id }}, '{{ product.title }}', '{{ product.filename }}')">{{ product.title }}</li>
+          {% endfor %}
+          {% for product in category.unselected_products %}
+          <li x-data="{ show: true }" x-show="show" @dropdownitem{{ product.id }}.window="show = $event.detail.show" @click="addProduct({{ product.id }}, '{{ product.title }}', '{{ product.filenames[0].filename }}')">{{ product.title }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <ul class="mt-4 divide-y divide-trueGray-200">
+        <template x-if="products.length === 0" hidden>
+          <li>Tanpa produk</li>
+        </template>
+        <template x-for="product in products" :key="product.product_id" hidden>
+          <li class="flex justify-between py-2 group">
+            <input type="hidden" name="productIds[]" :value="product.product_id">
+            <div class="flex items-center gap-6">
+              <img :src="`{{ base_url('photos/sm') }}/${product.filename}`" class="rounded-lg w-14 h-14 bg-trueGray-300">
+              <span x-text="product.title"></span>
+            </div>
+            <button @click="removeProduct(product.product_id)" type="button" class="mr-6 opacity-0 ignore-outside-click group-hover:opacity-100">
+              <svg class="w-6 h-6 text-black fill-current">
+                <use xlink:href="#ph_x">
+              </svg>
+            </button>
+          </li>
+        </template>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="flex justify-end w-full gap-3 mt-4">
+    <button @click="closeCategoryForm({{ category.id }})" type="button" class="btn btn-base btn-outlined-black">Kembali</button>
+    <button type="submit" class="btn btn-base btn-black">
+      <span>Simpan</span>
+      <svg>
+        <use xlink:href="#ph_check-bold">
+      </svg>
+    </button>
+  </div>
+
+</form>
 {% endfor %}

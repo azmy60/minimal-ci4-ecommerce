@@ -82,13 +82,13 @@ class ProductModel extends Model
     function _search($search = '', $where = '', $limit = 0, $offset = 0) {
         $limit_q = $limit ? "LIMIT $limit" : '';
         $offset_q = $offset ? "OFFSET $offset" : '';
-        $sql = "SELECT * FROM $this->table $limit_q $offset_q";
+        $sql = "SELECT * FROM $this->table $limit_q $offset_q WHERE deleted_at is NULL ";
         $query = null;
         
         if(empty($search)) {
-            $sql .= !empty($where) ? "WHERE $where" : '';
+            $sql .= !empty($where) ? "AND $where" : '';
         } else {
-            $sql .= 'WHERE ' . (!empty($where) ? "$where AND " : '') .
+            $sql .= 'AND ' . (!empty($where) ? "$where AND " : '') .
             "title LIKE '%" . $this->db->escapeLikeString($search) .
             "%' ESCAPE '!'";
         }

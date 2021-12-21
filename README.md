@@ -59,6 +59,9 @@ npm run dev
 - clipboard.js (see [official website](https://clipboardjs.com/))
 - fuse.js (see [official website](https://fusejs.io/))
 - Lodash (see [official website](https://lodash.com/))
+- clipboard (see [official website](https://clipboardjs.com/))
+- downscale (see [github](https://github.com/ytiurin/downscale))
+- muuri (see [official website](https://muuri.dev/))
 
 ## UI Resources
 - Phosphor icons (see [official website](https://phosphoricons.com/))

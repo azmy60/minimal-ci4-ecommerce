@@ -59,11 +59,11 @@
     products: {{ category.selected_products|json_encode()|raw }},
     addProduct(product_id, title, filename) {
       this.products.push({product_id, title, filename})
-      this.$dispatch(`dropdownitem${product_id}`, { show: false })
+      this.$dispatch(`dropdownitem${product_id}{{ category.id }}`, { show: false })
     },
     removeProduct(product_id) {
       this.products.splice(this.products.findIndex(p => p.product_id === product_id), 1)
-      this.$dispatch(`dropdownitem${product_id}`, { show: true })
+      this.$dispatch(`dropdownitem${product_id}{{ category.id }}`, { show: true })
     },
   }'
   x-show="show"
@@ -94,10 +94,10 @@
         </button>
         <ul x-cloak x-data="{ show: false }" @dropdownproduct.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute left-0 w-full top-full dropdown-menu dropdown-menu-lg">
           {% for product in category.selected_products %} 
-          <li x-data="{ show: false }" x-show="show" @dropdownitem{{ product.product_id }}.window="show = $event.detail.show" @click="addProduct({{ product.product_id }}, '{{ product.title }}', '{{ product.filename }}')">{{ product.title }}</li>
+          <li x-data="{ show: false }" x-show="show" @dropdownitem{{ product.product_id ~ category.id }}.window="show = $event.detail.show" @click="addProduct({{ product.product_id }}, '{{ product.title }}', '{{ product.filename }}')">{{ product.title }}</li>
           {% endfor %}
           {% for product in category.unselected_products %}
-          <li x-data="{ show: true }" x-show="show" @dropdownitem{{ product.id }}.window="show = $event.detail.show" @click="addProduct({{ product.id }}, '{{ product.title }}', '{{ product.filenames[0].filename }}')">{{ product.title }}</li>
+          <li x-data="{ show: true }" x-show="show" @dropdownitem{{ product.id ~ category.id }}.window="show = $event.detail.show" @click="addProduct({{ product.id }}, '{{ product.title }}', '{{ product.filenames[0].filename }}')">{{ product.title }}</li>
           {% endfor %}
         </ul>
       </div>

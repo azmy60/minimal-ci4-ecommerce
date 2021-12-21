@@ -17,6 +17,7 @@
 </header>
 
 {% if categories %}
+{#
   {{ products_categories_filters_n_search_bar({
       hx_get: route_to('search-categories'),
       chips: [
@@ -25,6 +26,7 @@
         { text: "Tidak tampil (#{invisibles_count})", filter: 'invisibles' },
       ],
   }) }}
+#}
   <div class="relative px-7 mt-9">
     <div
       x-data="{

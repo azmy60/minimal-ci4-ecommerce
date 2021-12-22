@@ -38,14 +38,6 @@ class ProductModel extends Model
         return $this->findAll($limit, $offset);
     }
 
-    function getCats($id) {
-        $productCats = model(ProductCategoryModel::class)->getProductCatsByCatId($id);
-        if(empty($productCats))
-            return [];
-        
-        return model(CategoryModel::class)->find($productCats);;
-    }
-
     function updateCats($id, $cats) {
         $categoryModel = model(CategoryModel::class);
         $productCategoryModel = model(ProductCategoryModel::class);

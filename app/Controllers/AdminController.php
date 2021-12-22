@@ -35,7 +35,7 @@ class AdminController extends BaseController
             }
             
             $products[$index]['thumbnails'] = $thumbnails;
-            $products[$index]['categories'] = $productModel->getCats($products[$index]['id']);
+            $products[$index]['categories'] = $categoryModel->getCategoriesByProductId($products[$index]['id']);
         }
 
         $inStocks = $productModel->findInStocks();
@@ -97,7 +97,7 @@ class AdminController extends BaseController
             }
             
             $products[$index]['thumbnails'] = $thumbnails;
-            $products[$index]['categories'] = $productModel->getCats($products[$index]['id']);
+            $products[$index]['categories'] = $categoryModel->getCategoriesByProductId($products[$index]['id']);
         }
 
         $categories = $categoryModel->findAll();

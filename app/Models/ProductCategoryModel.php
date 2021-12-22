@@ -48,10 +48,6 @@ class ProductCategoryModel extends Model
         return $productCount;
     }
 
-    public function getProductCatsByCatId($catId) {
-        return $this->where('product_id', $catId)->findColumn('cat_id');
-    }
-
     public function getProducts($catId) {
         $product_ids = $this->where('cat_id', $catId)->findColumn('product_id');
         if(!$product_ids)

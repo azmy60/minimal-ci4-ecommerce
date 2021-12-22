@@ -29,6 +29,12 @@ class CategoryModel extends Model
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
+    function getCategoriesByProductId($productId) {
+        $catIds = model(ProductCategoryModel::class)->where('product_id', $productId)->findColumn('cat_id');
+        if(empty($catIds)) return [];
+        return model(CategoryModel::class)->find($catIds);
+    }
+
     function findCategories($search = '', $limit = 0, $offset = 0) {
         return $this->_search($search, '', $limit, $offset);
     }

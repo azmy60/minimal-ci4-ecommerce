@@ -34,10 +34,10 @@ class ProductPhotoModel extends Model
      *
      * @return boolean
      */
-    public function store($productId, $photoFile, $order = null)
+    public function store($productId, $file, $order)
     {
-        $filename = $photoFile->getRandomName();
-        $path = $photoFile->store('product-photos', $filename);
+        $filename = $file->getRandomName();
+        $path = $file->store('product-photos', $filename);
         return $this->insert([
             'product_id' => $productId,
             'sort_order' => $order,

@@ -126,10 +126,12 @@ class UploadZone extends HTMLElement {
     this.updatePhotosOrdersInput()
   }
 
-  addFile(id, tid, file, order) {
+  addFile(id, tid, file) {
     if(this.files.length === 0)
       this.dispatchEvent(new CustomEvent('uploadzonefilled', { bubbles: true, composed: true, cancelable: true }))
     
+    const order = -1
+
     const thumbnail = new UploadZoneThumbnail(tid, order, file, this.thumbnailWidth, this.thumbnailHeight, this.removeFile.bind(this))
     const muuriItem = this.muuri.add([thumbnail], { index: this.files.length })[0]
     this.files.push({ id, tid, file, order, thumbnail, muuriItem })
@@ -164,15 +166,15 @@ class UploadZone extends HTMLElement {
   }
 
   /**
-   * @param {Array} files - an array of object containing img source and order { id: <number>, src: <string>, order: <number|null> } 
+   * @param {Array} files - an array of object containing img source and order { id: <number>, src: <string> } 
    */
   addFilesFromDB(files) {
     files.forEach((file) => {
       const tid = this.tidCounter()
-      this.addFile(file.id, tid, file.src, file.order)
+      this.addFile(file.id, tid, file.src)
     })
 
-    this.updateDbOrdersInput()
+    this.resetOrder()
 
     if(this.isFull()) this.hideUploadBtn()
   }
@@ -206,14 +208,14 @@ class UploadZone extends HTMLElement {
 
       // Register a new file to files
       const tid = this.tidCounter()
-      this.addFile(null, tid, droppedFiles[i], this.files.length)
+      this.addFile(null, tid, droppedFiles[i])
     }
+
+    this.resetOrder()
     
     this.filesInput.files = dt.files
 
     this.ffsdInput.value = ''
-
-    this.updatePhotosOrdersInput()
 
     if(this.isFull()) this.hideUploadBtn()
   }

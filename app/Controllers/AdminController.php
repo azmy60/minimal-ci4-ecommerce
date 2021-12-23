@@ -377,10 +377,11 @@ class AdminController extends BaseController
             return redirect()->setStatusCode(500)->back()->withInput()->with('error', 'Cannot insert a new product');
         }
 
+        $photosOrders = json_decode($productData['photos_orders'], true);
         $productId = $productsModel->getInsertID();
         $productPhotoModel = model(ProductPhotoModel::class);
-        foreach ($photos as $photo) {
-            $productPhotoModel->store($productId, $photo);
+        foreach ($photos as $index => $photo) {
+            $productPhotoModel->store($productId, $photo, $photosOrders[$index]);
         }
 
         $cats = json_decode($productData['cats']);

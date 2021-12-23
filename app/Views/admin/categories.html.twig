@@ -21,7 +21,7 @@
   {{ products_categories_filters_n_search_bar({
       hx_get: route_to('search-categories'),
       chips: [
-        { text: "Semua kategori (#{categories_count})", filter: 'all' },
+        { text: "Semua kategori (#{categories|length})", filter: 'all' },
         { text: "Ditampilkan (#{visibles_count})", filter: 'visibles' },
         { text: "Tidak tampil (#{invisibles_count})", filter: 'invisibles' },
       ],

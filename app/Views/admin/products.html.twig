@@ -20,7 +20,7 @@
   {{ products_categories_filters_n_search_bar({
       hx_get: route_to('search-products'),
       chips: [
-        { text: "Semua produk (#{products_count})", filter: 'all' },
+        { text: "Semua produk (#{products|length})", filter: 'all' },
         { text: "Stok ada (#{in_stocks_count})", filter: 'inStocks' },
         { text: "Stok habis (#{out_of_stocks_count})", filter: 'outOfStocks' },
       ],

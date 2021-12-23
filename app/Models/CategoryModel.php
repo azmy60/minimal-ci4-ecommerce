@@ -35,6 +35,10 @@ class CategoryModel extends Model
         return model(CategoryModel::class)->find($catIds);
     }
 
+    function getProductCount($id) {
+        return model(ProductCategoryModel::class)->where('cat_id', $id)->countAllResults();
+    }
+
     function findCategories($search = '', $limit = 0, $offset = 0) {
         return $this->_search($search, '', $limit, $offset);
     }
@@ -47,10 +51,19 @@ class CategoryModel extends Model
         return $this->_search($search, 'is_visible = 0', $limit, $offset);
     }
 
-    function _search($search = '', $where = '', $limit = 0, $offset = 0) {
+    function countVisibles() {
+        return $this->_search('', 'is_visible = 1', 0, 0, true)[0]['COUNT(*)'];
+    }
+
+    function countInvisibles() {
+        return $this->_search('', 'is_visible = 0', 0, 0, true)[0]['COUNT(*)'];
+    }
+
+    function _search($search = '', $where = '', $limit = 0, $offset = 0, $justCount = false) {
         $limit_q = $limit ? "LIMIT $limit" : '';
         $offset_q = $offset ? "OFFSET $offset" : '';
-        $sql = "SELECT * FROM $this->table $limit_q $offset_q";
+        $select = $justCount ? "COUNT(*)" : '*';
+        $sql = "SELECT $select FROM $this->table $limit_q $offset_q";
         $query = null;
         
         if(empty($search)) {

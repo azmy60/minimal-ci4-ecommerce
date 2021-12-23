@@ -71,10 +71,19 @@ class ProductModel extends Model
         return $this->_search($search, 'stock = 0', $limit, $offset);
     }
 
-    function _search($search = '', $where = '', $limit = 0, $offset = 0) {
+    function countInStocks() {
+        return $this->_search('', 'stock = 1', 0, 0, true)[0]['COUNT(*)'];
+    }
+
+    function countOutOfStocks() {
+        return $this->_search('', 'stock = 0', 0, 0, true)[0]['COUNT(*)'];
+    }
+
+    function _search($search = '', $where = '', $limit = 0, $offset = 0, $justCount = false) {
         $limit_q = $limit ? "LIMIT $limit" : '';
         $offset_q = $offset ? "OFFSET $offset" : '';
-        $sql = "SELECT * FROM $this->table $limit_q $offset_q WHERE deleted_at is NULL ";
+        $select = $justCount ? "COUNT(*)" : '*';
+        $sql = "SELECT $select FROM $this->table $limit_q $offset_q WHERE deleted_at is NULL ";
         $query = null;
         
         if(empty($search)) {

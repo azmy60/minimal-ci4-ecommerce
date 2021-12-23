@@ -38,15 +38,11 @@ class AdminController extends BaseController
             $products[$index]['categories'] = $categoryModel->getCategoriesByProductId($products[$index]['id']);
         }
 
-        $inStocks = $productModel->findInStocks();
-        $outOfStocks = $productModel->findOutOfStocks();
-
         $categories = $categoryModel->findAll();
 
         $data['products'] = $products;
-        $data['products_count'] = count($products);
-        $data['in_stocks_count'] = count($inStocks);
-        $data['out_of_stocks_count'] = count($outOfStocks);
+        $data['in_stocks_count'] = $productModel->countInStocks();;
+        $data['out_of_stocks_count'] = $productModel->countOutOfStocks();
         $data['categories'] = $categories;
 
         return $this->render('products', $data);
@@ -221,19 +217,12 @@ class AdminController extends BaseController
 
             $categories[$index]['selected_products'] = $selectedProducts;
             $categories[$index]['unselected_products'] = $unselectedProducts;
-
-            $productCount = $productCategoryModel->getProductCount($id);
-            $categories[$index]['product_count'] = $productCount;
+            $categories[$index]['product_count'] = count($selectedProducts);
         }
 
-        $visibles = $categoryModel->findVisibles();
-        $invisibles = $categoryModel->findInvisibles();
-
-        $data['products'] = $products;
         $data['categories'] = $categories;
-        $data['categories_count'] = count($categories);
-        $data['visibles_count'] = count($visibles);
-        $data['invisibles_count'] = count($invisibles);
+        $data['visibles_count'] = $categoryModel->countVisibles();
+        $data['invisibles_count'] = $categoryModel->countInvisibles();
 
         return $this->render('categories', $data);
     }
@@ -258,9 +247,7 @@ class AdminController extends BaseController
             $id = $category['id'];
             $filename = $productCategoryModel->getPhotoFilename($id);
             $categories[$index]['filename'] = $filename;
-
-            $productCount = $productCategoryModel->getProductCount($id);
-            $categories[$index]['product_count'] = $productCount;
+            $categories[$index]['product_count'] = $categoryModel->getProductCount($id);
         }
 
         $data = [

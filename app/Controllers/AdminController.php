@@ -185,12 +185,8 @@ class AdminController extends BaseController
     public function categories()
     {
         $categoryModel = model(CategoryModel::class);
-        $productCategoryModel = model(ProductCategoryModel::class);
 
-        $products = model(ProductModel::class)->findAll();
-        foreach ($products as $index => $_) {
-            $products[$index]['filenames'] = model(ProductPhotoModel::class)->getFilenames($products[$index]['id']);
-        }
+        $products = model(ProductModel::class)->getProductsWithFilenames();
 
         $categories = $categoryModel->findAll();
         foreach ($categories as $index => $category) {
@@ -382,14 +378,9 @@ class AdminController extends BaseController
     {
         $storeModel = model(StoreModel::class);
         $productModel = model(ProductModel::class);
-        $productPhotoModel = model(ProductPhotoModel::class);
         
         $store = $storeModel->first();
-        $products = $productModel->findAll();
-
-        foreach ($products as $index => $_) {
-            $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
-        }
+        $products = $productModel->getProductsWithFilenames();
         
         $data = [
             'products' => $products,

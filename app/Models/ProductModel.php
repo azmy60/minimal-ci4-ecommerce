@@ -38,6 +38,29 @@ class ProductModel extends Model
         return $this->findAll($limit, $offset);
     }
 
+    function getProductsWithFilenames() {
+        $products = $this->db->query('
+            SELECT
+                products.*,
+                GROUP_CONCAT(product_photos.filename) as filenames
+            FROM products
+            LEFT JOIN (
+                SELECT filename, product_id
+                FROM product_photos
+                ORDER BY sort_order ASC
+            ) product_photos ON product_photos.product_id = products.id
+            WHERE products.deleted_at IS NULL
+            GROUP BY products.id
+        ')
+        ->getResultArray();
+
+        foreach ($products as $k => $product) {
+            $products[$k]['filenames'] = explode(',', $product['filenames']); 
+        }
+        
+        return $products;
+    }
+
     function updateCats($id, $cats) {
         $categoryModel = model(CategoryModel::class);
         $productCategoryModel = model(ProductCategoryModel::class);

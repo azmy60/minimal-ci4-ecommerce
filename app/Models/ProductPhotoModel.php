@@ -29,20 +29,27 @@ class ProductPhotoModel extends Model
     protected $cleanValidationRules = true;
     
     /**
+     * $files and $orders should always be of equals length 
+     * 
      * @param int $productId
-     * @param CodeIgniter\HTTP\Files\UploadedFile $photoFile
+     * @param CodeIgniter\HTTP\Files\UploadedFile[] $files
+     * @param mixed[] $orders
      *
      * @return boolean
      */
-    public function store($productId, $file, $order)
+    public function store($productId, $files, $orders)
     {
-        $filename = $file->getRandomName();
-        $path = $file->store('product-photos', $filename);
-        return $this->insert([
-            'product_id' => $productId,
-            'sort_order' => $order,
-            'filename' => $filename,
-        ]);
+        $insertValues = array_map(function($file, $order) use ($productId){
+            $filename = $file->getRandomName();
+            $file->store('product-photos', $filename);
+            return [
+                'product_id' => $productId,
+                'sort_order' => $order,
+                'filename' => $filename,
+            ];
+        }, $files, $orders);
+
+        return $this->insertBatch($insertValues);
     }
 
     /**

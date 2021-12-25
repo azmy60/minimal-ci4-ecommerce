@@ -148,8 +148,9 @@ class AdminController extends BaseController
             }
 
             // $newOrders = explode(',', $photosData['new_orders']);
-            $productPhotoModel->store($productId, $photo, $photosOrders[$index] ?? null);
         }
+
+        if(!empty($photos)) $productPhotoModel->store($productId, $photos, $photosOrders);
 
         // $orders = explode(',', $photosData['old_orders']);
         if(!empty($dbOrders)) $productPhotoModel->setOrders($productId, $dbOrders);
@@ -362,10 +363,7 @@ class AdminController extends BaseController
 
         $photosOrders = json_decode($productData['photos_orders'], true);
         $productId = $productsModel->getInsertID();
-        $productPhotoModel = model(ProductPhotoModel::class);
-        foreach ($photos as $index => $photo) {
-            $productPhotoModel->store($productId, $photo, $photosOrders[$index]);
-        }
+        model(ProductPhotoModel::class)->store($productId, $photos, $photosOrders);
 
         $cats = json_decode($productData['cats']);
         if($cats != null)

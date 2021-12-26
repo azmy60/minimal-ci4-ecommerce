@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\StoreModel;
 use App\Models\CategoryModel;
 use App\Models\ProductCategoryModel;
 use App\Models\ProductModel;
@@ -11,29 +12,20 @@ class ClientController extends BaseController
 {
     public function index()
     {
-        $productModel = model(ProductModel::class);
-        $productPhotoModel = model(ProductPhotoModel::class);
-
-        $products = $productModel->getAll();
-        foreach ($products as $index => $_) {
-            $products[$index]['filenames'] = $productPhotoModel->getFilenames($products[$index]['id']);
-        }
+        $products = model(ProductModel::class)->getProductsWithFilenames();
 
         $data['products'] = $products;
-        $data['products_length'] = count($products);
 
         return $this->render('home', $data);
     }
     
     public function product($title)
     {
-        $productModel = model(ProductModel::class);
-        $product = $productModel->where('title', $title)->first();
+        $product = model(ProductModel::class)->where('title', $title)->first();
         if(!$product)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     
-        $productPhotoModel = model(ProductPhotoModel::class);
-        $photos = $productPhotoModel->getFilenames($product['id']);
+        $photos = model(ProductPhotoModel::class)->getFilenames($product['id']);
 
         $data = [
             'product' => $product,
@@ -45,13 +37,11 @@ class ClientController extends BaseController
 
     public function category($name)
     {
-        $categoryModel = model(CategoryModel::class);
-        $category = $categoryModel->where('name', $name)->first();
+        $category = model(CategoryModel::class)->where('name', $name)->first();
         if(!$category)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         
-        $productCategoryModel = model(ProductCategoryModel::class);
-        $products = $productCategoryModel->getProducts($category['id']);
+        $products = model(ProductCategoryModel::class)->getProducts($category['id']);
         if(!$products)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         
@@ -67,19 +57,20 @@ class ClientController extends BaseController
     {
         $dontExtend = $this->request->hasHeader('HX-Request');
         
-        $store = model(StoreModel::class)->getStoreInfo();
+        $storeModel = model(StoreModel::class);
+
+        $store = $storeModel->getStoreInfo();
         if(!$store)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Toko ini tidak tersedia.');
 
-        $categoryModel = model(CategoryModel::class);
-        $categories = $categoryModel->findAll();
+        $categories = model(CategoryModel::class)->findAll();
 
         // Show the website only if admin asks to and product table is not empty
-        $showStore = $store['status'] == 1 && !empty(model(ProductModel::class)->first());
+        $showStore = $store['status'] == 1 && !empty($storeModel->first());
 
         $data['categories'] = $categories;
         $data['template'] = $dontExtend ? 'wrappers/client_empty.html.twig' : 'wrappers/client.html.twig';
-        $data['store'] = model(StoreModel::class)->getStoreInfo();
+        $data['store'] = $store;
         $data['show_store'] = $showStore;
         
         return $this->twig->render("client/$name.html", $data);

@@ -165,8 +165,7 @@ class AdminController extends BaseController
         if($id == null)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         
-        $productModel = model(ProductModel::class);
-        $productModel->delete($id);
+        model(ProductModel::class)->delete($id);
 
         return $this->products();
     }
@@ -176,9 +175,7 @@ class AdminController extends BaseController
         $data = $this->request->getRawInput();
         $ids = json_decode($data['ids'], true);
 
-        if(empty($ids)) return $this->products();
-
-        model(ProductModel::class)->delete($ids);
+        if(!empty($ids)) model(ProductModel::class)->delete($ids);
 
         return $this->products();
     }
@@ -233,7 +230,6 @@ class AdminController extends BaseController
     public function findCategories()
     {
         $categoryModel = model(CategoryModel::class);
-        $productCategoryModel = model(ProductCategoryModel::class);
         $search = $this->request->getGet('q');
         $filter = $this->request->getGet('filter');
         $categories = [];
@@ -248,7 +244,7 @@ class AdminController extends BaseController
 
         foreach ($categories as $index => $category) {
             $id = $category['id'];
-            $filename = $productCategoryModel->getPhotoFilename($id);
+            $filename = model(ProductCategoryModel::class)->getPhotoFilename($id);
             $categories[$index]['filename'] = $filename;
             $categories[$index]['product_count'] = $categoryModel->getProductCount($id);
         }
@@ -331,8 +327,7 @@ class AdminController extends BaseController
 
     public function addProduct()
     {
-        $categoryModel = model(CategoryModel::class);
-        $categories = $categoryModel->findAll();
+        $categories = model(CategoryModel::class)->findAll();
 
         // TODO: send id and name of categories only
         $data = [
@@ -380,11 +375,8 @@ class AdminController extends BaseController
 
     public function addCategory()
     {
-        $storeModel = model(StoreModel::class);
-        $productModel = model(ProductModel::class);
-        
-        $store = $storeModel->first();
-        $products = $productModel->getProductsWithFilenames();
+        $store = model(StoreModel::class)->first();
+        $products = model(ProductModel::class)->getProductsWithFilenames();
         
         $data = [
             'products' => $products,
@@ -431,12 +423,9 @@ class AdminController extends BaseController
     {
         if($id == null)
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        
-        $productCategoryModel = model(ProductCategoryModel::class);
-        $categoryModel = model(CategoryModel::class);
 
-        $productCategoryModel->where('cat_id', $id)->delete();
-        $categoryModel->delete($id);
+        model(ProductCategoryModel::class)->where('cat_id', $id)->delete();
+        model(CategoryModel::class)->delete($id);
 
         return $this->categories();
     }

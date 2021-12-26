@@ -194,18 +194,24 @@ class AdminController extends BaseController
             $id = $category['id'];
             $selectedProducts = \Config\Database::connect()
                 ->query("
-                    SELECT
-                        product_categories.product_id,
-                        products.title,
-                        product_photos.filename
-                    FROM product_categories
-                    LEFT JOIN (
-                        SELECT filename, MIN(product_id) product_id
+                SELECT
+                    product_categories.product_id,
+                    products.title,
+                    product_photos.filename
+                FROM product_categories
+                RIGHT JOIN products ON (
+                    product_categories.product_id = products.id
+                    AND products.deleted_at IS NULL
+                )
+                LEFT JOIN product_photos ON (
+                    product_photos.product_id = products.id
+                    AND product_photos.sort_order = (
+                        SELECT MIN(sort_order)
                         FROM product_photos
-                        GROUP BY product_id
-                    ) product_photos ON product_categories.product_id = product_photos.product_id
-                    LEFT JOIN products ON product_categories.product_id = products.id
-                    WHERE product_categories.cat_id = $id
+                        WHERE product_id = products.id
+                    )
+                )
+                WHERE product_categories.cat_id = $id
                 ")
                 ->getResultArray();
 

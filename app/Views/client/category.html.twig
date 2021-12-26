@@ -1,16 +1,16 @@
 {% extends "wrappers/client.html.twig" %}
-{% block title %}{{ category.name }} - {{ store.name }}{% endblock title %}
+{% block title %}{{ category_name }} - {{ store.name }}{% endblock title %}
 
 {% block main %}
 <main class="flex-grow px-4 mx-auto mt-14 md:mt-0 md:px-8 lg:px-8 max-w-7xl">
   <h1 class="mt-3 mb-8 text-4xl font-semibold md:text-6xl lg:text-7xl md:mb-16">
-    {{ category.name }}
+    {{ category_name }}
   </h1>
   <div class="grid gap-8 pb-12 md:grid-cols-3 lg:gap-12 lg:grid-cols-4">
     {% for product in products %}
     <div>
       <a href="{{ route_to('product-page', product.title) }}">
-        <img width="1000" height="1000" class="h-auto max-w-full md:" src="{{ route_to('content-photos', 'lg', product.filenames[0].filename) }}">
+        <img width="1000" height="1000" class="h-auto max-w-full md:" src="{{ route_to('content-photos', 'lg', product.filename) }}">
         <div class="text-lg font-semibold">{{ product.title }}</div>
         <div class="text-base">
           <span>Rp</span>

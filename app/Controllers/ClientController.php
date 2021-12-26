@@ -34,17 +34,11 @@ class ClientController extends BaseController
 
     public function category($name)
     {
-        $category = model(CategoryModel::class)->where('name', $name)->first();
-        if(!$category)
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        
-        $products = model(ProductCategoryModel::class)->getProducts($category['id']);
-        if(!$products)
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        $products = model(ProductModel::class)->getProductsByCategoryName($name);
         
         $data = [
             'products' => $products,
-            'category' => $category,
+            'category_name' => $name,
         ];
 
         return $this->render('category', $data);

@@ -69,7 +69,7 @@ class ClientController extends BaseController
         
         $store = model(StoreModel::class)->getStoreInfo();
         if(!$store)
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Toko ini tidak tersedia.');
 
         $categoryModel = model(CategoryModel::class);
         $categories = $categoryModel->findAll();

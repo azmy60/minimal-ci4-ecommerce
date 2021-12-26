@@ -12,10 +12,7 @@ class ClientController extends BaseController
 {
     public function index()
     {
-        $products = model(ProductModel::class)->getProductsWithFilenames();
-
-        $data['products'] = $products;
-
+        $data['products'] = model(ProductModel::class)->getProductsWithOneFilename();
         return $this->render('home', $data);
     }
     

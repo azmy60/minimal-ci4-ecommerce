@@ -97,7 +97,7 @@
           <li x-data="{ show: false }" x-show="show" @dropdownitem{{ product.product_id ~ category.id }}.window="show = $event.detail.show" @click="addProduct({{ product.product_id }}, '{{ product.title }}', '{{ product.filename }}')">{{ product.title }}</li>
           {% endfor %}
           {% for product in category.unselected_products %}
-          <li x-data="{ show: true }" x-show="show" @dropdownitem{{ product.id ~ category.id }}.window="show = $event.detail.show" @click="addProduct({{ product.id }}, '{{ product.title }}', '{{ product.filenames[0].filename }}')">{{ product.title }}</li>
+          <li x-data="{ show: true }" x-show="show" @dropdownitem{{ product.id ~ category.id }}.window="show = $event.detail.show" @click="addProduct({{ product.id }}, '{{ product.title }}', '{{ product.filename }}')">{{ product.title }}</li>
           {% endfor %}
         </ul>
       </div>

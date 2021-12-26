@@ -184,7 +184,7 @@ class AdminController extends BaseController
     {
         $categoryModel = model(CategoryModel::class);
 
-        $products = model(ProductModel::class)->getProductsWithFilenames();
+        $unfilteredProducts = model(ProductModel::class)->getProductsWithOneFilename();
 
         $categories = $categoryModel->findAll();
         foreach ($categories as $index => $category) {
@@ -213,7 +213,7 @@ class AdminController extends BaseController
                 ->getResultArray();
 
             $selectedIds = array_map(fn($product) => $product['product_id'], $selectedProducts);
-            $unselectedProducts = array_filter($products, fn($product) => !in_array($product['id'], $selectedIds));
+            $unselectedProducts = array_filter($unfilteredProducts, fn($product) => !in_array($product['id'], $selectedIds));
 
             $categories[$index]['selected_products'] = $selectedProducts;
             $categories[$index]['unselected_products'] = $unselectedProducts;

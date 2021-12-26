@@ -38,6 +38,25 @@ class ProductModel extends Model
         return $this->findAll($limit, $offset);
     }
 
+    function getProductsWithOneFilename() {
+        return $this->db->query('
+            SELECT
+                products.*,
+                product_photos.filename
+            FROM products
+            LEFT JOIN product_photos ON (
+                product_photos.product_id = products.id
+                AND product_photos.sort_order = (
+                    SELECT MIN(sort_order)
+                    FROM product_photos
+                    WHERE product_id = products.id
+                )
+            )
+            WHERE products.deleted_at IS NULL
+        ')
+        ->getResultArray();
+    }
+
     function getProductsWithFilenames() {
         $products = $this->db->query('
             SELECT

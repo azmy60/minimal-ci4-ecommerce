@@ -1,0 +1,12 @@
+{% from "components/components.html.twig" import input %}
+
+<form hx-put="{{ route_to('update-settings') }}" hx-target="#main" hx-indicator="#main-indicator" class="space-y-4">
+  {{ input({
+    label: 'Template pesan',
+    type: 'textarea',
+    rows: 6,
+    name: 'message',
+    value: store.message,
+  }) }}
+  <button type="submit" class="btn btn-base btn-emerald">Simpan</button>
+</form>

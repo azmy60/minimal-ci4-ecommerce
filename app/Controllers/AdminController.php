@@ -300,13 +300,19 @@ class AdminController extends BaseController
         return $this->categories();
     }
 
-    public function settings()
+    public function settings($page = null)
     {
-        return $this->render('settings');
+        if($page == null) return redirect()->route('settings', ['store']);
+
+        $data = [
+            'current_page' => $page,
+        ];
+
+        return $this->render('settings', $data);
     }
 
 
-    public function updateStore()
+    public function updateSettings()
     {
         $data = $this->request->getRawInput();
         // return var_dump($data);
@@ -317,7 +323,7 @@ class AdminController extends BaseController
 
         $storeModel->update($id, $data);
 
-        return $this->settings();
+        return redirect()->back();
     }
 
     public function help()

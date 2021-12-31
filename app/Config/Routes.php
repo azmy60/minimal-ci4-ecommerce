@@ -104,9 +104,10 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
     $routes->delete('categories/(:num)', 'AdminController::deleteCategory/$1', ['as' => 'delete-category']);
     $routes->delete('categories', 'AdminController::deleteCategories', ['as' => 'categories-bulk-delete']);
 
-    $routes->put('settings/store-information', 'AdminController::updateStore', ['as' => 'update-store']);
-    $routes->put('settings/message-template', 'AdminController::updateStore', ['as' => 'update-message']);
-    $routes->put('settings/social-profiles', 'AdminController::updateStore', ['as' => 'update-profiles']);
+    $routes->get('settings', 'AdminController::settings');
+    $routes->get('settings/(:segment)', 'AdminController::settings/$1', ['as' => 'settings']);
+    $routes->put('settings', 'AdminController::updateSettings', ['as' => 'update-settings']);
+
 });
 
 $routes->get('photos/(:alpha)/(:segment)', 'ContentController::photos/$1/$2', ['as' => 'content-photos']);

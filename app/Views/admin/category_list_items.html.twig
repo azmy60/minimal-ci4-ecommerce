@@ -30,18 +30,19 @@
   <div>
     <span class="lozenge lozenge-base {{ category.is_visible == 1 ? 'lozenge-success' : 'lozenge-default'}}">{{ category.is_visible == 1 ? 'Ditampilkan' : 'Tidak tampil' }}</span>
   </div>
-  <div>
-    <button x-data @click="$dispatch('dropdowncategory{{ category.id }}')" class="opacity-0 group-hover:opacity-100">
-      <svg class="inline w-6 h-6 fill-current text-trueGray-700">
+  <div class="space-x-6 opacity-0 text-neutral-800 focus-within:opacity-100 group-hover:opacity-100">
+    <button title="Edit" @click="openCategoryForm({{ category.id }})">
+      <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_pencil-simple"></svg>
+    </button>
+    <button title="Salin link" data-clipboard-text="{{ base_url(route_to('category-page', category.name)) }}" class="btn-copy">
+      <svg class="w-6 h-6 fill-current"><use xlink:href="#ph_link-simple-horizontal"></svg>
+    </button>
+    <button x-data @click="$dispatch('dropdowncategory{{ category.id }}')">
+      <svg class="w-6 h-6 fill-current">
         <use xlink:href="#ph_dots-three-vertical-bold">
       </svg>
     </button>
     <ul x-cloak x-data="{ show: false }" @dropdowncategory{{ category.id }}.window="show = !show" @click="show = false" @click.outside="show = false" x-show="show" class="absolute dropdown-menu dropdown-menu-base">
-      <li @click="openCategoryForm({{ category.id }})">Edit kategori</li>
-      <li data-clipboard-text="{{ base_url(route_to('category-page', category.name)) }}" class="btn-copy">
-        <span>Link untuk share</span>
-        <svg class="w-5 h-5 fill-current"><use xlink:href="#ph_link-simple-horizontal"></svg>
-      </li>
       <li hx-delete="{{ route_to('delete-category', category.id) }}" hx-confirm="Anda yakin ingin menghapus kategori ini?" hx-target="#main" hx-indicator="#main-indicator" class="dropdown-menu-item-danger">
         <span>Hapus permanen</span>
         <svg class="w-5 h-5 fill-current"><use xlink:href="#ph_trash-simple"></svg>

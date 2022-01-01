@@ -40,7 +40,7 @@
   <div>
     <input name="phone" type="hidden" value="{{ store.phone }}">
     <div class="space-y-1">
-      <label for="phone" class="font-semibold text-trueGray-800">Nomor WhatsApp</label>
+      <label for="phone" class="font-semibold text-neutral-800">Nomor WhatsApp</label>
       <input-container class="input-base input-default">
         <span>+62</span>
         <input value="{{ store.phone[2:3] ~ '-' ~ store.phone[5:4] ~ '-' ~ store.phone[9:4] }}" x-ref="phone" @input="phoneMask($event);" @keyup.enter="$refs.phoneBtn.click()" @focus="$dispatch('telfocus')" @blur="$dispatch('telblur')" type="tel" placeholder="555-5555-5555">

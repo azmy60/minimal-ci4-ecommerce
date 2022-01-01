@@ -10,15 +10,15 @@
         {% endfor %}
         <div class="absolute top-0 left-0 items-center justify-between hidden w-full h-full p-6 transition-opacity opacity-0 select-none md:flex hover:opacity-100">
           <div @click="prev()" class="p-2 bg-white rounded-full cursor-pointer opacity-70">
-            <svg class="w-6 h-6 fill-current text-trueGray-900"><use xlink:href="#ph_caret-left-bold"></svg>
+            <svg class="w-6 h-6 fill-current text-neutral-900"><use xlink:href="#ph_caret-left-bold"></svg>
           </div>
           <div @click="next()" class="p-2 bg-white rounded-full cursor-pointer opacity-70">
-            <svg class="w-6 h-6 fill-current text-trueGray-900"><use xlink:href="#ph_caret-right-bold"></svg>
+            <svg class="w-6 h-6 fill-current text-neutral-900"><use xlink:href="#ph_caret-right-bold"></svg>
           </div>
         </div>
         <div class="absolute flex justify-center w-full gap-2 md:hidden bottom-6">
           {% for photo in photos %}
-            <div :class="{ 'opacity-50': current !== {{ loop.index0 }} }" class="w-2 h-2 rounded-full bg-trueGray-800"></div>
+            <div :class="{ 'opacity-50': current !== {{ loop.index0 }} }" class="w-2 h-2 rounded-full bg-neutral-800"></div>
           {% endfor %}
         </div>
       </div>
@@ -43,7 +43,7 @@
           </button>
         </a>
         </div>
-      <p class="text-trueGray-800 md:w-80">Pengiriman & pembayaran bisa didiskusikan melalui WhatsApp.</p>
+      <p class="text-neutral-800 md:w-80">Pengiriman & pembayaran bisa didiskusikan melalui WhatsApp.</p>
     </div>
   </div>
 {% endblock main %}

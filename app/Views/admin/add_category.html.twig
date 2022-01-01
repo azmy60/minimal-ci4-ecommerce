@@ -115,7 +115,7 @@ input_row options:
 
 {% block add_product_input %}
 <div class="relative">
-  <button x-data @click="$dispatch('dropdownproduct')" type="button" class="flex items-center justify-between w-full input input-lg input-default text-trueGray-400">
+  <button x-data @click="$dispatch('dropdownproduct')" type="button" class="flex items-center justify-between w-full input input-lg input-default text-neutral-400">
     <span>Tambahkan produk disini</span>
     <svg class="w-6 h-6 fill-current">
       <use xlink:href="#ph_caret-down">
@@ -127,12 +127,12 @@ input_row options:
     {% endfor %}
   </ul>
 </div>
-<ul class="mt-4 divide-y divide-trueGray-200">
+<ul class="mt-4 divide-y divide-neutral-200">
   <template x-for="product in products" :key="product.id" hidden>
     <li class="flex justify-between py-2">
       <input type="hidden" name="productIds[]" :value="product.id">
       <div class="flex items-center gap-6">
-        <img :src="`{{ base_url('photos/sm') }}/${product.filename}`" class="rounded-lg w-14 h-14 bg-trueGray-300">
+        <img :src="`{{ base_url('photos/sm') }}/${product.filename}`" class="rounded-lg w-14 h-14 bg-neutral-300">
         <span x-text="product.title"></span>
       </div>
       <button @click="removeProduct(product.id)" type="button" class="mr-6">

@@ -18,8 +18,8 @@ const templateHtml = /* html */`
   <input type="hidden" name="db_orders">
   <input type="hidden" name="delete_ids">
   <div class="relative w-full -m-3 thumbnails-container">
-    <div class="grid place-content-center w-28 h-28 border rounded-lg border-trueGray-400 cursor-pointer upload-btn">
-      <svg class="fill-current w-9 h-9 text-trueGray-400"><use xlink:href="#ph_upload-simple"></svg>
+    <div class="grid place-content-center w-28 h-28 border rounded-lg border-neutral-400 cursor-pointer upload-btn">
+      <svg class="fill-current w-9 h-9 text-neutral-400"><use xlink:href="#ph_upload-simple"></svg>
     </div>
   </div>
 </div>
@@ -61,11 +61,11 @@ class UploadZone extends HTMLElement {
   }
 
   addRing() {
-    this.root.classList.add('ring', this.isFull() ? 'ring-trueGray-500' : 'ring-emerald-500')
+    this.root.classList.add('ring', this.isFull() ? 'ring-neutral-500' : 'ring-emerald-500')
   }
 
   removeRing() {
-    this.root.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-trueGray')
+    this.root.classList.remove('ring', 'ring-emerald-500', 'ring-emerald-neutral')
   }
 
   hideUploadBtn() {

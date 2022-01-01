@@ -29,7 +29,7 @@
         </p>
     </section>
     <form action="{{ route_to('login', 'post') }}" method="POST"
-        class="grid items-end w-full h-full login-form sm:w-112 sm:border sm:border-trueGray-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
+        class="grid items-end w-full h-full login-form sm:w-112 sm:border sm:border-neutral-300 sm:rounded-lg sm:grid-rows-none sm:gap-6 sm:p-16">
         {{ csrf_field() }}
         <div class="space-y-2">
             <div class="text-4xl font-bold">Nama Toko</div>
@@ -50,7 +50,7 @@
         <div class="space-y-2 sm:self-start sm:mt-0">
             <button type="submit"
                 class="w-full py-2.5 px-4 text-lg rounded-lg font-semibold bg-emerald-500 text-white">Masuk</button>
-            <a href="{{ route_to('forgot') }}" class="block text-lg text-trueGray-800 lg:text-base">Lupa password?</a>
+            <a href="{{ route_to('forgot') }}" class="block text-lg text-neutral-800 lg:text-base">Lupa password?</a>
         </div>
     </form>
     <script src="{{ base_url('js/auth.js') }}"></script>

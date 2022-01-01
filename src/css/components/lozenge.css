@@ -15,7 +15,7 @@
 
   /* Themes */
   .lozenge-default {
-    @apply bg-trueGray-300 text-trueGray-900;
+    @apply bg-neutral-300 text-neutral-900;
   }
 
   .lozenge-success {

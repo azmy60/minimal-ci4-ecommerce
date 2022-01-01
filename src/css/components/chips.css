@@ -1,7 +1,7 @@
 @layer components {
   /* Base */
   .chip {
-    @apply flex gap-1 items-center px-4 leading-4 rounded-full cursor-pointer select-none bg-white border border-trueGray-300 text-trueGray-800;
+    @apply flex gap-1 items-center px-4 leading-4 rounded-full cursor-pointer select-none bg-white border border-neutral-300 text-neutral-800;
   }
 
   .chip > svg {
@@ -19,10 +19,10 @@
 
   /* Selected */
   .chip[selected] {
-    @apply bg-trueGray-800 text-white;
+    @apply bg-neutral-800 text-white;
   }
 
   .chip:not([selected]) {
-    @apply bg-white text-trueGray-800 border;
+    @apply bg-white text-neutral-800 border;
   }
 }

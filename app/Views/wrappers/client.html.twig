@@ -7,9 +7,9 @@
 {% set phone_formated = '0' ~ store.phone[2:3] ~ '-' ~ store.phone[5:4] ~ '-' ~ store.phone[9:] %}
 
 {% if show_store %}
-<body class="relative flex flex-col w-full h-screen bg-trueGray-100">
+<body class="relative flex flex-col w-full h-screen bg-neutral-100">
   {% include "dest/symbol/iconset.svg" %}
-  <header x-data="{ showNav: false }" @click.outside="showNav = false" class="fixed top-0 z-50 w-full px-4 py-4 select-none lg:px-8 md:static md:py-5 md:items-center md:px-8 md:flex md:gap-24 bg-trueGray-100">
+  <header x-data="{ showNav: false }" @click.outside="showNav = false" class="fixed top-0 z-50 w-full px-4 py-4 select-none lg:px-8 md:static md:py-5 md:items-center md:px-8 md:flex md:gap-24 bg-neutral-100">
     <div @click="showNav = !showNav" class="w-6 h-6 cursor-pointer fill-current md:hidden">
       <svg x-show="!showNav" class="w-full h-full">
         <use xlink:href="#ph_list-bold">
@@ -18,7 +18,7 @@
         <use xlink:href="#ph_x-bold">
       </svg>
     </div>
-    <div class="absolute text-lg font-semibold transform -translate-x-1/2 -translate-y-1/2 md:text-2xl md:transform-none md:static left-1/2 top-1/2">
+    <div class="absolute text-lg font-semibold -translate-x-1/2 -translate-y-1/2 md:text-2xl md:transform-none md:static left-1/2 top-1/2">
       <a href="{{ route_to('/') }}">{{ store.name }}</a>
     </div>
     <nav class="hidden gap-10 text-lg md:flex">
@@ -27,10 +27,10 @@
       {% endfor %}
     </nav>
   </header>
-  <main class="flex-grow px-4 mx-auto mt-14 md:mt-0 md:px-8 lg:px-8 max-w-7xl">
+  <main class="grow px-4 mx-auto mt-14 md:mt-0 md:px-8 lg:px-8 max-w-7xl">
     {% block main %}{% endblock main %}
   </main>
-  <footer class="grid gap-6 px-4 pt-8 pb-12 text-white lg:px-8 md:px-8 bg-trueGray-800">
+  <footer class="grid gap-6 px-4 pt-8 pb-12 text-white lg:px-8 md:px-8 bg-neutral-800">
     <div class="text-3xl font-bold">{{ store.name }}</div>
     <div class="flex flex-col gap-6 md:flex-row md:gap-32">
       <div class="fill-current">
@@ -56,7 +56,7 @@
   </footer>
 </body>
 {% else %}
-<body class="grid w-full h-screen text-center place-content-center bg-trueGray-100">
+<body class="grid w-full h-screen text-center place-content-center bg-neutral-100">
   {% include "dest/symbol/iconset.svg" %}
   <h1 class="text-5xl font-bold">{{ store.name }}</h1>
   <p class="text-lg">{{ store.desc }}</p>

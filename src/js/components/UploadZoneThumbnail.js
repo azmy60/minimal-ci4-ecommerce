@@ -3,10 +3,10 @@ import downscale from "downscale"
 const templateHtml = /*html*/`
 <div class="relative overflow-hidden border cursor-move rounded-lg w-28 h-28">
   <div class="absolute top-0 left-0 z-50 w-full h-full opacity-0 hover:opacity-100">
-    <button class="delete-btn absolute bottom-0 right-0 z-50 p-2 rounded-lg bg-trueGray-800">
+    <button class="delete-btn absolute bottom-0 right-0 z-50 p-2 rounded-lg bg-neutral-800">
       <svg class="w-5 h-5 text-white fill-current"><use xlink:href="#ph_trash-simple-bold"></svg>
     </button>
-    <span class="absolute w-full h-full bg-trueGray-800 opacity-10"></span>
+    <span class="absolute w-full h-full bg-neutral-800 opacity-10"></span>
   </div>
   <img width="112" height="112" class="w-full h-full">
 </div>

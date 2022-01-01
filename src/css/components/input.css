@@ -1,7 +1,7 @@
 @layer components {
   /* Don't use _input as a base */
   ._input {
-    @apply text-base bg-white border rounded-lg placeholder-trueGray-500;
+    @apply text-base bg-white border rounded-lg placeholder-neutral-500;
   }
 
   /* Base */
@@ -25,7 +25,7 @@
 
   /* Colors */
   .input-default {
-    @apply border-trueGray-400;
+    @apply border-neutral-400;
   }
 
   .input-danger {

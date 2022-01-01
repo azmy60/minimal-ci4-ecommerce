@@ -20,7 +20,7 @@
 {% macro input(options) %}
 <div class="grid gap-1 {{ options.class }}" {{ options.attributes|raw }}>
   {% if options.label is not empty %}
-  <label for="{{ options.name }}" class="{{ options.error is not empty ? 'text-red-500' : 'text-trueGray-800' }} font-semibold">
+  <label for="{{ options.name }}" class="{{ options.error is not empty ? 'text-red-500' : 'text-neutral-800' }} font-semibold">
     {{ options.label }}
   </label>
   {% endif %}
@@ -38,7 +38,7 @@
   {% if options.error is not empty %}
   <p class="text-red-500">{{ options.error }}</p>
   {% elseif options.helper is not empty %}
-  <p class="text-trueGray-500">{{ options.helper }}</p>
+  <p class="text-neutral-500">{{ options.helper }}</p>
   {% endif %}
 </div>
 {% endmacro %}
@@ -57,7 +57,7 @@ switch options:
 {% macro switch(options) %}
 <div x-data="{ checked: {{ options.checked ? 'true': 'false' }} }" class="{{ options.class }} flex items-center gap-2" {{ options.attributes|raw }}>
   <input x-ref="{{ options.name }}" id="{{ options.name }}" value="{{ options.checked ? options.checkedValue : options.uncheckedValue }}" name="{{ options.name }}" class="hidden">
-  <div @click="checked = !checked; $el.previousElementSibling.value = checked ? '{{ options.checkedValue }}' : '{{ options.uncheckedValue }}'" :class="{'bg-emerald-500': checked, 'bg-trueGray-300': !checked}" class="relative cursor-pointer w-14 h-7 rounded-3xl">
+  <div @click="checked = !checked; $el.previousElementSibling.value = checked ? '{{ options.checkedValue }}' : '{{ options.uncheckedValue }}'" :class="{'bg-emerald-500': checked, 'bg-neutral-300': !checked}" class="relative cursor-pointer w-14 h-7 rounded-3xl">
     <div :class="{'left-8': checked, 'left-1': !checked }" class="absolute w-5 h-5 bg-white rounded-full left-8 top-1"></div>
   </div>
   <div>
@@ -82,9 +82,9 @@ products_categories_filters_n_search_bar props:
     <span :class="{ 'font-semibold': selected === {{ loop.index0 }} }">{{ chip.text }}</span>
   </button>
   {% endfor %}
-  <input-container x-data="{ isEmpty: true }" class="flex-grow input-base input-default">
+  <input-container x-data="{ isEmpty: true }" class="grow input-base input-default">
     <input x-ref="input" @input="isEmpty = $event.target.value === ''" type="text" name="q" placeholder="Cari produk" autocomplete="off" hx-get="{{ props.hx_get }}" hx-include="[name='filter']" hx-trigger="keyup changed delay:500ms, click from:#btn-clear" hx-target="#list-wrapper" hx-indicator="#list-indicator">
-    <svg x-cloak x-show="isEmpty" class="fill-current text-trueGray-400"><use xlink:href="#ph_magnifying-glass"></svg>
+    <svg x-cloak x-show="isEmpty" class="fill-current text-neutral-400"><use xlink:href="#ph_magnifying-glass"></svg>
     <svg x-cloak x-show="!isEmpty" @click="$refs.input.value = ''; isEmpty = true;" class="text-black fill-current" id="btn-clear"><use xlink:href="#ph_x"></svg>
   </input-container>
 </div>

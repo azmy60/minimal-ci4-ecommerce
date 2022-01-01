@@ -1,7 +1,7 @@
 @layer components {
   /* Base */
   .dropdown-menu {
-    @apply z-50 overflow-hidden bg-white border divide-y rounded-lg drop-shadow border-trueGray-200 divide-trueGray-200;
+    @apply z-50 overflow-hidden bg-white border divide-y rounded-lg drop-shadow border-neutral-200 divide-neutral-200;
   }
 
   .dropdown-menu > *:not(template) {
@@ -23,7 +23,7 @@
 
   /* Colors for one item */
   .dropdown-menu > *:not(.dropdown-menu-item-danger) {
-    @apply hover:bg-trueGray-200;
+    @apply hover:bg-neutral-200;
   }
 
   .dropdown-menu > .dropdown-menu-item-danger {

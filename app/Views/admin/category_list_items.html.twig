@@ -1,7 +1,7 @@
 <div x-init="base.categoryCount = {{ categories|length }}"></div>
 
 {% for category in categories %}
-<div class="category-list-el category-{{ category.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 12rem 12rem auto;">
+<div class="category-list-el category-{{ category.id }} group grid items-center h-20 hover:bg-neutral-200" style="grid-template-columns: 3rem 24rem 12rem 12rem auto;">
   <button
     x-data="{ checked: false }"
     @click="
@@ -16,8 +16,8 @@
     <svg :class="{ 'hidden': checked }" class="w-full h-full fill-current"><use xlink:href="#ph_square"></svg>
     <svg x-cloak :class="{ 'hidden': !checked }" class="w-full h-full fill-current"><use xlink:href="#ph_check-square-fill"></svg>
   </button>
-  <div class="flex items-center flex-shrink">
-    <div class="inline-block w-16 h-16 mr-6 overflow-hidden rounded-lg bg-trueGray-300">
+  <div class="flex items-center shrink">
+    <div class="inline-block w-16 h-16 mr-6 overflow-hidden rounded-lg bg-neutral-300">
       {% if category.selected_products is not empty %}
       <img src="{{ route_to('content-photos', 'sm', category.selected_products[0].filename) }}" class="w-full h-full">
       {% endif %}
@@ -80,14 +80,14 @@
   <div class="flex gap-6">
 
     <div class="space-y-1">
-      <label for="name{{ category.id }}" class="block font-semibold text-trueGray-800">Judul kategori</label>
+      <label for="name{{ category.id }}" class="block font-semibold text-neutral-800">Judul kategori</label>
       <input id="name{{ category.id }}" name="name" type="text" value="{{ category.name }}" class="input input-base input-default">
     </div>
     
-    <div class="flex-grow">
-      <div class="relative flex-grow">
-        <label for="productIds[]" class="font-semibold text-trueGray-800">Daftar produk</label>
-        <button x-data @click="$dispatch('dropdownproduct')" type="button" class="flex items-center justify-between w-full mt-1 input input-base input-default text-trueGray-400">
+    <div class="grow">
+      <div class="relative grow">
+        <label for="productIds[]" class="font-semibold text-neutral-800">Daftar produk</label>
+        <button x-data @click="$dispatch('dropdownproduct')" type="button" class="flex items-center justify-between w-full mt-1 input input-base input-default text-neutral-400">
           <span>Tambahkan produk disini</span>
           <svg class="w-6 h-6 fill-current">
             <use xlink:href="#ph_caret-down">
@@ -102,7 +102,7 @@
           {% endfor %}
         </ul>
       </div>
-      <ul class="mt-4 divide-y divide-trueGray-200">
+      <ul class="mt-4 divide-y divide-neutral-200">
         <template x-if="products.length === 0" hidden>
           <li>Tanpa produk</li>
         </template>
@@ -110,7 +110,7 @@
           <li class="flex justify-between py-2 group">
             <input type="hidden" name="productIds[]" :value="product.product_id">
             <div class="flex items-center gap-6">
-              <img :src="`{{ base_url('photos/sm') }}/${product.filename}`" class="rounded-lg w-14 h-14 bg-trueGray-300">
+              <img :src="`{{ base_url('photos/sm') }}/${product.filename}`" class="rounded-lg w-14 h-14 bg-neutral-300">
               <span x-text="product.title"></span>
             </div>
             <button @click="removeProduct(product.product_id)" type="button" class="mr-6 opacity-0 ignore-outside-click group-hover:opacity-100">

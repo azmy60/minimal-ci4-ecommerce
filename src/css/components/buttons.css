@@ -28,7 +28,7 @@
   
   /* Colors */
   .btn-black {
-    @apply bg-trueGray-800 text-white;
+    @apply bg-neutral-800 text-white;
   }
   
   .btn-emerald {
@@ -36,7 +36,7 @@
   }
   
   .btn-outlined-black {
-    @apply border border-trueGray-800 text-black;
+    @apply border border-neutral-800 text-black;
   }
   
   .btn-outlined-emerald {

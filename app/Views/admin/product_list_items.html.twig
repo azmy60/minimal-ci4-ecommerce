@@ -1,10 +1,10 @@
 {% import "components/components.html.twig" as components %}
 
-<div x-init="base.productCount = {{ products|length }}" x-data='{ categories: JSON.parse(`{{ categories|json_encode()|raw }}`) }' class="border-t border-b divide-y divide-trueGray-100 border-trueGray-100">
+<div x-init="base.productCount = {{ products|length }}" x-data='{ categories: JSON.parse(`{{ categories|json_encode()|raw }}`) }' class="border-t border-b divide-y divide-neutral-100 border-neutral-100">
 
 {% for product in products %}
 {% set thumbnailSrc = product.thumbnails[0].src %}
-<div class="product-list-el product-{{ product.id }} group grid items-center h-20 hover:bg-trueGray-200" style="grid-template-columns: 3rem 24rem 13.75rem 10rem auto;">
+<div class="product-list-el product-{{ product.id }} group grid items-center h-20 hover:bg-neutral-200" style="grid-template-columns: 3rem 24rem 13.75rem 10rem auto;">
   <button
     x-data="{ checked: false }"
     @click="
@@ -19,12 +19,12 @@
     <svg :class="{ 'hidden': checked }" class="w-full h-full fill-current"><use xlink:href="#ph_square"></svg>
     <svg x-cloak :class="{ 'hidden': !checked }" class="w-full h-full fill-current"><use xlink:href="#ph_check-square-fill"></svg>
   </button>
-  <div class="flex-shrink">
-    <img src="{{ thumbnailSrc }}" class="inline-block w-16 h-16 mr-6 rounded-lg bg-trueGray-300">
+  <div class="shrink">
+    <img src="{{ thumbnailSrc }}" class="inline-block w-16 h-16 mr-6 rounded-lg bg-neutral-300">
     <span class="inline-block w-64">{{ product.title }}</span>
   </div>
   <div>
-    <span class="text-trueGray-500">Rp</span>
+    <span class="text-neutral-500">Rp</span>
     <span>{{ product.price|number_format(0, '', '.') }}</span>
   </div>
   <div>{{ 
@@ -89,7 +89,7 @@
     <div class="space-y-4 w-96">
 
       <div class="grid gap-1">
-        <label for="price" class="font-semibold text-trueGray-800">Harga</label>
+        <label for="price" class="font-semibold text-neutral-800">Harga</label>
         <input name="price" type="hidden" value="{{ product.price }}">
         <input-container class="input-base input-default">
           <span>Rp</span>
@@ -99,7 +99,7 @@
 
       <div x-data='helper.addCatData(categories, JSON.parse(`{{ product.categories|json_encode()|raw }}`))' @click.stop class="relative grid gap-1">
         <input name="cats" type="hidden" :value="JSON.stringify(updatedCats)">
-        <label for="cats" class="font-semibold text-trueGray-800">Kategori</label>
+        <label for="cats" class="font-semibold text-neutral-800">Kategori</label>
         <input x-ref="input" @focus="show = true" x-model="inputVal" @input="searchCat(inputVal)" @keydown.enter.prevent @clearinput.window="$el.value = ''" placeholder="Ketik kategori disini" class="w-full input input-lg input-default">
         <div class="flex flex-wrap gap-2 pt-2">
           <template x-for="cat in updatedCats">

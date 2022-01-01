@@ -6,7 +6,7 @@ import "./InputContainer"
 const templateHtml = /*html*/`
 <input-container x-data="{ show: false }">
   <input :type="show ? 'text' : 'password'" x-ref="passwordInput" type="password">
-  <div x-cloak @click="show = !show" class="text-trueGray-500">
+  <div x-cloak @click="show = !show" class="text-neutral-500">
     <svg x-show="!show" class="fill-current"><use xlink:href="#ph_eye" /></svg>
     <svg x-show="show" class="fill-current"><use xlink:href="#ph_eye-slash" /></svg>
   </div>

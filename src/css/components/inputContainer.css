@@ -32,7 +32,7 @@
   }
 
   input-container > input, .input-container > input {
-    @apply outline-none flex-grow;
+    @apply outline-none grow;
   }
 
   input-container svg, .input-container svg {

@@ -54,7 +54,7 @@
         },
       }"
       class="w-full">
-      <div x-cloak x-show="ids.length > 0" x-collapse class="flex items-center justify-between px-6 py-4 mb-4 rounded-lg bg-trueGray-100">
+      <div x-cloak x-show="ids.length > 0" x-collapse class="flex items-center justify-between px-6 py-4 mb-4 rounded-lg bg-neutral-100">
         <div class="flex items-center gap-4">
           <span x-text="`${ids.length} produk terpilih`"></span>
           <div class="relative">
@@ -121,7 +121,7 @@
       <label x-text="`Foto ${title}`" for="photos[]" class="block pb-4 text-2xl font-semibold"></label>
       <input x-ref="productId" type="hidden" name="product_id" class="hidden">
       <upload-zone x-ref="uploadZone"></upload-zone>
-      <div class="max-w-sm text-trueGray-800">
+      <div class="max-w-sm text-neutral-800">
         <p>Format foto .jpg .jpeg .png dengan ukuran minimal 1000x1000px dan maksimal 2MB.</p>
         <p class="mt-2">Pilih foto atau tarik dan letakkan di kotak hingga 10 foto. Geser foto sesuai urutan yang diinginkan.</p>
       </div>
@@ -132,7 +132,7 @@
     </form>
   </div>
 {% else %}
-  <section class="grid flex-grow w-full place-content-center">
+  <section class="grid grow w-full place-content-center">
     <div class="flex flex-col gap-6 mx-auto w-96">
       <svg class="w-full h-auto" fill="none" viewBox="0 0 384 285">
         <g clip-path="url(#a)">

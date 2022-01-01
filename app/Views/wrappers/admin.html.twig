@@ -10,7 +10,7 @@
 <body class="relative flex w-full">
   {% include "dest/symbol/iconset.svg" %}
   <aside x-data="{ showNav: false }" @click.outside="showNav = false"
-    class="fixed top-0 z-50 w-full text-white select-none md:sticky md:h-screen md:w-24 md:flex md:flex-col lg:w-56 h-14 bg-trueGray-900">
+    class="fixed top-0 z-50 w-full text-white select-none md:sticky md:h-screen md:w-24 md:flex md:flex-col lg:w-56 h-14 bg-neutral-900">
     <div @click="showNav = !showNav" class="ml-4 mt-[0.875rem] cursor-pointer fill-current w-7 h-7 md:hidden">
       <svg x-show="!showNav" class="w-full h-full">
         <use xlink:href="#ph_list-bold" />
@@ -19,7 +19,7 @@
         <use xlink:href="#ph_x-bold" />
       </svg>
     </div>
-    <div class="absolute text-xl transform -translate-x-1/2 -translate-y-1/2 md:border-b md:border-trueGray-800 left-1/2 top-1/2 md:text-base md:w-full md:mt-4 lg:mt-0 lg:py-4 md:text-center md:static md:transform-none">
+    <div class="absolute text-xl -translate-x-1/2 -translate-y-1/2 md:border-b md:border-neutral-800 left-1/2 top-1/2 md:text-base md:w-full md:mt-4 lg:mt-0 lg:py-4 md:text-center md:static md:transform-none">
       <a target="_blank" href="{{ route_to('/') }}">
         <span class="font-semibold md:hidden">
           {{ '[[STORENAME]]' }}
@@ -35,7 +35,7 @@
             <span class="hidden lg:block">
               {{ store.name|u.truncate(19, '...') }}
             </span>
-            <span class="hidden text-sm lg:block text-trueGray-400">
+            <span class="hidden text-sm lg:block text-neutral-400">
               {{ base_url('/')|u.truncate(25, '...') }}
             </span>
           </div>
@@ -43,7 +43,7 @@
       </a>
     </div>
     <nav hx-boost="true" hx-indicator="#main-indicator" hx-target="#main" x-data="navData()" x-show="showNav"
-      x-transition class="absolute w-full pt-1 md:flex-grow md:pt-0 md:static bg-trueGray-900 admin-nav">
+      x-transition class="absolute w-full pt-1 md:grow md:pt-0 md:static bg-neutral-900 admin-nav">
       <div class="relative">
         {{ _self.nav_group_skeleton() }}
         {{ _self.nav_item('Home', 'house', route_to('admin')) }}
@@ -55,7 +55,7 @@
         #}
       </div>
       
-      <div class="relative border-t border-trueGray-800">
+      <div class="relative border-t border-neutral-800">
         {{ _self.nav_group_skeleton() }}
         {{ _self.nav_item('Logout', 'sign-out', route_to('logout'), 'hx-disable hx-ignore x-ignore') }}
         {{ _self.nav_item('Beri saran/kritik', 'chat-text', route_to('admin/send-feedback'), 'hx-disable hx-ignore x-ignore') }}
@@ -63,7 +63,7 @@
     </nav>
   </aside>
 
-  <main id="main" class="relative z-0 flex flex-col flex-grow mt-14 md:mt-0">
+  <main id="main" class="relative z-0 flex flex-col grow mt-14 md:mt-0">
     {{ store.status == 0 ? block('warning_store_is_not_public') }}
     {% block main %}{% endblock main %}
   </main>
@@ -109,14 +109,14 @@
 {% endmacro %}
 
 {% macro nav_group_skeleton() %}
-<div x-show="$store.onboarding" x-transition:leave.duration.500ms class="absolute inset-0 flex flex-col p-6 space-y-4 bg-trueGray-900">
-  <div class="w-full h-12 rounded-lg bg-trueGray-800"></div>
-  <div class="w-full h-12 rounded-lg bg-trueGray-800"></div>
+<div x-show="$store.onboarding" x-transition:leave.duration.500ms class="absolute inset-0 flex flex-col p-6 space-y-4 bg-neutral-900">
+  <div class="w-full h-12 rounded-lg bg-neutral-800"></div>
+  <div class="w-full h-12 rounded-lg bg-neutral-800"></div>
 </div>
 {% endmacro %}
 
 {% block warning_store_is_not_public %}
-<div class="w-full py-3 font-semibold text-yellow-600 bg-yellow-100 px-7 md:flex-shrink">
+<div class="w-full py-3 font-semibold text-yellow-600 bg-yellow-100 px-7 md:shrink">
   Tokomu telah disembunyikan dari publik. Kamu bisa mengubah ini di 
   <button x-data @click="document.querySelector(`nav a[href='{{ route_to('admin/settings') }}']`).click()" class="font-semibold underline">pengaturan.</button>
 </div>

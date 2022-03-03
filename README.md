@@ -1,4 +1,10 @@
-# etalase.id
+# A Minimal CI 4 E-Commerce
+
+:warning: **UNDER DEVELOPMENT** :warning:
+
+## TODO
+- Improve the UI & UX
+- Simplify the back-end & front-end
 
 ## Requirements
 - php 7.3+, 8.0+

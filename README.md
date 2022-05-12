@@ -9,6 +9,7 @@
 ## Requirements
 - php 7.3+, 8.0+
 - php gd library `sudo apt-get install php-gd`
+- php intl extension `sudo apt-get install php-intl`
 - A SQLite driver `sudo apt-get install php-sqlite3`
 - [A local email server](https://gist.github.com/raelgc/6031274) for testing email verification and forgot password
 
@@ -28,6 +29,8 @@ npm run prod
 ```
 5. Set the php config's `post_max_size` to `21M` at minimum. https://stackoverflow.com/a/6135485/10012118
 6. Disable `ONLY_FULL_GROUP_BY` sql mode. https://stackoverflow.com/a/36033983/10012118
+7. Create a new account
+8. Login with the account by visitting /login
 
 ## Creating a new account
 ### Using CLI

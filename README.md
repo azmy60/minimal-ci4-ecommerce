@@ -3,8 +3,10 @@
 :warning: **UNDER DEVELOPMENT** :warning:
 
 ## TODO
-- Improve the UI & UX
+- Add tests
+- Improve UI/UX
 - Simplify the back-end & front-end
+- Simplify the setup configurations
 
 ## Requirements
 - php 7.3+, 8.0+
